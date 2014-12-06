@@ -8,14 +8,7 @@ function love.update(dt)
     for o, _ in pairs(global.entities) do
         o:update(dt)
     end
-end
-
-function love.update(dt)
-    -- simulate the passing of time---<dt> is the
-    -- time (fraction of a second) that has passed
-    -- since the last call to love.update
-
-   global.collider:update(dt)
+    global.collider:update(dt)
 end
 
 function love.draw()
