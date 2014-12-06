@@ -18,6 +18,8 @@ function Collidable:update(dt)
        local hh = hy1 - hy0
        self.hitbox:moveTo(self.x + hw/2, self.y + hh/2)
    end
+
+   Drawable.update(self, dt)
 end
 
 function Collidable:onCollision(other, dx, dy)
@@ -28,6 +30,8 @@ function Collidable:destroy()
    if self.hitbox ~= nil then
       global.removeHitbox(self.hitbox)
    end
+
+   Drawable.destroy(self)
 end
 
 return Collidable

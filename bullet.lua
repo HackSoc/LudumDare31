@@ -14,8 +14,7 @@ end
 
 function Bullet:onCollision(other, dx, dy)
     if other:isInstanceOf(Collidable) then
-        global.removeHitbox(self.hitbox)
-        global.removeDrawable(self)
+        self:destroy()
     end
 end
 
