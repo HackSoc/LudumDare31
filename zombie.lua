@@ -32,4 +32,24 @@ function Zombie:update(dt)
     Mobile.update(self, dt)
 end
 
+function Zombie.spawn()
+    local x = 0
+    local y = 0
+    local rand = love.math.random(3)
+    if rand == 0 then
+        x = 0
+        y = love.math.random(love.graphics.getHeight())
+    elseif rand == 1 then
+        x = love.math.random(love.graphics.getWidth())
+        y = 0
+    elseif rand == 2 then
+        x = love.graphics.getWidth()
+        y = love.math.random(love.graphics.getHeight())
+    else
+        x = love.math.random(love.graphics.getWidth())
+        y = love.graphics.getHeight()
+    end
+    global.addDrawable(Zombie:new(x, y))
+end
+
 return Zombie
