@@ -5,8 +5,6 @@ local Zombie = class("Zombie", Mobile)
 
 local global = require "global"
 
-local maxspeed = 10
-
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y, 100)
 
@@ -26,6 +24,15 @@ function Zombie:draw()
     -- draw portion of health bar for health lost
     love.graphics.setColor(255, 0, 0)
     love.graphics.rectangle("fill", self.x+self.hp/10, self.y-5, 10-self.hp/10, 2)
+end
+
+function Zombie:update(dt)
+    -- It's got stuck
+    if not self.targetx or not self.targety then
+        self.targetx = self.x + love.math.random(-20, 20)
+        self.targety = self.y + love.math.random(-20, 20)
+    end
+    Mobile.update(self, dt)
 end
 
 function Zombie.spawn()
