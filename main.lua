@@ -12,7 +12,6 @@ function love.load()
     global.addDrawable(Wall:new(200, 450, 200, 1))
     global.addDrawable(Wall:new(450, 450, 150, 1))
     global.addDrawable(Wall:new(600, 150, 1, 300))
-    global.addDrawable(Human:new(300, 300))
 end
 
 function love.update(dt)
@@ -27,7 +26,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    -- draw the current frame
     for o, _ in pairs(global.drawables) do
         o:draw()
     end
@@ -42,16 +40,18 @@ end
 function love.keypressed(key)
     if key == "d" then
         global.debug = not global.debug
+    elseif key == "escape" then
+        if selected then
+            selected:setUnselected()
+        end
+        selected = nil
+    elseif key == "h" then
+        global.addDrawable(Human:new(love.mouse.getPosition()))
     end
 end
 
 function love.keyreleased(key)
-	if key == "escape" then
-		if selected then
-			selected:setUnselected()
-		end
-		selected = nil
-	end
+
 end
 
 function love.mousepressed(x, y, button)
@@ -59,16 +59,16 @@ function love.mousepressed(x, y, button)
 end
 
 function love.mousereleased(x, y, button)
-	if button == "l" then
-		for _, c in pairs(global.collidablesAt(x, y)) do
-			if c:isInstanceOf(Human) then
-				selected = c
-				c:setSelected()
-				return
-			end
-		end
-		if selected then
-			selected:moveTo(x, y)
-		end
-	end
+    if button == "l" then
+        for _, c in pairs(global.collidablesAt(x, y)) do
+            if c:isInstanceOf(Human) then
+                selected = c
+                c:setSelected()
+                return
+            end
+        end
+        if selected then
+            selected:moveTo(x, y)
+        end
+    end
 end
