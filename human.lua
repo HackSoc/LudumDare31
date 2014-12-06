@@ -8,8 +8,8 @@ setmetatable(Human, {
     __index = Mobile
 })
 
-function Human.new(x, y, collider)
-    local self = Mobile.new(x, y, collider)
+function Human.new(x, y)
+    local self = Mobile.new(x, y)
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
     setmetatable(self, Human)
     return self
@@ -17,7 +17,7 @@ end
 
 function Human:draw()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rect("line", self.x, self.y, 10, 10)
+    love.graphics.rectangle("line", self.x, self.y, 10, 10)
 end
 
 return Human
