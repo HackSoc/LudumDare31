@@ -17,6 +17,7 @@ function Mobile:initialize(x, y, maxhp)
     -- Record previous positions
     self.buffer = {}
     self.bufidx = 0
+    self.rotation = 0
 end
 
 function Mobile:onCollision(other, dx, dy)
@@ -46,8 +47,17 @@ function Mobile:update(dt)
         if dx < 2 and dy < 2 then
             self.vx = 0
             self.vy = 0
+<<<<<<< HEAD
             self.targetx = nil
             self.targety = nil
+=======
+        else
+            self.vx = dx / mag * self.maxspeed
+            self.vy = dy / mag * self.maxspeed
+            if (self.vx ~= 0 or self.vy ~= 0) then
+                self.rotation = math.deg(math.atan2(self.vx, self.vy))
+            end
+>>>>>>> Add mobile rotation calculating based on velocity vectors
         end
     end
     Collidable.update(self, dt)
