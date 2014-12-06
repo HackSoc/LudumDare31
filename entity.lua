@@ -24,7 +24,8 @@ function Entity:getAbsDistance(other)
     return math.sqrt(x^2 + y^2)
 end
 
-function Entity:hasLineOfSight(targetx, targety)
+function Entity:hasLineOfSight(targetShape)
+    targetx, targety = targetShape:center()
     if self.x < targetx then
         x1 = self.x
         x2 = targetx
@@ -39,11 +40,12 @@ function Entity:hasLineOfSight(targetx, targety)
         y2 = self.y
         y1 = targety
     end
-    possibleBlockers = global.collider.shapesInRange(x1, y1, x2, y2)
-    for _, shape = pairs(possibleBlockers) do
+    possibleBlockers = global.collider:shapesInRange(x1, y1, x2, y2)
+    for _, shape in pairs(possibleBlockers) do
         if shape:intersectsRay(self.x, self.y, targetx-self.x, targety-self.y) then
             shapex, shapey = shape:center()
-            if shapex > x1 and shapex < x2 and shapey > y1 and shapey < y2 then
+            if shapex > x1 and shapex < x2 and shapey > y1 and shapey < y2 
+	       and shape ~= targetShape then
                 return false
             end
         end 

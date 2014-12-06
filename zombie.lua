@@ -13,7 +13,9 @@ function Zombie:initialize(x, y)
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
     self:setTarget(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     self:setMaxSpeed(10)
-    self.cooldown = 0
+    self.damageCooldown = 0
+    self.planningCooldown = 0
+    self.targetHuman = nil
 end
 
 function Zombie:draw()
@@ -35,17 +37,43 @@ function Zombie:update(dt)
         self.targetx = self.x + love.math.random(-100, 100)
         self.targety = self.y + love.math.random(-100, 100)
     end
-    if self.cooldown > 0 then
-        self.cooldown = self.cooldown - dt
+
+    if self.targetHuman == nil or self.planningCooldown <= 0 then
+       	local function compare(entity1, entity2)
+            dx1 = self.x - entity1.x
+            dx2 = self.x - entity2.x
+	    dy1 = self.y - entity1.y
+            dy2 = self.y - entity2.y
+            distance1 = math.sqrt(dx1^2 + dy1^2)
+            distance2 = math.sqrt(dx2^2 + dy2^2)
+	    return distance1 < distance2
+        end
+        table.sort(global.entities, compare)
+        for _, entity in pairs(global.entities) do
+            if entity:isInstanceOf(Human) and 
+               self:hasLineOfSight(entity.hitbox) then
+                self.targetHuman = entity
+		self.planningCooldown = 1
+                break
+            end
+       end
+    else
+        self:setTarget(self.targetHuman.x, self.targetHuman.y)
+        self.planningCooldown = self.planningCooldown - dt
     end
+
+    if self.damageCooldown > 0 then
+        self.damageCooldown = self.damageCooldown - dt
+    end
+
     Mobile.update(self, dt)
 end
 
 function Zombie:onCollision(other, dx, dy)
     Mobile.onCollision(self, other, dx, dy)
-    if other:isInstanceOf(Human) and (self.cooldown <= 0) then
+    if other:isInstanceOf(Human) and (self.damageCooldown <= 0) then
         other:hurt(10)
-        self.cooldown = 1
+        self.damageCooldown = 1
     end
 end
 
