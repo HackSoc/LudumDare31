@@ -20,7 +20,11 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, sp
     self.maxreload = reload
     self.accuracy = 10 -- bullet scatter
     self.radius = 25 -- For drawing/hitbox
-    self.direction = direction
+    if direction < 0 then
+        self.direction = 2 * math.pi + direction
+    else
+        self.direction = direction
+    end
     self.spread = spread
     self.hitbox = global.addHitbox(self, x, y, self.radius * 2, self.radius * 2)
 end
@@ -34,7 +38,7 @@ function Turret:update(dt)
         local zeds = {}
         local zcount = 0
         for _, e in pairs(global.entities) do
-            if e:isInstanceOf(Zombie) then
+            if e:isInstanceOf(Zombie) and self:isInFieldOfView(e) then
                 zcount = zcount + 1
                 zeds[zcount] = e
             end
@@ -84,6 +88,25 @@ local function rotateAbout(x, y, cx, cy, theta)
     return rx + cx, ry + cy
 end
 
+function Turret:isInFieldOfView(entity)
+    local theta1 = self.direction - self.spread
+    local theta2 = self.direction + self.spread
+
+    local cx = self.x + self.radius
+    local cy = self.y + self.radius
+
+    local dx = cx - entity.x
+    local dy = cy - entity.y
+
+    local theta = math.atan2(dy, dx)
+
+    if theta < 0 then
+        theta = 2 * math.pi + theta
+    end
+
+    return theta1 <= theta and theta <= theta2
+end
+
 function Turret:draw()
     local cx = self.x + self.radius
     local cy = self.y + self.radius
@@ -92,8 +115,8 @@ function Turret:draw()
     love.graphics.circle("line", cx, cy, self.radius)
 
     -- Draw boundaries of the field of vier as lines
-    local px = cx
-    local py = self.y
+    local px = self.x
+    local py = cy
     local theta0 = self.direction
     local theta1 = self.direction - self.spread
     local theta2 = self.direction + self.spread
