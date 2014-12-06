@@ -40,7 +40,9 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    -- handle <key> being pressed
+    if key == "d" then
+        global.debug = not global.debug
+    end
 end
 
 function love.keyreleased(key)
