@@ -18,7 +18,7 @@ function love.update(dt)
     end
     global.collider:update(dt)
 
-    if love.math.random() <= 0.25 * dt then
+    if global.continuousspawn and love.math.random() <= 0.25 * dt then
         Zombie.spawn()
     end
 end
@@ -38,6 +38,8 @@ end
 function love.keypressed(key)
     if key == "d" then
         global.debug = not global.debug
+    elseif key == "z" then
+        global.continuousspawn = not global.continuousspawn
     elseif key == "h" then
         global.addDrawable(Human:new(love.mouse.getPosition()))
     end

@@ -4,6 +4,7 @@ global.entities = {}
 global.drawables = {}
 
 global.debug = false
+global.continuousspawn = false
 
 -- State used for the onCollision function. 'collider' is the actual
 -- collider object, and 'shapeMap' is a map from hitboxes to objects,
