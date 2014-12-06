@@ -5,7 +5,7 @@ function love.load()
 end
 
 function love.update(dt)
-    for _, e in pairs(entites) do
+    for _, e in pairs(entities) do
         e:update(dt)
     end
 end
