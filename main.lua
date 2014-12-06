@@ -49,8 +49,11 @@ function love.keypressed(key)
                 global.removeDrawable(e)
             end
         end
+    elseif key == 'escape' then
+        unselectAll()
     elseif key == 'a' then
-        select(global.entities)
+        unselectAll()
+        selectMore(global.entities)
     end
 end
 
@@ -58,14 +61,32 @@ function love.keyreleased(key)
 
 end
 
-function select(entities)
+-- When holding shift, toggle the selection state of entities in the
+-- set (but don't unselect things we have already selected), if not
+-- holding shift, same as before: one-unit selections.
+function selectMore(entities)
     for e, _ in pairs(global.entities) do
         if e:isInstanceOf(Human) then
-            if entities[e] then
-                e:setSelected()
+            if love.keyboard.isDown("lshift") then
+                if entities[e] then
+                    e:toggleSelected()
+                end
             else
-                e:setUnselected()
+                if entities[e] then
+                    e:setSelected()
+                else
+                    e:setUnselected()
+                end
             end
+        end
+    end
+end
+
+-- Unselect all selected entities
+function unselectAll()
+    for e, _ in pairs(global.entities) do
+        if e:isInstanceOf(Human) then
+            e:setUnselected()
         end
     end
 end
@@ -76,7 +97,7 @@ end
 
 function love.mousereleased(x, y, button)
     if button == "l" then
-        select(global.collidablesAt(x, y))
+        selectMore(global.collidablesAt(x, y))
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
