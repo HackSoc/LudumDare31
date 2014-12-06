@@ -57,8 +57,11 @@ function love.keypressed(key)
     elseif key == 'escape' then
         unselectAll()
     elseif key == 'a' then
-        unselectAll()
-        selectMore(global.entities)
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) then
+                e:setSelected()
+            end
+        end
     elseif key == 'b' then
         local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250), 50)
         global.addDrawable(b)
