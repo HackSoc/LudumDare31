@@ -10,7 +10,7 @@ function Entity.new(x, y)
     return self
 end
 
-function Entity:draw()
+function Entity:update(dt)
 
 end
 
