@@ -5,6 +5,7 @@ local Human = require "human"
 local Bullet = require "bullet"
 local Turret = require "turret"
 local Gate = require "gate"
+local Trap = require "trap"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 3))
@@ -65,6 +66,8 @@ function love.keypressed(key)
     elseif key == 'b' then
         local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250), 50)
         global.addDrawable(b)
+    elseif key == 't' then
+        global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
     end
 end
 
