@@ -5,8 +5,6 @@ local Human = class("Human", Mobile)
 
 local global = require "global"
 
-local maxspeed = 50
-
 function Human:initialize(x, y)
     Mobile.initialize(self, x, y)
 
@@ -14,6 +12,7 @@ function Human:initialize(x, y)
     self.selected = false
     self.targetx = nil
     self.targety = nil
+    self:setMaxSpeed(50)
 end
 
 function Human:draw()
@@ -23,17 +22,6 @@ function Human:draw()
         drawstyle = "fill"
     end
     love.graphics.rectangle(drawstyle, self.x, self.y, 10, 10)
-end
-
-function Human:update(dt)
-    if self.targetx and self.targety then
-        local dx = self.targetx - self.x
-        local dy = self.targety - self.y
-        local mag = math.sqrt(dx^2 + dy^2)
-        self.vx = dx / mag * maxspeed
-        self.vy = dy / mag * maxspeed
-    end
-    Mobile.update(self, dt)
 end
 
 function Human:toggleSelected()
@@ -46,11 +34,6 @@ end
 
 function Human:setUnselected()
     self.selected = false
-end
-
-function Human:moveTo(x, y)
-    self.targetx = x
-    self.targety = y
 end
 
 return Human

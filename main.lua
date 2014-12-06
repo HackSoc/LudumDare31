@@ -80,7 +80,7 @@ function love.mousereleased(x, y, button)
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
-                e:moveTo(x, y)
+                e:setTarget(x, y)
             end
         end
     end
