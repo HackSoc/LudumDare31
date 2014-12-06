@@ -1,8 +1,8 @@
 local entities = {}
+local drawables = {}
 
 function love.load()
     -- initialisation code goes here
-    drawables = {}
 end
 
 function love.update(dt)
