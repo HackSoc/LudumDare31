@@ -7,8 +7,9 @@ setmetatable(Human, {
     __index = Mobile
 })
 
-function Human.new(x, y)
-    local self = Mobile.new(x, y)
+function Human.new(x, y, collider)
+    local self = Mobile.new(x, y, collider)
+    self.hitbox = collider:addRectangle(x, y, 10, 10)
     setmetatable(self, Human)
     return self
 end

@@ -1,14 +1,36 @@
 local entities = {}
 local drawables = {}
 
+-- State used for the onCollision function. 'collider' is the actual
+-- collider object, and 'shapeMap' is a map from hitboxes to objects,
+-- as we cannot associate data with shapes.
+local HC = require 'hardoncollider'
+local collider = nil
+local shapeMap = {}
+
 function love.load()
     -- initialisation code goes here
+
+   collider = HC(100, onCollision)
 end
 
 function love.update(dt)
     for _, e in pairs(entities) do
         e:update(dt)
     end
+end
+
+function love.update(dt)
+    -- simulate the passing of time---<dt> is the
+    -- time (fraction of a second) that has passed
+    -- since the last call to love.update
+
+   collider:update(dt)
+end
+
+function onCollision(dt, a, b)
+   shapeMap[a]:onCollision(b)
+   shapeMap[b]:onCollision(a)
 end
 
 function love.draw()

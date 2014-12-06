@@ -7,8 +7,9 @@ setmetatable(Zombie, {
     __index = Mobile
 })
 
-function Zombie.new(x, y)
-    local self = Mobile.new(x, y)
+function Zombie.new(x, y, collider)
+    local self = Mobile.new(x, y, collider)
+    self.hitbox = collider:addCircle(x, y, 5)
     setmetatable(self, Zombie)
     self.vx = 5
     self.vy = 5
