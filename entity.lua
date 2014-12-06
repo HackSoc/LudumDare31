@@ -18,6 +18,12 @@ function Entity:update(dt)
     end
 end
 
+function Entity:getAbsDistance(other)
+    local x = other.x - self.x
+    local y = other.y - self.y
+    return math.sqrt(x^2 + y^2)
+end
+
 function Entity:destroy()
     global.removeEntity(self)
 end

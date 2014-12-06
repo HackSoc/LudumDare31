@@ -51,7 +51,8 @@ function love.keypressed(key)
     elseif key == "z" then
         global.continuousspawn = not global.continuousspawn
     elseif key == "h" then
-        global.addDrawable(Human:new(love.mouse.getPosition()))
+        local x, y = love.mouse.getPosition()
+        global.addDrawable(Human:new(x, y, 10, 0.1, 1))
     elseif key == "q" then
         global.addDrawable(Zombie:new(love.mouse.getPosition()))
     elseif key == 'c' then
