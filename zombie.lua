@@ -5,7 +5,7 @@ local Zombie = class("Zombie", Mobile)
 
 local global = require "global"
 
-local maxspeed = 50
+local maxspeed = 10
 
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y)

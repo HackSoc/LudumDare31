@@ -21,6 +21,7 @@ function Collidable:update(dt)
 end
 
 function Collidable:onCollision(other, dx, dy)
+    print("Collidable colliding")
 end
 
 function Collidable:destroy()

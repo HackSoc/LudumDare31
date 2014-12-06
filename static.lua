@@ -7,4 +7,7 @@ function Static:initialize(x, y)
     Collidable.initialize(self, x, y)
 end
 
+function Static:onCollision(other, dx, dy)
+end
+
 return Static
