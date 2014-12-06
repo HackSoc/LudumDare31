@@ -3,6 +3,8 @@ local class = require "middleclass.middleclass"
 local Collidable = require "collidable"
 local Mobile = class("Mobile", Collidable)
 
+local bufsize = 32
+
 function Mobile:initialize(x, y)
     Collidable.initialize(self, x, y)
 
@@ -36,8 +38,8 @@ function Mobile:update(dt)
     self.y = self.y + self.vy * dt
 
     self.buffer[self.bufidx] = {x=self.x, y=self.y}
-    self.bufidx = (self.bufidx + 1) % 8
-    local oldbufidx = (self.bufidx - 8) % 8
+    self.bufidx = (self.bufidx + 1) % bufsize
+    local oldbufidx = (self.bufidx - bufsize) % bufsize
     if self.buffer[oldbufidx] then
         local dx = math.abs(self.buffer[oldbufidx].x - self.x)
         local dy = math.abs(self.buffer[oldbufidx].y - self.y)
