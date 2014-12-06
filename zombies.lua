@@ -13,4 +13,10 @@ function Zombie.new()
     return self
 end
 
+function Zombie:draw()
+    local radius = 5
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.circle("line", self.x+radius, self.y+radius, radius)
+end
+
 return Zombie
