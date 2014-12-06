@@ -13,7 +13,7 @@ end
 
 function love.draw()
     -- draw the current frame
-    for k, v = pairs(drawables) do
+    for k, v in pairs(drawables) do
         v:draw()
     end
 end
