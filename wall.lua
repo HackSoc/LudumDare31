@@ -9,7 +9,7 @@ setmetatable(Wall, {
 })
 
 function Wall.new(x, y, width, height)
-    local self = Static.new(x, y, collider)
+    local self = Static.new(x, y)
     self.width = width
     self.height = height
     self.hitbox = global.addHitbox(self, x, y, width, height)
