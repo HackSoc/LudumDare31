@@ -1,7 +1,13 @@
 local global = require "global"
+local Wall = require "wall"
 
 function love.load()
-    -- initialisation code goes here
+    global.addDrawable(Wall.new(220, 150, 350, 1))
+    global.addDrawable(Wall.new(200, 150, 1, 100))
+    global.addDrawable(Wall.new(200, 350, 1, 100))
+    global.addDrawable(Wall.new(200, 450, 200, 1))
+    global.addDrawable(Wall.new(450, 450, 150, 1))
+    global.addDrawable(Wall.new(600, 150, 1, 300))
 end
 
 function love.update(dt)
