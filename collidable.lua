@@ -8,6 +8,7 @@ local global = require "global"
 function Collidable:initialize(x, y)
     Drawable.initialize(self, x, y)
     self.stopsBullets = true
+    self.hp = 100
 end
 
 function Collidable:update(dt)
@@ -26,6 +27,13 @@ end
 function Collidable:onCollision(other, dx, dy)
     print("Collidable colliding")
 end
+
+function Collidable:hurt(damage)
+    self.hp = self.hp - damage
+    if self.hp <= 0 then
+        Collidable.destroy(self)
+    end
+end 
 
 function Collidable:destroy()
    if self.hitbox ~= nil then
