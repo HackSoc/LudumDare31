@@ -43,6 +43,14 @@ function love.keypressed(key)
         global.continuousspawn = not global.continuousspawn
     elseif key == "h" then
         global.addDrawable(Human:new(love.mouse.getPosition()))
+    elseif key == 'c' then
+        for e, _ in pairs(global.drawables) do
+            if e:isInstanceOf(Human) or e:isInstanceOf(Zombie) then
+                global.removeDrawable(e)
+            end
+        end
+    elseif key == 'a' then
+        select(global.entities)
     end
 end
 
