@@ -50,23 +50,25 @@ function love.keyreleased(key)
 
 end
 
+function select(entities)
+    for e, _ in pairs(global.entities) do
+        if e:isInstanceOf(Human) then
+            if entities[e] then
+                e:setSelected()
+            else
+                e:setUnselected()
+            end
+        end
+    end
+end
+
 function love.mousepressed(x, y, button)
-    -- handle mouse presses
+
 end
 
 function love.mousereleased(x, y, button)
     if button == "l" then
-        collidables = global.collidablesAt(x, y)
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) then
-                if collidables[e] then
-                    e:setSelected()
-                else
-                    e:setUnselected()
-                end
-            end
-        end
-
+        select(global.collidablesAt(x, y))
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
