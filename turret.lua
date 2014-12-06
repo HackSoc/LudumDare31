@@ -8,8 +8,8 @@ local Zombie = require "zombie"
 local Bullet = require "bullet"
 
 -- Turrets have an ammo supply, which is gradually depleted. When
--- empty, the turret needs to recharge
-function Turret:initialize(x, y, ammo, cooldown, reload, accuracy)
+-- empty, the turret needs to recharge.
+function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, spread)
     Static.initialize(self, x, y)
 
     self.stopsBullets = false
@@ -20,6 +20,8 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy)
     self.maxreload = reload
     self.accuracy = 10 -- bullet scatter
     self.radius = 25 -- For drawing/hitbox
+    self.direction = direction
+    self.spread = spread
     self.hitbox = global.addHitbox(self, x, y, self.radius * 2, self.radius * 2)
 end
 
@@ -75,9 +77,37 @@ function Turret:update(dt)
     Static.update(self, dt)
 end
 
+local function rotateAbout(x, y, cx, cy, theta)
+    local rx = (x - cx) * math.cos(theta) - (y - cy) * math.sin(theta)
+    local ry = (x - cx) * math.sin(theta) + (y - cy) * math.cos(theta)
+
+    return rx + cx, ry + cy
+end
+
 function Turret:draw()
+    local cx = self.x + self.radius
+    local cy = self.y + self.radius
+
     love.graphics.setColor(255, 0, 255)
-    love.graphics.circle("line", self.x + 25, self.y + 25, 25)
+    love.graphics.circle("line", cx, cy, self.radius)
+
+    -- Draw boundaries of the field of vier as lines
+    local px = cx
+    local py = self.y
+    local theta0 = self.direction
+    local theta1 = self.direction - self.spread
+    local theta2 = self.direction + self.spread
+
+    local rx, ry = rotateAbout(px, py, cx, cy, theta0)
+    love.graphics.setColor(255, 228, 181)
+    love.graphics.line(cx, cy, rx, ry)
+
+    love.graphics.setColor(200, 0, 100)
+    rx, ry = rotateAbout(px, py, cx, cy, theta1)
+    love.graphics.line(cx, cy, rx, ry)
+
+    rx, ry = rotateAbout(px, py, cx, cy, theta2)
+    love.graphics.line(cx, cy, rx, ry)
 end
 
 return Turret
