@@ -7,10 +7,14 @@ setmetatable(Collidable, {
     __index = Drawable
 })
 
-function Collidable.new()
-    local self = Drawable.new()
+function Collidable.new(x, y)
+    local self = Drawable.new(x, y)
     setmetatable(self, Collidable)
     return self
+end
+
+function Colliable:onCollision(other)
+
 end
 
 return Collidable

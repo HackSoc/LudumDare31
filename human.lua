@@ -7,8 +7,8 @@ setmetatable(Human, {
     __index = Mobile
 })
 
-function Human.new()
-    local self = Mobile.new()
+function Human.new(x, y)
+    local self = Mobile.new(x, y)
     setmetatable(self, Human)
     return self
 end
