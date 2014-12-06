@@ -4,12 +4,16 @@ local class = require 'middleclass.middleclass'
 local Collidable = require 'collidable'
 local Bullet = class('Bullet', Collidable)
 
-function Bullet:initialize(x, y, dx, dy)
-    Collidable.initialize(self, x, y)
+function Bullet:initialize(x, y, dx, dy, damage)
+    Collidable.initialize(self, x, y, 999)
 
     self.hitbox = global.addHitbox(self, x, y, 2, 2)
     self.dx = dx
     self.dy = dy
+    self.damage = damage
+end
+
+function Bullet:hurt()
 end
 
 function Bullet:onCollision(other, dx, dy)

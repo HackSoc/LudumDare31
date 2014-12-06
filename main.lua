@@ -60,7 +60,7 @@ function love.keypressed(key)
         unselectAll()
         selectMore(global.entities)
     elseif key == 'b' then
-        local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250))
+        local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250), 50)
         global.addDrawable(b)
     end
 end

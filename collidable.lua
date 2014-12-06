@@ -5,11 +5,11 @@ local Collidable = class("Collidable", Drawable)
 
 local global = require "global"
 
-function Collidable:initialize(x, y)
+function Collidable:initialize(x, y, maxhp)
     Drawable.initialize(self, x, y)
     self.stopsBullets = true
-    self.maxhp = 100
-    self.hp = self.maxhp
+    self.maxhp = maxhp
+    self.hp = maxhp
 end
 
 function Collidable:update(dt)
@@ -32,7 +32,7 @@ end
 function Collidable:hurt(damage)
     self.hp = self.hp - damage
     if self.hp <= 0 then
-        Collidable.destroy(self)
+        self:destroy()
     end
 end 
 

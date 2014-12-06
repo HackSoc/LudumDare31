@@ -5,8 +5,8 @@ local Mobile = class("Mobile", Collidable)
 
 local bufsize = 32
 
-function Mobile:initialize(x, y)
-    Collidable.initialize(self, x, y)
+function Mobile:initialize(x, y, maxhp)
+    Collidable.initialize(self, x, y, maxhp)
 
     self.vx = 0
     self.vy = 0

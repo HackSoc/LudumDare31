@@ -8,7 +8,7 @@ local global = require "global"
 local maxspeed = 10
 
 function Zombie:initialize(x, y)
-    Mobile.initialize(self, x, y)
+    Mobile.initialize(self, x, y, 100)
 
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
     self:setTarget(love.graphics.getWidth()/2, love.graphics.getHeight()/2)

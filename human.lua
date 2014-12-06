@@ -6,7 +6,7 @@ local Human = class("Human", Mobile)
 local global = require "global"
 
 function Human:initialize(x, y)
-    Mobile.initialize(self, x, y)
+    Mobile.initialize(self, x, y, 100)
 
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
     self.selected = false
