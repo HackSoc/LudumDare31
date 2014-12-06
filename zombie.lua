@@ -29,8 +29,8 @@ end
 function Zombie:update(dt)
     -- It's got stuck
     if not self.targetx or not self.targety then
-        self.targetx = self.x + love.math.random(-20, 20)
-        self.targety = self.y + love.math.random(-20, 20)
+        self.targetx = self.x + love.math.random(-100, 100)
+        self.targety = self.y + love.math.random(-100, 100)
     end
     Mobile.update(self, dt)
 end
