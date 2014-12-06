@@ -28,9 +28,9 @@ function love.update(dt)
    collider:update(dt)
 end
 
-function onCollision(dt, a, b)
-   shapeMap[a]:onCollision(b)
-   shapeMap[b]:onCollision(a)
+function onCollision(dt, a, b, dx, dy)
+   shapeMap[a]:onCollision(b, dx, dy)
+   shapeMap[b]:onCollision(a, dx, dy)
 end
 
 function love.draw()

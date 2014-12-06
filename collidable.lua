@@ -22,7 +22,7 @@ function Collidable:update(dt)
    end
 end
 
-function Collidable:onCollision(other)
+function Collidable:onCollision(other, dx, dy)
 
 end
 
