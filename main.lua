@@ -2,6 +2,7 @@ local entities = {}
 
 function love.load()
     -- initialisation code goes here
+    drawables = {}
 end
 
 function love.update(dt)
@@ -12,6 +13,9 @@ end
 
 function love.draw()
     -- draw the current frame
+    for k, v = pairs(drawables) do
+        v:draw()
+    end
 end
 
 function love.keypressed(key)
