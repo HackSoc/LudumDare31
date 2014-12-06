@@ -11,6 +11,10 @@ function Mobile:initialize(x, y)
     self.targetx = nil
     self.targety = nil
     self.maxspeed = 1 --Stupid small default speed
+
+    -- Record previous positions
+    self.buffer = {}
+    self.bufidx = 0
 end
 
 function Mobile:onCollision(other, dx, dy)
@@ -25,23 +29,32 @@ function Mobile:update(dt)
         local dx = self.targetx - self.x
         local dy = self.targety - self.y
         local mag = math.sqrt(dx^2 + dy^2)
-        --If the mobile instance is within 2 px of its target, clamp velocity to stop twerking
-        if math.abs(self.targetx - self.x) < 2 and math.abs(self.targety - self.y) < 2 then
-            self.vx = 0
-            self.vy = 0
-        else
-            self.vx = dx / mag * self.maxspeed
-            self.vy = dy / mag * self.maxspeed
-        end
+        self.vx = dx / mag * self.maxspeed
+        self.vy = dy / mag * self.maxspeed
     end
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
+
+    self.buffer[self.bufidx] = {x=self.x, y=self.y}
+    self.bufidx = (self.bufidx + 1) % 8
+    local oldbufidx = (self.bufidx - 8) % 8
+    if self.buffer[oldbufidx] then
+        local dx = math.abs(self.buffer[oldbufidx].x - self.x)
+        local dy = math.abs(self.buffer[oldbufidx].y - self.y)
+        if dx < 2 and dy < 2 then
+            self.vx = 0
+            self.vy = 0
+            self.targetx = nil
+            self.targety = nil
+        end
+    end
     Collidable.update(self, dt)
 end
 
 function Mobile:setTarget(x, y)
     self.targetx = x
     self.targety = y
+    self.buffer = {}
 end
 
 function Mobile:setMaxSpeed(speed)
