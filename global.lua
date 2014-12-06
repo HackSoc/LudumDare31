@@ -9,8 +9,8 @@ global.continuousspawn = false
 local HC = require 'hardoncollider'
 
 local function onCollision(dt, a, b, dx, dy)
-    a.entity:onCollision(b, dx, dy)
-    b.entity:onCollision(a, -dx, -dy)
+    a.entity:onCollision(b.entity, dx, dy)
+    b.entity:onCollision(a.entity, -dx, -dy)
 end
 
 global.collider = HC(100, onCollision)
