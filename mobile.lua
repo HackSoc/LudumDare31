@@ -23,8 +23,14 @@ function Mobile:update(dt)
         local dx = self.targetx - self.x
         local dy = self.targety - self.y
         local mag = math.sqrt(dx^2 + dy^2)
-        self.vx = dx / mag * self.maxspeed
-        self.vy = dy / mag * self.maxspeed
+        --If the mobile instance is within 2 px of its target, clamp velocity to stop twerking
+        if math.abs(self.targetx - self.x) < 2 and math.abs(self.targety - self.y) < 2 then
+            self.vx = 0
+            self.vy = 0
+        else
+            self.vx = dx / mag * self.maxspeed
+            self.vy = dy / mag * self.maxspeed
+        end
     end
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
