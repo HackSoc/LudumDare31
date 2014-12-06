@@ -11,6 +11,7 @@ local shapeMap = {}
 
 local function onCollision(dt, a, b, dx, dy)
     shapeMap[a]:onCollision(b, dx, dy)
+    shapeMap[b]:onCollision(a, -dx, -dy)
 end
 
 global.collider = HC(100, onCollision)
