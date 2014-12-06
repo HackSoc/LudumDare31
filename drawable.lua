@@ -1,16 +1,10 @@
-local Drawable = {}
-Drawable.__index = Drawable
+local class = require "middleclass.middleclass"
 
 local Entity = require "entity"
+local Drawable = class("Drawable", Entity)
 
-setmetatable(Drawable, {
-    __index = Entity
-})
-
-function Drawable.new(x, y)
-    local self = Entity.new(x, y)
-    setmetatable(self, Drawable)
-    return self
+function Drawable:initialize(x, y)
+    Entity.initialize(self, x, y)
 end
 
 function Drawable:draw()

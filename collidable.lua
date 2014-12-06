@@ -1,17 +1,12 @@
-local Collidable = {}
-Collidable.__index = Collidable
+local class = require "middleclass.middleclass"
 
 local Drawable = require "drawable"
+local Collidable = class("Collidable", Drawable)
+
 local global = require "global"
 
-setmetatable(Collidable, {
-    __index = Drawable
-})
-
-function Collidable.new(x, y)
-    local self = Drawable.new(x, y)
-    setmetatable(self, Collidable)
-    return self
+function Collidable:initialize(x, y)
+    Drawable.initialize(self, x, y)
 end
 
 function Collidable:update(dt)

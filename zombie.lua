@@ -1,20 +1,16 @@
-local Zombie = {}
-Zombie.__index = Zombie
+local class = require "middleclass.middleclass"
 
 local Mobile = require "mobile"
-local global = require "global"
+local Zombie = class("Zombie", Mobile)
 
-setmetatable(Zombie, {
-    __index = Mobile
-})
+local global = require "global"
 
 local maxspeed = 50
 
-function Zombie.new(x, y)
-    local self = Mobile.new(x, y)
+function Zombie:initialize(x, y)
+    Mobile.initialize(self, x, y)
+
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
-    setmetatable(self, Zombie)
-    return self
 end
 
 function Zombie:draw()

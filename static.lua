@@ -1,16 +1,10 @@
-local Static = {}
-Static.__index = Static
+local class = require "middleclass.middleclass"
 
 local Collidable = require "collidable"
+local Static = class("Static", Collidable)
 
-setmetatable(Static, {
-    __index = Collidable
-})
-
-function Static.new(x, y)
-    local self = Collidable.new(x, y)
-    setmetatable(self, Static)
-    return self
+function Static:initialize(x, y)
+    Collidable.initialize(self, x, y)
 end
 
 return Static

@@ -1,18 +1,13 @@
-local Mobile = {}
-Mobile.__index = Mobile
+local class = require "middleclass.middleclass"
 
 local Collidable = require "collidable"
+local Mobile = class("Mobile", Collidable)
 
-setmetatable(Mobile, {
-    __index = Collidable
-})
+function Mobile:initialize(x, y)
+    Collidable.initialize(self, x, y)
 
-function Mobile.new(x, y)
-    local self = Collidable.new(x, y)
     self.vx = 0
     self.vy = 0
-    setmetatable(self, Mobile)
-    return self
 end
 
 function Mobile:update(dt)

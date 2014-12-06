@@ -1,20 +1,16 @@
-local Wall = {}
-Wall.__index = Wall
+local class = require "middleclass.middleclass"
 
 local Static = require "static"
+local Wall = class("Wall", Static)
+
 local global = require "global"
 
-setmetatable(Wall, {
-    __index = Static
-})
+function Wall:initialize(x, y, w, h)
+    Static.initialize(self, x, y)
 
-function Wall.new(x, y, w, h)
-    local self = Static.new(x, y)
     self.w = w
     self.h = h
     self.hitbox = global.addHitbox(self, x, y, w, h)
-    setmetatable(self, Wall)
-    return self
 end
 
 function Wall:draw()

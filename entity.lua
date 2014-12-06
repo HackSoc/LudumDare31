@@ -1,13 +1,10 @@
-local Entity = {}
-Entity.__index = Entity
+local class = require "middleclass.middleclass"
 
-function Entity.new(x, y)
-    local self = {
-        x = x,
-        y = y
-    }
-    setmetatable(self, Entity)
-    return self
+local Entity = class("Entity")
+
+function Entity:initialize(x, y)
+    self.x = x
+    self.y = y
 end
 
 function Entity:update(dt)

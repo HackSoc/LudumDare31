@@ -1,18 +1,14 @@
-local Human = {}
-Human.__index = Human
+local class = require "middleclass.middleclass"
 
 local Mobile = require "mobile"
+local Human = class("Human", Mobile)
+
 local global = require "global"
 
-setmetatable(Human, {
-    __index = Mobile
-})
+function Human:initialize(x, y)
+    Mobile.initialize(self, x, y)
 
-function Human.new(x, y)
-    local self = Mobile.new(x, y)
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
-    setmetatable(self, Human)
-    return self
 end
 
 function Human:draw()
