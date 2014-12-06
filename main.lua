@@ -3,8 +3,6 @@ local Wall = require "wall"
 local Zombie = require "zombie"
 local Human = require "human"
 
-local selected = nil
-
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 1))
     global.addDrawable(Wall:new(200, 150, 1, 100))
@@ -40,11 +38,6 @@ end
 function love.keypressed(key)
     if key == "d" then
         global.debug = not global.debug
-    elseif key == "escape" then
-        if selected then
-            selected:setUnselected()
-        end
-        selected = nil
     elseif key == "h" then
         global.addDrawable(Human:new(love.mouse.getPosition()))
     end
@@ -62,13 +55,15 @@ function love.mousereleased(x, y, button)
     if button == "l" then
         for _, c in pairs(global.collidablesAt(x, y)) do
             if c:isInstanceOf(Human) then
-                selected = c
-                c:setSelected()
+                c:toggleSelected()
                 return
             end
         end
-        if selected then
-            selected:moveTo(x, y)
+
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) and e.selected then
+                e:moveTo(x, y)
+            end
         end
     end
 end

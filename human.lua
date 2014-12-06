@@ -36,12 +36,8 @@ function Human:update(dt)
     Mobile.update(self, dt)
 end
 
-function Human:setSelected()
-    self.selected = true
-end
-
-function Human:setUnselected()
-    self.selected = false
+function Human:toggleSelected()
+    self.selected = not self.selected
 end
 
 function Human:moveTo(x, y)
