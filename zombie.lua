@@ -5,12 +5,15 @@ local Zombie = class("Zombie", Mobile)
 
 local global = require "global"
 
+local Human = require "human"
+
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y, 100)
 
     self.hitbox = global.addHitbox(self, x, y, 10, 10)
     self:setTarget(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     self:setMaxSpeed(10)
+    self.cooldown = 0
 end
 
 function Zombie:draw()
@@ -32,7 +35,18 @@ function Zombie:update(dt)
         self.targetx = self.x + love.math.random(-100, 100)
         self.targety = self.y + love.math.random(-100, 100)
     end
+    if self.cooldown > 0 then
+        self.cooldown = self.cooldown - dt
+    end
     Mobile.update(self, dt)
+end
+
+function Zombie:onCollision(other, dx, dy)
+    Mobile.onCollision(self, other, dx, dy)
+    if other:isInstanceOf(Human) and (self.cooldown <= 0) then
+        other:hurt(10)
+        self.cooldown = 1
+    end
 end
 
 function Zombie.spawn()
