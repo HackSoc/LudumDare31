@@ -1,5 +1,6 @@
 local global = require "global"
 local Wall = require "wall"
+local Zombie = require "zombie"
 
 function love.load()
     global.addDrawable(Wall.new(220, 150, 350, 1))
@@ -8,6 +9,10 @@ function love.load()
     global.addDrawable(Wall.new(200, 450, 200, 1))
     global.addDrawable(Wall.new(450, 450, 150, 1))
     global.addDrawable(Wall.new(600, 150, 1, 300))
+    global.addDrawable(Zombie.new(0,0))
+    global.addDrawable(Zombie.new(0,love.graphics.getHeight()))
+    global.addDrawable(Zombie.new(love.graphics.getWidth(),0))
+    global.addDrawable(Zombie.new(love.graphics.getWidth(), love.graphics.getHeight()))
 end
 
 function love.update(dt)
