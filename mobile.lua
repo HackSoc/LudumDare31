@@ -14,8 +14,10 @@ function Mobile:initialize(x, y)
 end
 
 function Mobile:onCollision(other, dx, dy)
-    self.x = self.x + dx
-    self.y = self.y + dy
+    if other:isInstanceOf(Collidable) then
+        self.x = self.x + dx
+        self.y = self.y + dy
+    end
 end
 
 function Mobile:update(dt)
