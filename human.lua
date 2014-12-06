@@ -22,6 +22,13 @@ function Human:draw()
         drawstyle = "fill"
     end
     love.graphics.rectangle(drawstyle, self.x, self.y, 10, 10)
+
+    -- draw portion of health bar for remaining health
+    love.graphics.setColor(0, 255, 0)
+    love.graphics.rectangle("fill", self.x, self.y-5, self.hp/10, 2)
+    -- draw portion of health bar for health lost
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.rectangle("fill", self.x + self.hp/10, self.y-5, 10 - self.hp/10, 2)
 end
 
 function Human:toggleSelected()
