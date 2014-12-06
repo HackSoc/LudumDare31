@@ -6,34 +6,31 @@ global.drawables = {}
 global.debug = false
 global.continuousspawn = false
 
--- State used for the onCollision function. 'collider' is the actual
--- collider object, and 'shapeMap' is a map from hitboxes to objects,
--- as we cannot associate data with shapes.
 local HC = require 'hardoncollider'
-local shapeMap = {}
 
 local function onCollision(dt, a, b, dx, dy)
-    shapeMap[a]:onCollision(b, dx, dy)
-    shapeMap[b]:onCollision(a, -dx, -dy)
+    a.entity:onCollision(b, dx, dy)
+    b.entity:onCollision(a, -dx, -dy)
 end
 
 global.collider = HC(100, onCollision)
 
 function global.addHitbox(obj, x, y, w, h)
     local hitbox = global.collider:addRectangle(x, y, w, h)
-    shapeMap[hitbox] = obj
+    hitbox.entity = obj
 
     return hitbox
 end
 
 function global.removeHitbox(hitbox)
     global.collider:remove(hitbox)
-    shapeMap[hitbox] = nil
 end
 
 function global.drawHitboxes()
-    for h, _ in pairs(shapeMap) do
-        h:draw("line")
+    for h, _ in pairs(global.entities) do
+        if h.hitbox ~= nil then
+            h.hitbox:draw("line")
+        end
     end
 end
 
@@ -58,7 +55,7 @@ end
 function global.collidablesAt(x, y)
     local collidables = {}
     for _, shape in pairs(global.collider:shapesAt(x, y)) do
-        collidables[shapeMap[shape]] = 1
+        collidables[shape.entity] = 1
     end
     return collidables
 end
