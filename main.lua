@@ -31,6 +31,12 @@ function love.draw()
     for o, _ in pairs(global.drawables) do
         o:draw()
     end
+
+    if global.debug then
+        love.graphics.setColor(255, 0, 0)
+        global.drawHitboxes()
+        love.graphics.setColor(255, 255, 255)
+    end
 end
 
 function love.keypressed(key)

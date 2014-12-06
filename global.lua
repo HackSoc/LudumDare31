@@ -3,6 +3,8 @@ local global = {}
 global.entities = {}
 global.drawables = {}
 
+global.debug = true
+
 -- State used for the onCollision function. 'collider' is the actual
 -- collider object, and 'shapeMap' is a map from hitboxes to objects,
 -- as we cannot associate data with shapes.
@@ -26,6 +28,12 @@ end
 function global.removeHitbox(hitbox)
     global.collider:remove(hitbox)
     shapeMap[hitbox] = nil
+end
+
+function global.drawHitboxes()
+    for h, _ in pairs(shapeMap) do
+        h:draw("line")
+    end
 end
 
 function global.addEntity(obj)
