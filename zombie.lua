@@ -24,14 +24,14 @@ end
 function Zombie.spawn()
     local x = 0
     local y = 0
-    local rand = love.math.random(3)
-    if rand == 0 then
+    local rand = love.math.random(4)
+    if rand == 1 then
         x = 0
         y = love.math.random(love.graphics.getHeight())
-    elseif rand == 1 then
+    elseif rand == 2 then
         x = love.math.random(love.graphics.getWidth())
         y = 0
-    elseif rand == 2 then
+    elseif rand == 3 then
         x = love.graphics.getWidth()
         y = love.math.random(love.graphics.getHeight())
     else
