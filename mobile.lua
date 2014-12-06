@@ -32,8 +32,13 @@ function Mobile:update(dt)
         local dx = self.targetx - self.x
         local dy = self.targety - self.y
         local mag = math.sqrt(dx^2 + dy^2)
-        self.vx = dx / mag * self.maxspeed
-        self.vy = dy / mag * self.maxspeed
+        if mag ~= 0 then
+            self.vx = dx / mag * self.maxspeed
+            self.vy = dy / mag * self.maxspeed
+        else
+            self.vx = 0
+            self.vy = 0
+        end
         if (self.vx ~= 0 or self.vy ~= 0) then
             self.rotation = math.deg(math.atan2(self.vx, self.vy))
         end
