@@ -14,6 +14,7 @@ function Wall:initialize(x, y, w, h)
 end
 
 function Wall:draw()
+    love.graphics.setColor(255,255,255)
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
 end
 
