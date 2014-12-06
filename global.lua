@@ -35,7 +35,7 @@ function global.drawHitboxes()
 end
 
 function global.addEntity(obj)
-    global.entities[obj] = 1
+    global.entities[obj] = obj
 end
 
 function global.removeEntity(obj)
@@ -44,7 +44,7 @@ end
 
 function global.addDrawable(obj)
     global.addEntity(obj)
-    global.drawables[obj] = 1
+    global.drawables[obj] = obj
 end
 
 function global.removeDrawable(obj)
@@ -55,7 +55,7 @@ end
 function global.collidablesAt(x, y)
     local collidables = {}
     for _, shape in pairs(global.collider:shapesAt(x, y)) do
-        collidables[shape.entity] = 1
+        collidables[shape.entity] = shape.entity
     end
     return collidables
 end
