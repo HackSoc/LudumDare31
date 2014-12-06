@@ -40,6 +40,14 @@ function Human:toggleSelected()
     self.selected = not self.selected
 end
 
+function Human:setSelected()
+    self.selected = true
+end
+
+function Human:setUnselected()
+    self.selected = false
+end
+
 function Human:moveTo(x, y)
     self.targetx = x
     self.targety = y

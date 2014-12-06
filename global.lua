@@ -58,7 +58,7 @@ end
 function global.collidablesAt(x, y)
     local collidables = {}
     for _, shape in pairs(global.collider:shapesAt(x, y)) do
-        table.insert(collidables, shapeMap[shape])
+        collidables[shapeMap[shape]] = 1
     end
     return collidables
 end

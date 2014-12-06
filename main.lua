@@ -55,17 +55,23 @@ end
 
 function love.mousereleased(x, y, button)
     if button == "l" then
-        for _, c in pairs(global.collidablesAt(x, y)) do
-            if c:isInstanceOf(Human) then
-                c:toggleSelected()
-                return
+        collidables = global.collidablesAt(x, y)
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) then
+                if collidables[e] then
+                    e:setSelected()
+                else
+                    e:setUnselected()
+                end
             end
         end
 
+    elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
                 e:moveTo(x, y)
             end
         end
     end
+
 end
