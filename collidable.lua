@@ -13,7 +13,7 @@ function Collidable.new(x, y)
     return self
 end
 
-function Colliable:onCollision(other)
+function Collidable:onCollision(other)
 
 end
 

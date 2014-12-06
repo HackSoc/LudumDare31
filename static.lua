@@ -7,8 +7,8 @@ setmetatable(Static, {
     __index = Collidable
 })
 
-function Static.new()
-    local self = Collidable.new()
+function Static.new(x, y)
+    local self = Collidable.new(x, y)
     setmetatable(self, Static)
     return self
 end
