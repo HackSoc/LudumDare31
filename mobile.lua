@@ -34,6 +34,9 @@ function Mobile:update(dt)
         local mag = math.sqrt(dx^2 + dy^2)
         self.vx = dx / mag * self.maxspeed
         self.vy = dy / mag * self.maxspeed
+        if (self.vx ~= 0 or self.vy ~= 0) then
+            self.rotation = math.deg(math.atan2(self.vx, self.vy))
+        end
     end
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
@@ -49,12 +52,6 @@ function Mobile:update(dt)
             self.vy = 0
             self.targetx = nil
             self.targety = nil
-        else
-            self.vx = dx / mag * self.maxspeed
-            self.vy = dy / mag * self.maxspeed
-            if (self.vx ~= 0 or self.vy ~= 0) then
-                self.rotation = math.deg(math.atan2(self.vx, self.vy))
-            end
         end
     end
     Collidable.update(self, dt)
