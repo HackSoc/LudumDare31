@@ -24,6 +24,33 @@ function Entity:getAbsDistance(other)
     return math.sqrt(x^2 + y^2)
 end
 
+function Entity:hasLineOfSight(targetx, targety)
+    if self.x < targetx then
+        x1 = self.x
+        x2 = targetx
+    else
+        x2 = self.x
+        x1 = targetx
+    end
+    if self.y < targety then
+        y1 = self.y
+        y2 = targety
+    else
+        y2 = self.y
+        y1 = targety
+    end
+    possibleBlockers = global.collider.shapesInRange(x1, y1, x2, y2)
+    for _, shape = pairs(possibleBlockers) do
+        if shape:intersectsRay(self.x, self.y, targetx-self.x, targety-self.y) then
+            shapex, shapey = shape:center()
+            if shapex > x1 and shapex < x2 and shapey > y1 and shapey < y2 then
+                return false
+            end
+        end 
+    end
+    return true
+end
+
 function Entity:destroy()
     global.removeEntity(self)
 end
