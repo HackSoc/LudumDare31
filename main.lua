@@ -2,6 +2,7 @@ local global = require "global"
 local Wall = require "wall"
 local Zombie = require "zombie"
 local Human = require "human"
+local Bullet = require "bullet"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 1))
@@ -54,6 +55,9 @@ function love.keypressed(key)
     elseif key == 'a' then
         unselectAll()
         selectMore(global.entities)
+    elseif key == 'b' then
+        local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250))
+        global.addDrawable(b)
     end
 end
 
