@@ -32,6 +32,7 @@ function love.draw()
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
         love.graphics.setColor(255, 255, 255)
+        love.graphics.printf(string.format("x: %d, y: %d", love.mouse.getX(), love.mouse.getY()), 0, 0 ,130)
     end
 end
 
