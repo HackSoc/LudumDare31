@@ -7,8 +7,8 @@ setmetatable(Mobile, {
     __index = Collidable
 })
 
-function Mobile.new(x, y, collider)
-    local self = Collidable.new(x, y, collider)
+function Mobile.new(x, y)
+    local self = Collidable.new(x, y)
     self.vx = 0
     self.vy = 0
     setmetatable(self, Mobile)

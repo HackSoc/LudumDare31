@@ -2,14 +2,15 @@ local Zombie = {}
 Zombie.__index = Zombie
 
 local Mobile = require "mobile"
+local global = require "global"
 
 setmetatable(Zombie, {
     __index = Mobile
 })
 
-function Zombie.new(x, y, collider)
-    local self = Mobile.new(x, y, collider)
-    self.hitbox = collider:addCircle(x, y, 5)
+function Zombie.new(x, y)
+    local self = Mobile.new(x, y)
+    self.hitbox = global.addHitbox(self, x, y, 10, 10)
     setmetatable(self, Zombie)
     self.vx = 5
     self.vy = 5

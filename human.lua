@@ -2,6 +2,7 @@ local Human = {}
 Human.__index = Human
 
 local Mobile = require "mobile"
+local global = require "global"
 
 setmetatable(Human, {
     __index = Mobile
@@ -9,7 +10,7 @@ setmetatable(Human, {
 
 function Human.new(x, y, collider)
     local self = Mobile.new(x, y, collider)
-    self.hitbox = collider:addRectangle(x, y, 10, 10)
+    self.hitbox = global.addHitbox(self, x, y, 10, 10)
     setmetatable(self, Human)
     return self
 end

@@ -2,14 +2,14 @@ local Collidable = {}
 Collidable.__index = Collidable
 
 local Drawable = require "drawable"
+local global = require "global"
 
 setmetatable(Collidable, {
     __index = Drawable
 })
 
-function Collidable.new(x, y, collider)
+function Collidable.new(x, y)
     local self = Drawable.new(x, y)
-    self.collider = collider
     setmetatable(self, Collidable)
     return self
 end
@@ -23,12 +23,11 @@ function Collidable:update(dt)
 end
 
 function Collidable:onCollision(other, dx, dy)
-
 end
 
 function Collidable:destroy()
    if self.hitbox ~= nil then
-      self.collider:remove(self.hitbox)
+      global.removeHitbox(self.hitbox)
    end
 end
 
