@@ -9,10 +9,10 @@ function Entity:initialize(x, y)
 end
 
 function Entity:update(dt)
-    -- If off the edge of the screen (with a 50px buffer), destroy
+    -- If off the edge of the window (with a 50px buffer), destroy
     -- self.
-    if self.x < -50 or self.x > love.screen.getWidth() + 50 or
-       self.y < -50 or self.y > love.screen.getHeight() + 50 then
+    if self.x < -50 or self.x > love.window.getWidth() + 50 or
+       self.y < -50 or self.y > love.window.getHeight() + 50 then
 
         self:destroy()
     end
