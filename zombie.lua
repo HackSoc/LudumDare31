@@ -19,6 +19,13 @@ function Zombie:draw()
     local radius = 5
     love.graphics.setColor(255, 255, 255)
     love.graphics.circle("line", self.x+radius, self.y+radius, radius)
+
+    -- draw portion of health bar for remaining health
+    love.graphics.setColor(0, 255, 0)
+    love.graphics.rectangle("fill", self.x, self.y-5, self.hp/10, 2)
+    -- draw portion of health bar for health lost
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.rectangle("fill", self.x+self.hp/10, self.y-5, 10-self.hp/10, 2)
 end
 
 function Zombie.spawn()
