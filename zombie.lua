@@ -7,9 +7,11 @@ setmetatable(Zombie, {
     __index = Mobile
 })
 
-function Zombie.new()
-    local self = Mobile.new()
+function Zombie.new(x, y)
+    local self = Mobile.new(x, y)
     setmetatable(self, Zombie)
+    self.vx = 5
+    self.vy = 5
     return self
 end
 
