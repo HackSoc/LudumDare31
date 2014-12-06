@@ -3,6 +3,7 @@ local Wall = require "wall"
 local Zombie = require "zombie"
 local Human = require "human"
 local Bullet = require "bullet"
+local Turret = require "turret"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 1))
@@ -11,6 +12,7 @@ function love.load()
     global.addDrawable(Wall:new(200, 450, 200, 1))
     global.addDrawable(Wall:new(450, 450, 150, 1))
     global.addDrawable(Wall:new(600, 150, 1, 300))
+    global.addDrawable(Turret:new(400, 300, 10, 0.75, 5, 10))
 end
 
 function love.update(dt)
