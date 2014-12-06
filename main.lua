@@ -1,7 +1,6 @@
 local global = require "global"
 local Wall = require "wall"
 local Zombie = require "zombie"
-local Mob = require "mob"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 1))
