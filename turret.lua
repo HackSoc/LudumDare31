@@ -28,7 +28,7 @@ function Turret:update(dt)
         self.cooldown = self.cooldown - dt
     end
 
-    if self.ammo >= 0 then
+    if self.ammo >= 0 and self.cooldown <= 0 then
         local zeds = {}
         local zcount = 0
         for _, e in pairs(global.entities) do
@@ -56,7 +56,9 @@ function Turret:update(dt)
             local vy = dy / mag * 100
 
             -- Spawn a bullet
-            global.addDrawable(Bullet:new(self.x + self.radius, self.y + self.radius, vx, vy))
+            global.addDrawable(Bullet:new(self.x + self.radius,
+                                          self.y + self.radius,
+                                          vx, vy, 50))
             self.ammo = self.ammo - 1
 
             -- Reload if we have no ammo, and set the cooldown

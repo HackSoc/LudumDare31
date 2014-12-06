@@ -14,7 +14,7 @@ function love.load()
     global.addDrawable(Wall:new(200, 450, 200, 1))
     global.addDrawable(Wall:new(450, 450, 150, 1))
     global.addDrawable(Wall:new(600, 150, 1, 300))
-    global.addDrawable(Turret:new(400, 300, 10, 0.75, 5, 10))
+    global.addDrawable(Turret:new(400, 300, 10, 0.1, 1, 50))
 end
 
 function love.update(dt)
