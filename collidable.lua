@@ -7,6 +7,7 @@ local global = require "global"
 
 function Collidable:initialize(x, y)
     Drawable.initialize(self, x, y)
+    self.stopsBullets = true
 end
 
 function Collidable:update(dt)

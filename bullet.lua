@@ -13,7 +13,7 @@ function Bullet:initialize(x, y, dx, dy)
 end
 
 function Bullet:onCollision(other, dx, dy)
-    if other:isInstanceOf(Collidable) then
+    if other:isInstanceOf(Collidable) and other.stopsBullets then
         self:destroy()
     end
 end
