@@ -4,11 +4,13 @@ local Zombie = require "zombie"
 local Human = require "human"
 local Bullet = require "bullet"
 local Turret = require "turret"
+local Gate = require "gate"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 1))
     global.addDrawable(Wall:new(200, 150, 1, 100))
     global.addDrawable(Wall:new(200, 350, 1, 100))
+    global.addDrawable(Gate:new(198, 250, 5, 100))
     global.addDrawable(Wall:new(200, 450, 200, 1))
     global.addDrawable(Wall:new(450, 450, 150, 1))
     global.addDrawable(Wall:new(600, 150, 1, 300))
@@ -70,7 +72,7 @@ end
 -- When holding shift, toggle the selection state of entities in the
 -- set (but don't unselect things we have already selected), if not
 -- holding shift, same as before: one-unit selections.
-function selectMore(entities)
+function click(entities)
     for e, _ in pairs(global.entities) do
         if e:isInstanceOf(Human) then
             if love.keyboard.isDown("lshift") then
@@ -84,6 +86,8 @@ function selectMore(entities)
                     e:setUnselected()
                 end
             end
+        elseif e:isInstanceOf(Gate) and entities[e] then
+            e:toggle()
         end
     end
 end
@@ -103,7 +107,7 @@ end
 
 function love.mousereleased(x, y, button)
     if button == "l" then
-        selectMore(global.collidablesAt(x, y))
+        click(global.collidablesAt(x, y))
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then

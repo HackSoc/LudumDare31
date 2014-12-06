@@ -26,6 +26,14 @@ function global.removeHitbox(hitbox)
     global.collider:remove(hitbox)
 end
 
+function global.setGhost(hitbox)
+    global.collider:setGhost(hitbox)
+end
+
+function global.setSolid(hitbox)
+    global.collider:setSolid(hitbox)
+end
+
 function global.drawHitboxes()
     for h, _ in pairs(global.entities) do
         if h.hitbox ~= nil then
