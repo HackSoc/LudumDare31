@@ -74,6 +74,16 @@ function love.load()
     global.addDrawable(Gate(855, 330, 5, 40))
     global.addDrawable(Gate(576, 100, 126, 3))
     global.addDrawable(Gate(576, h - 100, 126, 3))
+
+    -- Starting humans
+    global.addDrawable(Human(576, 290, 10, 0.1, 1))
+    global.addDrawable(Human(576, 330, 10, 0.1, 1))
+    global.addDrawable(Human(576, 370, 10, 0.1, 1))
+    global.addDrawable(Human(576, 410, 10, 0.1, 1))
+    global.addDrawable(Human(702, 290, 10, 0.1, 1))
+    global.addDrawable(Human(702, 330, 10, 0.1, 1))
+    global.addDrawable(Human(702, 370, 10, 0.1, 1))
+    global.addDrawable(Human(702, 410, 10, 0.1, 1))
 end
 
 function love.update(dt)
