@@ -155,19 +155,6 @@ end
 function love.keypressed(key)
     if key == "d" then
         global.debug = not global.debug
-    elseif key == "z" then
-        global.continuousspawn = not global.continuousspawn
-    elseif key == "h" then
-        local x, y = love.mouse.getPosition()
-        global.addDrawable(Human:new(x, y, 10, 0.1, 1))
-    elseif key == "q" then
-        global.addDrawable(Zombie:new(love.mouse.getPosition()))
-    elseif key == 'c' then
-        for e, _ in pairs(global.drawables) do
-            if e:isInstanceOf(Human) or e:isInstanceOf(Zombie) then
-                global.removeDrawable(e)
-            end
-        end
     elseif key == 'escape' then
         unselectAll()
     elseif key == 'a' then
@@ -176,13 +163,6 @@ function love.keypressed(key)
                 e:setSelected()
             end
         end
-    elseif key == 'b' then
-        local b = Bullet(love.mouse.getX(), love.mouse.getY(),
-                         love.math.random(-250,250),
-                         love.math.random(-250,250), 50)
-        global.addDrawable(b)
-    elseif key == 't' then
-        global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
     elseif key == 'kp0' then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
@@ -200,6 +180,30 @@ function love.keypressed(key)
             if e:isInstanceOf(Human) and e.selected then
                 e:setMode("trap")
             end
+        end
+    end
+
+    if global.debug then
+        if key == "z" then
+            global.continuousspawn = not global.continuousspawn
+        elseif key == "h" then
+            local x, y = love.mouse.getPosition()
+            global.addDrawable(Human:new(x, y, 10, 0.1, 1))
+        elseif key == "q" then
+            global.addDrawable(Zombie:new(love.mouse.getPosition()))
+        elseif key == 'c' then
+            for e, _ in pairs(global.drawables) do
+                if e:isInstanceOf(Human) or e:isInstanceOf(Zombie) then
+                    e:destroy()
+                end
+            end
+        elseif key == 'b' then
+            local b = Bullet(love.mouse.getX(), love.mouse.getY(),
+                             love.math.random(-250,250),
+                             love.math.random(-250,250), 50)
+            global.addDrawable(b)
+        elseif key == 't' then
+            global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
         end
     end
 end
