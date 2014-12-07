@@ -37,6 +37,13 @@ function love.draw()
         o:draw()
     end
 
+    if dragging then
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.rectangle("line", dragging.x, dragging.y,
+                                love.mouse.getX() - dragging.x,
+                                love.mouse.getY() - dragging.y)
+    end
+
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
@@ -114,11 +121,13 @@ function unselectAll()
 end
 
 function love.mousepressed(x, y, button)
-
+    dragging = {x=x, y=y}
 end
 
 function love.mousereleased(x, y, button)
-    if button == "l" then
+    if not (dragging.x == x and dragging.y == y) then
+        click(global.collidablesUnder(dragging.x, dragging.y, x, y))
+    elseif button == "l" then
         click(global.collidablesAt(x, y))
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
@@ -127,5 +136,5 @@ function love.mousereleased(x, y, button)
             end
         end
     end
-
+    dragging = nil
 end

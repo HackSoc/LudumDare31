@@ -6,7 +6,8 @@ global.drawables = {}
 global.debug = false
 global.continuousspawn = false
 
-local HC = require 'hardoncollider'
+local HC = require "hardoncollider"
+local HCShapes = require "hardoncollider.shapes"
 
 local function onCollision(dt, a, b, dx, dy)
     a.entity:onCollision(b.entity, dx, dy)
@@ -64,6 +65,17 @@ function global.collidablesAt(x, y)
     local collidables = {}
     for _, shape in pairs(global.collider:shapesAt(x, y)) do
         collidables[shape.entity] = shape.entity
+    end
+    return collidables
+end
+
+function global.collidablesUnder(x0, y0, x1, y1)
+    local collidables = {}
+    local rect = HCShapes.newPolygonShape(x0, y0, x1, y0, x1, y1, x0, y1)
+    for _, shape in pairs(global.collider:shapesInRange(x0, y0, x1, y1)) do
+        if shape:collidesWith(rect) then
+            collidables[shape.entity] = shape.entity
+        end
     end
     return collidables
 end
