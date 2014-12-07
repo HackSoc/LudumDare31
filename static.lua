@@ -3,9 +3,9 @@ local class = require "middleclass.middleclass"
 local Collidable = require "collidable"
 local Static = class("Static", Collidable)
 
-function Static:initialize(x, y)
-    -- 999 is a good approximation of infinity
-    Collidable.initialize(self, x, y, 999)
+function Static:initialize(x, y, health)
+    local health = health or math.huge
+    Collidable.initialize(self, x, y, health)
 end
 
 function Static:onCollision(other, dx, dy)

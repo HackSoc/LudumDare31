@@ -67,8 +67,11 @@ end
 
 function Zombie:onCollision(other, dx, dy)
     Mobile.onCollision(self, other, dx, dy)
-    if other.class.name == "Human" and (self.damageCooldown <= 0) then
-        other:zomb()
+    if (other.class.name == "Human" or other.class.name == "Gate")
+       and (self.damageCooldown <= 0) then
+        if other.class.name == "Human" then
+            other:zomb()
+        end
         other:hurt(10)
         self.damageCooldown = 1
     end

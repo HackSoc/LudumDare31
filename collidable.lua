@@ -34,7 +34,7 @@ function Collidable:hurt(damage)
     if self.hp <= 0 then
         self:destroy()
     end
-end 
+end
 
 function Collidable:destroy()
    if self.hitbox ~= nil then

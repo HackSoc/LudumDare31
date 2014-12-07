@@ -5,7 +5,7 @@ local Collidable = require 'collidable'
 local Bullet = class('Bullet', Collidable)
 
 function Bullet:initialize(x, y, dx, dy, damage)
-    Collidable.initialize(self, x, y, 999)
+    Collidable.initialize(self, x, y)
 
     self.hitbox = global.addHitbox(self, x, y, 2, 2)
     self.dx = dx

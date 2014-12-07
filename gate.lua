@@ -4,9 +4,10 @@ local Static = require "static"
 local Gate = class("Gate", Static)
 
 local global = require "global"
+local Collidable = require "collidable"
 
 function Gate:initialize(x, y, w, h)
-    Static.initialize(self, x, y)
+    Static.initialize(self, x, y, 5000)
 
     self.w = w
     self.h = h
@@ -39,6 +40,11 @@ function Gate:toggle()
     else
         self:open()
     end
+end
+
+function Gate:hurt(damage)
+    -- Static does nothing
+    Collidable.hurt(self, damage)
 end
 
 return Gate

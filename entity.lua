@@ -44,11 +44,11 @@ function Entity:hasLineOfSight(targetShape)
     for _, shape in pairs(possibleBlockers) do
         if shape:intersectsRay(self.x, self.y, targetx-self.x, targety-self.y) then
             shapex, shapey = shape:center()
-            if shapex > x1 and shapex < x2 and shapey > y1 and shapey < y2 
+            if shapex > x1 and shapex < x2 and shapey > y1 and shapey < y2
 	       and shape ~= targetShape then
                 return false
             end
-        end 
+        end
     end
     return true
 end
