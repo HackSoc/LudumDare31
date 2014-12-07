@@ -105,9 +105,11 @@ function love.draw()
     end
 
     love.graphics.setColor(0, 0, 0)
+    local msgstr = ""
     for i = 1, global.messagenum do
-        love.graphics.print(global.messages[i], 5, 5 + 15 * (i - 1))
+        msgstr = msgstr .. global.messages[i] .. "\n"
     end
+    love.graphics.printf(msgstr, 5, 20, 400)
 
     local selected = nil
     local selcount = 0
