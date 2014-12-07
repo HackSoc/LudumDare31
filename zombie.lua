@@ -10,7 +10,7 @@ local image = love.graphics.newImage('zombie.png')
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y, 100)
 
-    self.hitbox = global.addHitbox(self, x, y, 10, 10)
+    self.hitbox = global.addHitbox(self, x, y, image:getWidth(), image:getHeight())
     self:setTarget(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     self:setMaxSpeed(10)
     self.damageCooldown = 0
@@ -25,7 +25,9 @@ function Zombie:draw()
     local im = image
     love.graphics.setColor(255, 255, 255)
     -- love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
-    love.graphics.draw(im, self.x, self.y, self.rotation,
+    love.graphics.draw(im,
+                       self.x+im:getWidth()/2, self.y+im:getWidth()/2,
+                       self.rotation,
                        1, 1,
                        im:getWidth()/2, im:getHeight()/2)
 

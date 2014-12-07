@@ -69,7 +69,7 @@ local dreamcount = 7
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
-    self.hitbox = global.addHitbox(self, x, y, size, size)
+    self.hitbox = global.addHitbox(self, x, y, image:getWidth(), image:getHeight())
     self.selected = false
     self.targetx = nil
     self.targety = nil
@@ -109,7 +109,9 @@ function Human:draw()
         im = image_selected
     end
     -- love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
-    love.graphics.draw(im, self.x, self.y, self.rotation,
+    love.graphics.draw(im,
+                       self.x+im:getWidth()/2, self.y+im:getWidth()/2,
+                       self.rotation,
                        1, 1,
                        im:getWidth()/2, im:getHeight()/2)
 
