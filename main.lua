@@ -11,10 +11,7 @@ local HotZone = require "hotzone"
 local zSpawnRate = 0.25
 
 function love.load()
-    local w = 1280
-    local h = 720
-
-    love.window.setMode(w, h)
+    love.window.setMode(1280, 720)
     love.graphics.setBackgroundColor(255, 248, 220)
 
     -- Turret room 1
@@ -56,8 +53,8 @@ function love.load()
     -- Central room
     global.addDrawable(Wall(450, 100, 126, 3))
     global.addDrawable(Wall(702, 100, 126, 3))
-    global.addDrawable(Wall(450, h - 100, 126, 3))
-    global.addDrawable(Wall(702, h - 100, 126, 3))
+    global.addDrawable(Wall(450, 620, 126, 3))
+    global.addDrawable(Wall(702, 620, 126, 3))
     global.addDrawable(Wall(450, 100, 3, 230))
     global.addDrawable(Wall(450, 370, 3, 250))
     global.addDrawable(Wall(825, 100, 3, 230))
@@ -73,7 +70,7 @@ function love.load()
     global.addDrawable(Gate(425, 330, 5, 40))
     global.addDrawable(Gate(855, 330, 5, 40))
     global.addDrawable(Gate(576, 100, 126, 3))
-    global.addDrawable(Gate(576, h - 100, 126, 3))
+    global.addDrawable(Gate(576, 620, 126, 3))
 
     -- Starting humans
     global.addDrawable(Human(576, 290, 10, 0.1, 1))
