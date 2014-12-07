@@ -15,7 +15,7 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, sp
     Static.initialize(self, x, y)
 
     self.stopsBullets = false
-    self.radius = 25 -- For drawing/hitbox
+    self.radius = 15 -- For drawing/hitbox
     if direction < 0 then
         self.direction = 2 * math.pi + direction
     else

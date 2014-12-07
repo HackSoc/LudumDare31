@@ -11,48 +11,44 @@ local Human = require "human"
 
 local level = {math=math}
 
+local function correctWall(info, thickness)
+    local x, y, w, h
+    x = info.x * 15 + 6
+    y = info.y * 15 + 6
+    if info.dir == 'v' then
+        w = thickness
+        h = info.len * 15 + 3
+        x = x - (thickness-3) / 2
+    elseif info.dir == 'h' then
+        w = info.len * 15 + 3
+        h = thickness
+        y = y - (thickness-3) / 2
+    else
+        error("Invalid direction")
+    end
+    return x, y, w, h
+end
+
 --wall {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.wall(info)
-    local w = 0
-    local h = 0
-    if info.dir == 'v' then
-        w = 3
-        h = info.len
-    elseif info.dir == 'h' then
-        w = info.len
-        h = 3
-    else
-        error("Invalid wall direction")
-    end
-    global.addDrawable(Wall(info.x, info.y, w, h))
+    global.addDrawable(Wall(correctWall(info, 3)))
 end
 
 --gate {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.gate(info)
-    local w = 0
-    local h = 0
-    if info.dir == 'v' then
-        w = 5
-        h = info.len
-    elseif info.dir == 'h' then
-        w = info.len
-        h = 5
-    else
-        error("Invalid gate direction")
-    end
-    global.addDrawable(Gate(info.x, info.y, w, h))
+    global.addDrawable(Gate(correctWall(info, 5)))
 end
 
 --turret {x=<n>, y=<n>, dir=<n*pi>, hx=<n>, hy=<n>, hw=<n>, hh=<n>}
 function level.turret(info)
-    local hz = HotZone(info.hx, info.hy, info.hw, info.hh)
+    local hz = HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
     global.addDrawable(hz)
-    global.addDrawable(Turret(info.x, info.y, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
+    global.addDrawable(Turret(info.x*15+8, info.y*15+8, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
 end
 
 --human {x=<n>, y=<n>}
 function level.human(info)
-    global.addDrawable(Human(info.x, info.y, 10, 0.1, 1))
+    global.addDrawable(Human(info.x*15+8, info.y*15+8, 10, 0.1, 1))
 end
 
 function LevelLoader:initialize(module)
