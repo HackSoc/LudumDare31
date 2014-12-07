@@ -9,7 +9,7 @@ local Gun = require "gun"
 
 -- Turrets have an ammo supply, which is gradually depleted. When
 -- empty, the turret needs to recharge.
-function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, spread)
+function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, spread, hotzone)
     Static.initialize(self, x, y)
 
     self.stopsBullets = false
@@ -22,9 +22,17 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, sp
     self.spread = spread
     self.gun = Gun:new(self.radius, 50, ammo, cooldown, reload, accuracy)
     self.hitbox = global.addHitbox(self, x, y, self.radius * 2, self.radius * 2)
+    self.hotzone = hotzone
+    self.accuracy = accuracy
 end
 
 function Turret:update(dt)
+    if self.hotzone:containsHuman() then
+        self.gun.accuracy = self.accuracy / 2
+    elseif self.hotzone:containsZombie() then
+        self.gun.accuracy = self.accuracy * 3
+    end
+
     self.gun:update(dt)
 
     local zeds = {}

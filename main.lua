@@ -6,6 +6,7 @@ local Bullet = require "bullet"
 local Turret = require "turret"
 local Gate = require "gate"
 local Trap = require "trap"
+local HotZone = require "hotzone"
 
 function love.load()
     global.addDrawable(Wall:new(220, 150, 350, 3))
@@ -15,10 +16,21 @@ function love.load()
     global.addDrawable(Wall:new(200, 450, 200, 3))
     global.addDrawable(Wall:new(450, 450, 150, 3))
     global.addDrawable(Wall:new(600, 150, 3, 300))
-    global.addDrawable(Turret:new(190, 120, 10, 0.1, 1, 50, math.pi/4, math.pi/4))
-    global.addDrawable(Turret:new(560, 120, 10, 0.1, 1, 50, 3*math.pi/4, math.pi/4))
-    global.addDrawable(Turret:new(190, 430, 10, 0.1, 1, 50, -math.pi/4, math.pi/4))
-    global.addDrawable(Turret:new(560, 430, 10, 0.1, 1, 50, -3*math.pi/4, math.pi/4))
+
+    local zo1 = HotZone:new(215, 160, 50, 50)
+    local zo2 = HotZone:new(535, 160, 50, 50)
+    local zo3 = HotZone:new(215, 390, 50, 50)
+    local zo4 = HotZone:new(535, 390, 50, 50)
+
+    global.addDrawable(zo1)
+    global.addDrawable(zo2)
+    global.addDrawable(zo3)
+    global.addDrawable(zo4)
+
+    global.addDrawable(Turret:new(190, 120, 10, 0.1, 1, 75, math.pi/4, math.pi/4, zo1))
+    global.addDrawable(Turret:new(560, 120, 10, 0.1, 1, 75, 3*math.pi/4, math.pi/4, zo2))
+    global.addDrawable(Turret:new(190, 430, 10, 0.1, 1, 75, -math.pi/4, math.pi/4, zo3))
+    global.addDrawable(Turret:new(560, 430, 10, 0.1, 1, 75, -3*math.pi/4, math.pi/4, zo4))
 end
 
 function love.update(dt)
