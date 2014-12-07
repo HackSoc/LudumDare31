@@ -63,7 +63,7 @@ function Mobile:update(dt)
     Collidable.update(self, dt)
 end
 
-function Mobile:getClosest(objType, dist)
+function Mobile:getClosest(objType, dist, mustSee)
     local function compare(entity1, entity2)
         return self:getAbsDistance(entity1) < self:getAbsDistance(entity2)
     end
@@ -71,16 +71,39 @@ function Mobile:getClosest(objType, dist)
     local entities = {}
     for _, e in pairs(global.entities) do
         if e.class.name == objType and
-           (dist == nil or self:getAbsDistance(e) < dist) then
+           (dist == nil or self:getAbsDistance(e) < dist) and
+           (not mustSee or self:canSee(e)) then
             table.insert(entities, e)
         end
     end
     table.sort(entities, compare)
     for _, entity in ipairs(entities) do
-        if self:hasLineOfSight(entity.hitbox) then
+        -- make nil truthy
+        if mustSee == false or self:canSee(entity) then
             return entity
         end
     end
+end
+
+function Mobile:canSee(target)
+    local Static = require "static"
+    local shapes = require "hardoncollider.shapes"
+    local check = shapes.newPolygonShape(self.x, self.y,
+                                         self.x + 1, self.y + 1,
+                                         target.x, target.y)
+
+    for _, e in pairs(global.drawables) do
+        -- Only static things which stop bullets obstruct line of
+        -- sight
+        if e:isInstanceOf(Static) and
+           e.stopsBullets == true and
+           e.hitbox:collidesWith(check) then
+            print(self, target, e)
+            return false
+        end
+    end
+
+    return true
 end
 
 function Mobile:setTarget(x, y)
