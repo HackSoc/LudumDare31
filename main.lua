@@ -1,12 +1,9 @@
 local global = require "global"
-local Wall = require "wall"
 local Zombie = require "zombie"
 local Human = require "human"
 local Bullet = require "bullet"
-local Turret = require "turret"
 local Gate = require "gate"
-local Trap = require "trap"
-local HotZone = require "hotzone"
+local LevelLoader = require "levelloader"
 
 local zSpawnRate = 0.25
 
@@ -14,73 +11,7 @@ function love.load()
     love.window.setMode(1280, 720)
     love.graphics.setBackgroundColor(255, 248, 220)
 
-    -- Turret room 1
-    local zo1 = HotZone(250, 275, 100, 25)
-    local zo2 = HotZone(225, 300, 25, 100)
-    local zo3 = HotZone(250, 400, 100, 25)
-    global.addDrawable(zo1)
-    global.addDrawable(zo2)
-    global.addDrawable(zo3)
-
-    global.addDrawable(Turret(275, 225, 10, 0.1, 1, 75, math.pi/2, math.pi/4, zo1))
-    global.addDrawable(Turret(175, 325, 10, 0.1, 1, 75, 0, math.pi/4, zo2))
-    global.addDrawable(Turret(275, 425, 10, 0.1, 1, 75, 3*math.pi/2, math.pi/4, zo3))
-
-    global.addDrawable(Wall(200, 250, 200, 3))
-    global.addDrawable(Wall(200, 250, 3, 200))
-    global.addDrawable(Wall(200, 450, 203, 3))
-    global.addDrawable(Wall(400, 250, 3, 80))
-    global.addDrawable(Wall(400, 370, 3, 80))
-
-    -- Turret room 2
-    local zo4 = HotZone(930, 275, 100, 25)
-    local zo5 = HotZone(1030, 300, 25, 100)
-    local zo6 = HotZone(930, 400, 100, 25)
-    global.addDrawable(zo4)
-    global.addDrawable(zo5)
-    global.addDrawable(zo6)
-
-    global.addDrawable(Turret(955, 225, 10, 0.1, 1, 75, math.pi/2, math.pi/4, zo4))
-    global.addDrawable(Turret(1055, 325, 10, 0.1, 1, 75, math.pi, math.pi/4, zo5))
-    global.addDrawable(Turret(955, 425, 10, 0.1, 1, 75, 3*math.pi/2, math.pi/4, zo6))
-
-    global.addDrawable(Wall(880, 250, 200, 3))
-    global.addDrawable(Wall(1080, 250, 3, 200))
-    global.addDrawable(Wall(880, 450, 203, 3))
-    global.addDrawable(Wall(880, 250, 3, 80))
-    global.addDrawable(Wall(880, 370, 3, 80))
-
-    -- Central room
-    global.addDrawable(Wall(450, 100, 126, 3))
-    global.addDrawable(Wall(702, 100, 126, 3))
-    global.addDrawable(Wall(450, 620, 126, 3))
-    global.addDrawable(Wall(702, 620, 126, 3))
-    global.addDrawable(Wall(450, 100, 3, 230))
-    global.addDrawable(Wall(450, 370, 3, 250))
-    global.addDrawable(Wall(825, 100, 3, 230))
-    global.addDrawable(Wall(825, 370, 3, 250))
-
-    -- Side corridors
-    global.addDrawable(Wall(400, 330, 53, 3))
-    global.addDrawable(Wall(400, 370, 53, 3))
-    global.addDrawable(Wall(825, 330, 58, 3))
-    global.addDrawable(Wall(825, 370, 56, 3))
-
-    -- Gates
-    global.addDrawable(Gate(425, 330, 5, 40))
-    global.addDrawable(Gate(855, 330, 5, 40))
-    global.addDrawable(Gate(576, 100-1, 126, 5))
-    global.addDrawable(Gate(576, 620-1, 126, 5))
-
-    -- Starting humans
-    global.addDrawable(Human(576, 290, 10, 0.1, 1))
-    global.addDrawable(Human(576, 330, 10, 0.1, 1))
-    global.addDrawable(Human(576, 370, 10, 0.1, 1))
-    global.addDrawable(Human(576, 410, 10, 0.1, 1))
-    global.addDrawable(Human(702, 290, 10, 0.1, 1))
-    global.addDrawable(Human(702, 330, 10, 0.1, 1))
-    global.addDrawable(Human(702, 370, 10, 0.1, 1))
-    global.addDrawable(Human(702, 410, 10, 0.1, 1))
+    LevelLoader("level")
 end
 
 function love.update(dt)
