@@ -10,6 +10,8 @@ local Zombie = require "zombie"
 local size = 10
 local range = 100
 
+local heal_rate = 10
+
 local image = love.graphics.newImage('human.png')
 local image_selected = love.graphics.newImage('human_selected.png')
 
@@ -22,6 +24,8 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.targety = nil
     self.infected = false
     self:setMaxSpeed(50)
+
+    self.mode = "normal"
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 end
@@ -54,22 +58,30 @@ end
 function Human:update(dt)
     self.gun:update(dt)
 
-    local zeds = {}
-    local zcount = 0
-    for _, e in pairs(global.entities) do
-        -- cycle breaking :(
-        if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
-            zcount = zcount + 1
-            zeds[zcount] = e
+    if self.mode == "normal" then
+        local zeds = {}
+        local zcount = 0
+        for _, e in pairs(global.entities) do
+            -- cycle breaking :(
+            if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
+                zcount = zcount + 1
+                zeds[zcount] = e
+            end
         end
-    end
 
-    if zcount > 0 then
-        -- Pick a random zombie
-        local zid = love.math.random(zcount)
-        local zx, zy = zeds[zid].x, zeds[zid].y
-        self.rotation = math.atan2(zx - self.x, self.y - zy)
-        self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
+        if zcount > 0 then
+            -- Pick a random zombie
+            local zid = love.math.random(zcount)
+            local zx, zy = zeds[zid].x, zeds[zid].y
+            self.rotation = math.atan2(zx - self.x, self.y - zy)
+            self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
+        end
+    elseif self.mode == "heal" then
+        self.hp = self.hp + heal_rate * dt
+        if self.hp >= self.maxhp then
+            self.hp = self.maxhp
+            self.infected = false
+        end
     end
 
     closeZ = self:getClosest("Zombie")
@@ -99,6 +111,10 @@ end
 
 function Human:zomb()
     self.infected = true
+end
+
+function Human:setMode(mode)
+    self.mode = mode
 end
 
 function Human:hurt(damage)

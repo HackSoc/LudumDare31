@@ -100,6 +100,18 @@ function love.keypressed(key)
         global.addDrawable(b)
     elseif key == 't' then
         global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
+    elseif key == 'kp0' then
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) and e.selected then
+                e:setMode("normal")
+            end
+        end
+    elseif key == 'kp1' then
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) and e.selected then
+                e:setMode("heal")
+            end
+        end
     end
 end
 
