@@ -222,7 +222,7 @@ end
 -- When holding shift, toggle the selection state of entities in the
 -- set (but don't unselect things we have already selected), if not
 -- holding shift, same as before: one-unit selections.
-function click(entities)
+function click(entities, isdragging)
     for e, _ in pairs(global.entities) do
         if e:isInstanceOf(Human) then
             if love.keyboard.isDown("lshift") then
@@ -236,7 +236,7 @@ function click(entities)
                     e:setUnselected()
                 end
             end
-        elseif e:isInstanceOf(Gate) and entities[e] then
+        elseif e:isInstanceOf(Gate) and not isdragging and entities[e] then
             e:toggle()
         end
     end
@@ -264,9 +264,9 @@ function love.mousereleased(x, y, button)
                 y = y + 1
             end
 
-            click(global.collidablesUnder(dragging.x, dragging.y, x, y))
+            click(global.collidablesUnder(dragging.x, dragging.y, x, y), true)
         else
-            click(global.collidablesAt(x, y))
+            click(global.collidablesAt(x, y), false)
         end
     elseif button == "r" then
         for e, _ in pairs(global.humans) do
