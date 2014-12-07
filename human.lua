@@ -15,6 +15,43 @@ local heal_rate = 10
 local image = love.graphics.newImage('human.png')
 local image_selected = love.graphics.newImage('human_selected.png')
 
+local forenames = {"Clarence",
+                   "Galahad",
+                   "Joseph",
+                   "Edward",
+                   "Sebastian",
+                   "Colin",
+                   "Rupert",
+                   "Montague",
+                   "Hugo",
+                   "Gerald",
+                   "Cyril",
+                   "Ann",
+                   "Constance",
+                   "Millicent",
+                   "Daphne",
+                   "Joan",
+                   "Aileen",
+                   "Linda",
+                   "Susan",
+                   "Lavender",
+                   "Alexandra",
+                   "Eve"}
+local forenamecount = 22
+
+local surnames = {"Threepwood",
+                  "Warblington",
+                  "Keeble",
+                  "Jackson",
+                  "Cumberbatch",
+                  "Runciman",
+                  "Fish",
+                  "Moresby",
+                  "Garland",
+                  "Wedge",
+                  "Allsop"}
+local surnamecount = 11
+
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
@@ -28,6 +65,13 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.mode = "normal"
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
+
+    self.forename = forenames[love.math.random(1, forenamecount)]
+    self.surname = surnames[love.math.random(1, surnamecount)]
+end
+
+function Human:say(msg)
+    global.log("(" .. self.forename .. " " .. self.surname .. ") " .. msg)
 end
 
 function Human:draw()
@@ -58,17 +102,17 @@ end
 function Human:update(dt)
     self.gun:update(dt)
 
-    if self.mode == "normal" then
-        local zeds = {}
-        local zcount = 0
-        for _, e in pairs(global.entities) do
-            -- cycle breaking :(
-            if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
-                zcount = zcount + 1
-                zeds[zcount] = e
-            end
+    local zeds = {}
+    local zcount = 0
+    for _, e in pairs(global.entities) do
+        -- cycle breaking :(
+        if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
+            zcount = zcount + 1
+            zeds[zcount] = e
         end
+    end
 
+    if self.mode == "normal" then
         if zcount > 0 then
             -- Pick a random zombie
             local zid = love.math.random(zcount)
@@ -93,40 +137,63 @@ function Human:update(dt)
         self:hurt(5 * dt)
     end
 
-    if love.math.random() <= 0.1 * dt then
-        local phrases = {"Ho hum"}
-        local pcount = 1
+    if love.math.random() <= 0.05 * dt then
+        local phrases1 = {"Ho hum",
+                          "Red hair, sir, in my opinion, is dangerous.",
+                          "Do trousers matter?",
+                          "I am far from being gruntled.",
+                          "What ho!",
+                          "What ho?",
+                          "What ho! What ho!",
+                          "I always advise people never to give advice.",
+                          "Unseen in the background, Fate was quietly slipping lead into the boxing-glove.",
+                          "I am not always good and noble.",
+                          "If he had a mind, there was something on it.",
+                          "You would not enjoy Nietzsche, sir. He is fundamentally unsound."}
+        local p1count = 12
+
+        local phrases2 = {}
+        local p2count = 0
 
         if self.gun.ammo <= 0 then
-            table.insert(phrases, "I'm out of ammo!")
-            pcount = pcount + 1
+            table.insert(phrases2, "I'm out of ammo!")
+            p2count = p2count + 1
         end
 
         if zcount == 0 then
-            table.insert(phrases, "Can't see anything...")
-            pcount = pcount + 1
+            table.insert(phrases2, "Can't see anything...")
+            p2count = p2count + 1
         elseif zcount <= 3 then
-            table.insert(phrases, "Got the blighter in my sights!")
-            pcount = pcount + 1
+            table.insert(phrases2, "Got the blighter in my sights!")
+            p2count = p2count + 1
         else
-            table.insert(phrases, "There are so many!")
-            pcount = pcount + 1
+            table.insert(phrases2, "There are so many!")
+            p2count = p2count + 1
         end
 
         if self.infected then
-            table.insert(phrases, "I'm feeling a little woozy...")
-            pcount = pcount + 1
+            table.insert(phrases2, "I'm feeling a little woozy...")
+            p2count = p2count + 1
         end
 
         if self.hp < 10 then
-            table.insert(phrases, "It's all going dark!")
-            pcount = pcount + 1
+            table.insert(phrases2, "It's all going dark!")
+            p2count = p2count + 1
         elseif self.hp < 50 then
-            table.insert(phrases, "That hurt!")
-            pcount = pcount + 1
+            table.insert(phrases2, "That hurt!")
+            p2count = p2count + 1
         end
 
-        global.log(phrases[love.math.random(1, pcount)])
+        local p2prob = 0.5
+        if p2count > 2 then
+            p2prob = 0.75
+        end
+
+        if love.math.random() <= p2prob then
+            self:say(phrases2[love.math.random(1, p2count)])
+        else
+            self:say(phrases1[love.math.random(1, p1count)])
+        end
     end
 
     Mobile.update(self, dt)
@@ -146,7 +213,7 @@ end
 
 function Human:zomb()
     self.infected = true
-    global.log("It got me!")
+    self:say("It got me!")
 end
 
 function Human:setMode(mode)
@@ -157,10 +224,10 @@ function Human:hurt(damage)
     self.hp = self.hp - damage
 
     if self.hp <= 0 then
-        global.log("Argh!")
+        self:say("Argh!")
 
         if self.infected then
-            global.log("*hiss*")
+            self:say("*hiss*")
             global.addDrawable(Zombie:new(self.x, self.y))
         end
 
