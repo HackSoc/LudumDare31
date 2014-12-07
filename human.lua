@@ -93,6 +93,42 @@ function Human:update(dt)
         self:hurt(5 * dt)
     end
 
+    if love.math.random() <= 0.1 * dt then
+        local phrases = {"Ho hum"}
+        local pcount = 1
+
+        if self.gun.ammo <= 0 then
+            table.insert(phrases, "I'm out of ammo!")
+            pcount = pcount + 1
+        end
+
+        if zcount == 0 then
+            table.insert(phrases, "Can't see anything...")
+            pcount = pcount + 1
+        elseif zcount <= 3 then
+            table.insert(phrases, "Got the blighter in my sights!")
+            pcount = pcount + 1
+        else
+            table.insert(phrases, "There are so many!")
+            pcount = pcount + 1
+        end
+
+        if self.infected then
+            table.insert(phrases, "I'm feeling a little woozy...")
+            pcount = pcount + 1
+        end
+
+        if self.hp < 10 then
+            table.insert(phrases, "It's all going dark!")
+            pcount = pcount + 1
+        elseif self.hp < 50 then
+            table.insert(phrases, "That hurt!")
+            pcount = pcount + 1
+        end
+
+        global.log(phrases[love.math.random(1, pcount)])
+    end
+
     Mobile.update(self, dt)
 end
 
@@ -110,6 +146,7 @@ end
 
 function Human:zomb()
     self.infected = true
+    global.log("It got me!")
 end
 
 function Human:setMode(mode)
@@ -120,7 +157,10 @@ function Human:hurt(damage)
     self.hp = self.hp - damage
 
     if self.hp <= 0 then
+        global.log("Argh!")
+
         if self.infected then
+            global.log("*hiss*")
             global.addDrawable(Zombie:new(self.x, self.y))
         end
 

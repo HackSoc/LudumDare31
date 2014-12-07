@@ -90,4 +90,23 @@ function global.collidablesUnder(x0, y0, x1, y1)
     return collidables
 end
 
+global.messages = {}
+global.messagenum = 0
+global.maxmessages = 10
+
+function global.log(str)
+    if global.messagenum == global.maxmessages then
+        local msgs = {}
+        for i = 1, global.messagenum - 1 do
+            msgs[i] = global.messages[i + 1]
+        end
+
+        global.messages = msgs
+        global.messagenum = global.messagenum - 1
+    end
+
+    global.messagenum = global.messagenum + 1
+    global.messages[global.messagenum] = str
+end
+
 return global

@@ -61,6 +61,11 @@ function love.draw()
                                 love.mouse.getY() - dragging.y)
     end
 
+    love.graphics.setColor(255, 255, 255)
+    for i = 1, global.messagenum do
+        love.graphics.print(global.messages[i], 5, 5 + 15 * (i - 1))
+    end
+
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
