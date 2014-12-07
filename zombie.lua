@@ -17,9 +17,10 @@ function Zombie:initialize(x, y)
     self:setMaxSpeed(10)
     self.damageCooldown = 0
     self.planningCooldown = 0
-    self.targetHuman = nil
+    self.target = nil
     self.followDist = 250
     self.noticeDist = 150
+    self.waitForPlan = false
 end
 
 function Zombie:draw()
@@ -41,20 +42,43 @@ end
 
 function Zombie:update(dt)
     -- It's got stuck
-    if not self.targetx or not self.targety then
+    if not self.waitForPlan and (not self.targetx or not self.targety) then
         self:setTarget(self.x + love.math.random(-100, 100),
                        self.y + love.math.random(-100, 100))
     end
 
-    if self.targetHuman == nil or
+    if self.target == nil or
        self.planningCooldown <= 0 or
-       self:getAbsDistance(self.targetHuman) > self.followDist then
-        self.targetHuman = self:getClosest("Human", self.noticeDist)
+       self:getAbsDistance(self.target) > self.followDist then
+        self.target = self:getClosest("Human", self.noticeDist)
+
+        -- If no humans, head to breakables further afield
+        for _, objType in ipairs({"Window", "Gate"}) do
+            if self.target == nil then
+                self.target = self:getClosest(objType, self.followDist)
+            end
+        end
+
         self.planningCooldown = 1
-    else
-        self:setTarget(self.targetHuman.x, self.targetHuman.y)
-        self.planningCooldown = self.planningCooldown - dt
+        self.waitForPlan = false
+
+    elseif not self.waitForPlan then
+        local targetx = self.target.x
+        if self.target.w ~= nil then
+            targetx = targetx + love.math.random(self.target.w)
+            self.waitForPlan = true
+        end
+
+        local targety = self.target.y
+        if self.target.h ~= nil then
+            targety = targety + love.math.random(self.target.h)
+            self.waitForPlan = true
+        end
+
+        self:setTarget(targetx, targety)
     end
+
+    self.planningCooldown = self.planningCooldown - dt
 
     if self.damageCooldown > 0 then
         self.damageCooldown = self.damageCooldown - dt
