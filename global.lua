@@ -71,7 +71,17 @@ end
 
 function global.collidablesUnder(x0, y0, x1, y1)
     local collidables = {}
+    if x0 == x1 or y0 == y1 then
+        return collidables
+    end
+
     local rect = HCShapes.newPolygonShape(x0, y0, x1, y0, x1, y1, x0, y1)
+    if x0 > x1 then
+        x0, x1 = x1, x0
+    end
+    if y0 > y1 then
+        y0, y1 = y1, y0
+    end
     for _, shape in pairs(global.collider:shapesInRange(x0, y0, x1, y1)) do
         if shape:collidesWith(rect) then
             collidables[shape.entity] = shape.entity

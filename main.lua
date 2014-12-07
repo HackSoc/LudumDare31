@@ -133,14 +133,24 @@ function unselectAll()
 end
 
 function love.mousepressed(x, y, button)
-    dragging = {x=x, y=y}
+    if button == "l" then
+        dragging = {x=x, y=y}
+    end
 end
 
 function love.mousereleased(x, y, button)
-    if not (dragging.x == x and dragging.y == y) then
-        click(global.collidablesUnder(dragging.x, dragging.y, x, y))
-    elseif button == "l" then
-        click(global.collidablesAt(x, y))
+    if button == "l" then
+        if not (dragging.x == x and dragging.y == y) then
+            if dragging.x == x then
+                x = x + 1
+            elseif dragging.y == y then
+                y = y + 1
+            end
+
+            click(global.collidablesUnder(dragging.x, dragging.y, x, y))
+        else
+            click(global.collidablesAt(x, y))
+        end
     elseif button == "r" then
         for e, _ in pairs(global.entities) do
             if e:isInstanceOf(Human) and e.selected then
