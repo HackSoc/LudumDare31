@@ -157,6 +157,11 @@ function Human:update(dt)
         end
     end
 
+    -- Heal passively (but slowly)
+    if self.mode ~= "heal" then
+        self:heal(dt)
+    end
+
     closeZ = self:getClosest("Zombie")
     if self.targetx == nil and closeZ and self:getAbsDistance(closeZ) < 20 then
         self:setTarget(self.x - (closeZ.x - self.x), self.y - (closeZ.y - self.y))
