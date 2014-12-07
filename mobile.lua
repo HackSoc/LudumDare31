@@ -100,8 +100,9 @@ function Mobile:canSee(target)
     for _, e in pairs(global.collider:shapesInRange(x1, y1, x2, y2)) do
         -- Only static things which stop bullets obstruct line of
         -- sight
-        if e.entity:isInstanceOf(Static) and
-           e.entity.stopsBullets == true and
+        if e.entity ~= target and
+           e.entity:isInstanceOf(Static) and
+           e.entity.stopsBullets and
            e:collidesWith(check) then
             return false
         end
