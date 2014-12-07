@@ -120,8 +120,8 @@ function love.draw()
 
     local selected = nil
     local selcount = 0
-    for _, e in pairs(global.drawables) do
-        if e:isInstanceOf(Human) and e.selected then
+    for _, e in pairs(global.humans) do
+        if e.selected then
             selected = e
             selcount = selcount + 1
         end
@@ -165,26 +165,24 @@ function love.keypressed(key)
     elseif key == 'escape' then
         unselectAll()
     elseif key == 'a' then
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) then
-                e:setSelected()
-            end
+        for e, _ in pairs(global.humans) do
+            e:setSelected()
         end
     elseif key == 'kp0' then
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) and e.selected then
+        for e, _ in pairs(global.humans) do
+            if e.selected then
                 e:setMode("normal")
             end
         end
     elseif key == 'kp1' then
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) and e.selected then
+        for e, _ in pairs(global.humans) do
+            if e.selected then
                 e:setMode("heal")
             end
         end
     elseif key == 'kp2' then
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) and e.selected then
+        for e, _ in pairs(global.humans) do
+            if e.selected then
                 e:setMode("trap")
             end
         end
@@ -199,10 +197,12 @@ function love.keypressed(key)
         elseif key == "q" then
             global.addDrawable(Zombie:new(love.mouse.getPosition()))
         elseif key == 'c' then
-            for e, _ in pairs(global.drawables) do
-                if e:isInstanceOf(Human) or e:isInstanceOf(Zombie) then
-                    e:destroy()
-                end
+            for e, _ in pairs(global.humans) do
+                e:destroy()
+            end
+
+            for e, _ in pairs(global.zombies) do
+                e:destroy()
             end
         elseif key == 'b' then
             local b = Bullet(love.mouse.getX(), love.mouse.getY(),
@@ -244,10 +244,8 @@ end
 
 -- Unselect all selected entities
 function unselectAll()
-    for e, _ in pairs(global.entities) do
-        if e:isInstanceOf(Human) then
-            e:setUnselected()
-        end
+    for e, _ in pairs(global.humans) do
+        e:setUnselected()
     end
 end
 
@@ -271,8 +269,8 @@ function love.mousereleased(x, y, button)
             click(global.collidablesAt(x, y))
         end
     elseif button == "r" then
-        for e, _ in pairs(global.entities) do
-            if e:isInstanceOf(Human) and e.selected then
+        for e, _ in pairs(global.humans) do
+            if e.selected then
                 e:setTarget(x, y)
             end
         end

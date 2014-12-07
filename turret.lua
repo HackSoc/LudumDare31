@@ -42,8 +42,8 @@ function Turret:update(dt)
 
     local zeds = {}
     local zcount = 0
-    for _, e in pairs(global.entities) do
-        if e:isInstanceOf(Zombie) and self:isInFieldOfView(e) then
+    for _, e in pairs(global.zombies) do
+        if self:isInFieldOfView(e) then
             zcount = zcount + 1
             zeds[zcount] = e
         end

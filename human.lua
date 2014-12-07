@@ -132,9 +132,9 @@ function Human:update(dt)
 
     local zeds = {}
     local zcount = 0
-    for _, e in pairs(global.entities) do
+    for _, e in pairs(global.zombies) do
         -- cycle breaking :(
-        if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
+        if self:getAbsDistance(e) < range then
             zcount = zcount + 1
             zeds[zcount] = e
         end

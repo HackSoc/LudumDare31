@@ -2,6 +2,8 @@ local global = {}
 
 global.entities = {}
 global.drawables = {}
+global.humans = {}
+global.zombies = {}
 
 global.debug = false
 global.continuousspawn = true
@@ -47,10 +49,20 @@ end
 
 function global.addEntity(obj)
     global.entities[obj] = obj
+
+    local class = obj.class.name:lower() .. "s"
+    if global[class] ~= nil then
+        global[class][obj] = obj
+    end
 end
 
 function global.removeEntity(obj)
     global.entities[obj] = nil
+
+    local class = obj.class.name:lower() .. "s"
+    if global[class] ~= nil then
+        global[class][obj] = nil
+    end
 end
 
 function global.addDrawable(obj)
