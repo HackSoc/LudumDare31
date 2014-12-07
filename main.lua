@@ -1,3 +1,5 @@
+require "utils"
+
 local global = require "global"
 local Wall = require "wall"
 local Zombie = require "zombie"
@@ -84,9 +86,7 @@ function love.load()
 end
 
 function love.update(dt)
-    for o, _ in pairs(global.entities) do
-        o:update(dt)
-    end
+    omap(global.entities, "update", dt)
     global.collider:update(dt)
 
     if love.math.random() <=  zSpawnRate * dt then
@@ -97,11 +97,8 @@ end
 
 function love.draw()
     for i = 1, global.maxdrawlayer do
-        for o, _ in pairs(global.drawables) do
-            if o.layer == i then
-                o:draw()
-            end
-        end
+        local thislayer = filter(global.drawables, function(o) return o.layer == i end)
+        omap(thislayer, "draw")
     end
 
     if dragging then
@@ -118,16 +115,10 @@ function love.draw()
     end
     love.graphics.printf(msgstr, 5, 20, 400)
 
-    local selected = nil
-    local selcount = 0
-    for _, e in pairs(global.humans) do
-        if e.selected then
-            selected = e
-            selcount = selcount + 1
-        end
-    end
+    local selected, selcount = ofilter(global.humans, "selected")
 
     if selcount == 1 then
+        selected = only(selected)
         local w = 200
         local wL = 275
         local x = love.graphics.getWidth() - w - 5
@@ -165,27 +156,13 @@ function love.keypressed(key)
     elseif key == 'escape' then
         unselectAll()
     elseif key == 'a' then
-        for e, _ in pairs(global.humans) do
-            e:setSelected()
-        end
+        omap(global.humans, "setSelected")
     elseif key == 'kp0' then
-        for e, _ in pairs(global.humans) do
-            if e.selected then
-                e:setMode("normal")
-            end
-        end
+        omap(ofilter(global.humans, "selected"), "setMode", "normal")
     elseif key == 'kp1' then
-        for e, _ in pairs(global.humans) do
-            if e.selected then
-                e:setMode("heal")
-            end
-        end
+        omap(ofilter(global.humans, "selected"), "setMode", "heal")
     elseif key == 'kp2' then
-        for e, _ in pairs(global.humans) do
-            if e.selected then
-                e:setMode("trap")
-            end
-        end
+        omap(ofilter(global.humans, "selected"), "setMode", "trap")
     end
 
     if global.debug then
@@ -197,13 +174,8 @@ function love.keypressed(key)
         elseif key == "q" then
             global.addDrawable(Zombie:new(love.mouse.getPosition()))
         elseif key == 'c' then
-            for e, _ in pairs(global.humans) do
-                e:destroy()
-            end
-
-            for e, _ in pairs(global.zombies) do
-                e:destroy()
-            end
+            omap(global.humans, "destroy")
+            omap(global.zombies, "destroy")
         elseif key == 'b' then
             local b = Bullet(love.mouse.getX(), love.mouse.getY(),
                              love.math.random(-250,250),
@@ -244,9 +216,7 @@ end
 
 -- Unselect all selected entities
 function unselectAll()
-    for e, _ in pairs(global.humans) do
-        e:setUnselected()
-    end
+    omap(global.humans, "setUnselected")
 end
 
 function love.mousepressed(x, y, button)
@@ -269,11 +239,7 @@ function love.mousereleased(x, y, button)
             click(global.collidablesAt(x, y), false)
         end
     elseif button == "r" then
-        for e, _ in pairs(global.humans) do
-            if e.selected then
-                e:setTarget(x, y)
-            end
-        end
+        omap(ofilter(global.humans, "selected"), "setTarget", x, y)
     end
     dragging = nil
 end

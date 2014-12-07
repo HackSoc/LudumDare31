@@ -132,13 +132,12 @@ function Human:update(dt)
 
     local zeds = {}
     local zcount = 0
-    for _, e in pairs(global.zombies) do
-        -- cycle breaking :(
+    map(global.zombies, function(e)
         if self:getAbsDistance(e) < range then
             zcount = zcount + 1
             zeds[zcount] = e
         end
-    end
+    end)
 
     if self.mode == "normal" then
         if zcount > 0 then
