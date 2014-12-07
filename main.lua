@@ -69,8 +69,8 @@ function love.load()
     -- Gates
     global.addDrawable(Gate(425, 330, 5, 40))
     global.addDrawable(Gate(855, 330, 5, 40))
-    global.addDrawable(Gate(576, 100, 126, 3))
-    global.addDrawable(Gate(576, 620, 126, 3))
+    global.addDrawable(Gate(576, 100-1, 126, 5))
+    global.addDrawable(Gate(576, 620-1, 126, 5))
 
     -- Starting humans
     global.addDrawable(Human(576, 290, 10, 0.1, 1))
