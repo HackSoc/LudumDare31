@@ -5,6 +5,7 @@ local Human = class("Human", Mobile)
 
 local global = require "global"
 local Gun = require "gun"
+local Zombie = require "zombie"
 
 local size = 10
 local range = 100
@@ -16,6 +17,7 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.selected = false
     self.targetx = nil
     self.targety = nil
+    self.infected = false
     self:setMaxSpeed(50)
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
@@ -44,7 +46,7 @@ function Human:update(dt)
     local zcount = 0
     for _, e in pairs(global.entities) do
         -- cycle breaking :(
-        if e.class.name == "Zombie" and self:getAbsDistance(e) < range then
+        if e:isInstanceOf(Zombie) and self:getAbsDistance(e) < range then
             zcount = zcount + 1
             zeds[zcount] = e
         end
@@ -54,6 +56,10 @@ function Human:update(dt)
         -- Pick a random zombie
         local zid = love.math.random(zcount)
         self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
+    end
+
+    if self.infected then
+        self:hurt(5 * dt)
     end
 
     Mobile.update(self, dt)
@@ -69,6 +75,22 @@ end
 
 function Human:setUnselected()
     self.selected = false
+end
+
+function Human:zomb()
+    self.infected = true
+end
+
+function Human:hurt(damage)
+    self.hp = self.hp - damage
+
+    if self.hp <= 0 then
+        if self.infected then
+            global.addDrawable(Zombie:new(self.x, self.y))
+        end
+
+        self:destroy()
+    end
 end
 
 return Human

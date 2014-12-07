@@ -5,8 +5,6 @@ local Zombie = class("Zombie", Mobile)
 
 local global = require "global"
 
-local Human = require "human"
-
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y, 100)
 
@@ -50,7 +48,7 @@ function Zombie:update(dt)
         end
         table.sort(global.entities, compare)
         for _, entity in pairs(global.entities) do
-            if entity:isInstanceOf(Human) and 
+            if entity.class.name == "Human" and 
                self:hasLineOfSight(entity.hitbox) then
                 self.targetHuman = entity
 		self.planningCooldown = 1
@@ -71,7 +69,8 @@ end
 
 function Zombie:onCollision(other, dx, dy)
     Mobile.onCollision(self, other, dx, dy)
-    if other:isInstanceOf(Human) and (self.damageCooldown <= 0) then
+    if other.class.name == "Human" and (self.damageCooldown <= 0) then
+        other:zomb()
         other:hurt(10)
         self.damageCooldown = 1
     end
