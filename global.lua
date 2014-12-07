@@ -4,7 +4,7 @@ global.entities = {}
 global.drawables = {}
 
 global.debug = false
-global.continuousspawn = false
+global.continuousspawn = true
 
 global.maxdrawlayer = 2
 
