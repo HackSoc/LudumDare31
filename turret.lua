@@ -49,7 +49,9 @@ function Turret:update(dt)
         end
     end
     if zcount > 0 then
-        if not self.target or not global.entities[self.target] then
+        if not self.target or
+           not global.entities[self.target] or
+           not self:isInFieldOfView(self.target) then
             -- Pick a random zombie
             local zid = love.math.random(zcount)
             self.target = zeds[zid]
