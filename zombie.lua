@@ -5,6 +5,8 @@ local Zombie = class("Zombie", Mobile)
 
 local global = require "global"
 
+local image = love.graphics.newImage('zombie.png')
+
 function Zombie:initialize(x, y)
     Mobile.initialize(self, x, y, 100)
 
@@ -18,15 +20,25 @@ end
 
 function Zombie:draw()
     local radius = 5
-    love.graphics.setColor(107, 142, 35)
-    love.graphics.circle("fill", self.x+radius, self.y+radius, radius)
+    local im = image
+    love.graphics.setColor(255, 255, 255)
+    -- love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
+    love.graphics.draw(im, self.x, self.y, self.rotation,
+                       1, 1,
+                       im:getWidth()/2, im:getHeight()/2)
 
     -- draw portion of health bar for remaining health
     love.graphics.setColor(0, 255, 0)
-    love.graphics.rectangle("fill", self.x, self.y-5, self.hp/10, 2)
+    love.graphics.rectangle("fill",
+                            self.x-im:getWidth()/2,
+                            self.y-im:getHeight()/2,
+                            self.hp/10, 2)
     -- draw portion of health bar for health lost
     love.graphics.setColor(255, 0, 0)
-    love.graphics.rectangle("fill", self.x+self.hp/10, self.y-5, 10-self.hp/10, 2)
+    love.graphics.rectangle("fill",
+                            self.x-im:getWidth()/2 + self.hp/10,
+                            self.y-im:getHeight()/2,
+                            10 - self.hp/10, 2)
 end
 
 function Zombie:update(dt)

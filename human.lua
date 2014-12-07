@@ -10,6 +10,9 @@ local Zombie = require "zombie"
 local size = 10
 local range = 100
 
+local image = love.graphics.newImage('human.png')
+local image_selected = love.graphics.newImage('human_selected.png')
+
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
@@ -24,19 +27,28 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 end
 
 function Human:draw()
-    love.graphics.setColor(0, 191, 255)
-    local drawstyle = "line"
+    love.graphics.setColor(255, 255, 255)
+    local im = image
     if self.selected then
-        drawstyle = "fill"
+        im = image_selected
     end
-    love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
+    -- love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
+    love.graphics.draw(im, self.x, self.y, self.rotation,
+                       1, 1,
+                       im:getWidth()/2, im:getHeight()/2)
 
     -- draw portion of health bar for remaining health
     love.graphics.setColor(0, 255, 0)
-    love.graphics.rectangle("fill", self.x, self.y-5, self.hp/10, 2)
+    love.graphics.rectangle("fill",
+                            self.x-im:getWidth()/2,
+                            self.y-im:getHeight()/2,
+                            self.hp/10, 2)
     -- draw portion of health bar for health lost
     love.graphics.setColor(255, 0, 0)
-    love.graphics.rectangle("fill", self.x + self.hp/10, self.y-5, 10 - self.hp/10, 2)
+    love.graphics.rectangle("fill",
+                            self.x-im:getWidth()/2 + self.hp/10,
+                            self.y-im:getHeight()/2,
+                            10 - self.hp/10, 2)
 end
 
 function Human:update(dt)
@@ -55,6 +67,8 @@ function Human:update(dt)
     if zcount > 0 then
         -- Pick a random zombie
         local zid = love.math.random(zcount)
+        local zx, zy = zeds[zid].x, zeds[zid].y
+        self.rotation = math.atan2(zx - self.x, self.y - zy)
         self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
     end
 
