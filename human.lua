@@ -24,7 +24,7 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 end
 
 function Human:draw()
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(0, 191, 255)
     local drawstyle = "line"
     if self.selected then
         drawstyle = "fill"

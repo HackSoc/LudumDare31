@@ -18,8 +18,8 @@ end
 
 function Zombie:draw()
     local radius = 5
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.circle("line", self.x+radius, self.y+radius, radius)
+    love.graphics.setColor(107, 142, 35)
+    love.graphics.circle("fill", self.x+radius, self.y+radius, radius)
 
     -- draw portion of health bar for remaining health
     love.graphics.setColor(0, 255, 0)

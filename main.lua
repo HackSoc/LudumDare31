@@ -9,6 +9,8 @@ local Trap = require "trap"
 local HotZone = require "hotzone"
 
 function love.load()
+    love.graphics.setBackgroundColor(255, 248, 220)
+
     global.addDrawable(Wall:new(220, 150, 350, 3))
     global.addDrawable(Wall:new(200, 150, 3, 100))
     global.addDrawable(Wall:new(200, 350, 3, 100))
@@ -50,7 +52,7 @@ function love.draw()
     end
 
     if dragging then
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("line", dragging.x, dragging.y,
                                 love.mouse.getX() - dragging.x,
                                 love.mouse.getY() - dragging.y)
@@ -59,7 +61,7 @@ function love.draw()
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(0, 0, 0)
         love.graphics.printf(string.format("x: %d, y: %d", love.mouse.getX(), love.mouse.getY()), 0, 0 ,130)
     end
 end

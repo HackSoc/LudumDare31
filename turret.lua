@@ -82,7 +82,7 @@ function Turret:draw()
     local cx = self.x + self.radius
     local cy = self.y + self.radius
 
-    love.graphics.setColor(255, 0, 255)
+    love.graphics.setColor(210, 105, 30)
     love.graphics.circle("line", cx, cy, self.radius)
 
     -- Draw boundaries of the field of vier as lines
@@ -93,10 +93,10 @@ function Turret:draw()
     local theta2 = self.direction + self.spread
 
     local rx, ry = rotateAbout(px, py, cx, cy, theta0)
-    love.graphics.setColor(255, 228, 181)
+    love.graphics.setColor(210, 180, 140)
     love.graphics.line(cx, cy, rx, ry)
 
-    love.graphics.setColor(200, 0, 100)
+    love.graphics.setColor(178, 34, 34)
     rx, ry = rotateAbout(px, py, cx, cy, theta1)
     love.graphics.line(cx, cy, rx, ry)
 
