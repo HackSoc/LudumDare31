@@ -61,7 +61,7 @@ function love.draw()
                                 love.mouse.getY() - dragging.y)
     end
 
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(0, 0, 0)
     for i = 1, global.messagenum do
         love.graphics.print(global.messages[i], 5, 5 + 15 * (i - 1))
     end
@@ -80,18 +80,21 @@ function love.draw()
         local wL = 275
         local x = love.graphics.getWidth() - w - 5
         local xL = love.graphics.getWidth() - wL - 5
-        love.graphics.printf(selected.name .. " (" .. selected.hp .. ")", x, 5, w, "center")
+        love.graphics.printf(selected.name .. " (" .. math.floor(selected.hp) .. ")", x, 5, w, "center")
         local y = 20
         if selected.talent ~= nil then
+            love.graphics.setColor(100, 100, 100)
             love.graphics.printf("[" .. selected.talent .. "]", x, y, w, "center")
             y = y + 15
         end
 
         y = y + 15
+        love.graphics.setColor(70, 130, 180)
         love.graphics.printf(selected.dream, xL, y, wL, "right")
         y = y + 30
 
         if selected.lastsaid ~= nil then
+            love.graphics.setColor(165, 42, 42)
             love.graphics.printf(selected.lastsaid, xL, y, wL, "right")
         end
     end
