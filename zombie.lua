@@ -16,6 +16,8 @@ function Zombie:initialize(x, y)
     self.damageCooldown = 0
     self.planningCooldown = 0
     self.targetHuman = nil
+    self.followDist = 250
+    self.noticeDist = 150
 end
 
 function Zombie:draw()
@@ -48,8 +50,10 @@ function Zombie:update(dt)
                        self.y + love.math.random(-100, 100))
     end
 
-    if self.targetHuman == nil or self.planningCooldown <= 0 then
-        self.targetHuman = self:getClosest("Human", 150)
+    if self.targetHuman == nil or
+       self.planningCooldown <= 0 or
+       self:getAbsDistance(self.targetHuman) > self.followDist then
+        self.targetHuman = self:getClosest("Human", self.noticeDist)
         self.planningCooldown = 1
     else
         self:setTarget(self.targetHuman.x, self.targetHuman.y)
