@@ -66,6 +66,25 @@ function love.draw()
         love.graphics.print(global.messages[i], 5, 5 + 15 * (i - 1))
     end
 
+    local selected = nil
+    local selcount = 0
+    for _, e in pairs(global.drawables) do
+        if e:isInstanceOf(Human) and e.selected then
+            selected = e
+            selcount = selcount + 1
+        end
+    end
+
+    if selcount == 1 then
+        local w = 275
+        local x = love.graphics.getWidth() - w - 5
+        love.graphics.printf(selected.name, x, 5, w, "right")
+        love.graphics.printf("HP: " .. math.floor(selected.hp), x, 20, w, "right")
+        if selected.lastsaid ~= nil then
+            love.graphics.printf(selected.lastsaid, x, 35, w, "right")
+        end
+    end
+
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()

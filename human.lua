@@ -66,12 +66,19 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
-    self.forename = forenames[love.math.random(1, forenamecount)]
-    self.surname = surnames[love.math.random(1, surnamecount)]
+    self:setName(forenames[love.math.random(1, forenamecount)],
+                 surnames[love.math.random(1, surnamecount)])
+end
+
+function Human:setName(forename, surname)
+    self.forename = forename
+    self.surname = surname
+    self.name = forename .. " " .. surname
 end
 
 function Human:say(msg)
-    global.log("(" .. self.forename .. " " .. self.surname .. ") " .. msg)
+    self.lastsaid = msg
+    global.log("(" .. self.name .. ") " .. msg)
 end
 
 function Human:draw()
