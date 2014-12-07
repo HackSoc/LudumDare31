@@ -49,10 +49,8 @@ function Zombie:update(dt)
     end
 
     if self.targetHuman == nil or self.planningCooldown <= 0 then
-        self.targetHuman = self:getClosest("Human")
-        if self.targetHuman then
-            self.planningCooldown = 1
-        end
+        self.targetHuman = self:getClosest("Human", 150)
+        self.planningCooldown = 1
     else
         self:setTarget(self.targetHuman.x, self.targetHuman.y)
         self.planningCooldown = self.planningCooldown - dt

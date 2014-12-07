@@ -63,14 +63,15 @@ function Mobile:update(dt)
     Collidable.update(self, dt)
 end
 
-function Mobile:getClosest(objType)
+function Mobile:getClosest(objType, dist)
     local function compare(entity1, entity2)
         return self:getAbsDistance(entity1) < self:getAbsDistance(entity2)
     end
     assert(objType)
     local entities = {}
     for _, e in pairs(global.entities) do
-        if e.class.name == objType then
+        if e.class.name == objType and
+           (dist == nil or self:getAbsDistance(e) < dist) then
             table.insert(entities, e)
         end
     end
