@@ -8,6 +8,8 @@ local Gate = require "gate"
 local Trap = require "trap"
 local HotZone = require "hotzone"
 
+local zSpawnRate = 0.25
+
 function love.load()
     love.graphics.setBackgroundColor(255, 248, 220)
 
@@ -41,7 +43,8 @@ function love.update(dt)
     end
     global.collider:update(dt)
 
-    if global.continuousspawn and love.math.random() <= 0.25 * dt then
+    if global.continuousspawn and love.math.random() <=  zSpawnRate * dt then
+        zSpawnRate = math.min(zSpawnRate * 1.01, 7)
         Zombie.spawn()
     end
 end
@@ -91,7 +94,9 @@ function love.keypressed(key)
             end
         end
     elseif key == 'b' then
-        local b = Bullet(love.mouse.getX(), love.mouse.getY(), love.math.random(-250,250), love.math.random(-250,250), 50)
+        local b = Bullet(love.mouse.getX(), love.mouse.getY(),
+                         love.math.random(-250,250),
+                         love.math.random(-250,250), 50)
         global.addDrawable(b)
     elseif key == 't' then
         global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
