@@ -130,7 +130,7 @@ function Human:update(dt)
     local zcount = 0
     for _, e in pairs(global.zombies) do
         -- cycle breaking :(
-        if self:getAbsDistance(e) < range then
+        if self:getAbsDistance(e) < range and self:canSee(e) then
             zcount = zcount + 1
             zeds[zcount] = e
         end
