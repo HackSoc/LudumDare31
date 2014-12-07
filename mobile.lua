@@ -15,6 +15,8 @@ function Mobile:initialize(x, y, maxhp)
     self.targety = nil
     self.maxspeed = 1 --Stupid small default speed
 
+    self.layer = 2
+
     -- Record previous positions
     self.buffer = {}
     self.bufidx = 0

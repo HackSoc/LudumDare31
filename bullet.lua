@@ -11,6 +11,8 @@ function Bullet:initialize(x, y, dx, dy, damage)
     self.dx = dx
     self.dy = dy
     self.damage = damage
+
+    self.layer = 2
 end
 
 function Bullet:hurt()

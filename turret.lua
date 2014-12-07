@@ -28,6 +28,7 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, sp
     self.hotzone = hotzone
     self.accuracy = accuracy
     self.target = nil
+    self.layer = 2
 end
 
 function Turret:update(dt)

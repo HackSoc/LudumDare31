@@ -89,8 +89,12 @@ function love.update(dt)
 end
 
 function love.draw()
-    for o, _ in pairs(global.drawables) do
-        o:draw()
+    for i = 1, global.maxdrawlayer do
+        for o, _ in pairs(global.drawables) do
+            if o.layer == i then
+                o:draw()
+            end
+        end
     end
 
     if dragging then

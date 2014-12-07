@@ -6,6 +6,8 @@ global.drawables = {}
 global.debug = false
 global.continuousspawn = false
 
+global.maxdrawlayer = 2
+
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
 

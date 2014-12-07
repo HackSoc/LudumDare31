@@ -6,6 +6,7 @@ local Drawable = class("Drawable", Entity)
 
 function Drawable:initialize(x, y)
     Entity.initialize(self, x, y)
+    self.layer = 1
 end
 
 function Drawable:draw()
