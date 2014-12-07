@@ -92,12 +92,17 @@ function Mobile:canSee(target)
                                          self.x + 1, self.y + 1,
                                          target.x, target.y)
 
-    for _, e in pairs(global.drawables) do
+    local x1 = math.min(self.x, target.x)
+    local y1 = math.min(self.y, target.y)
+    local x2 = math.max(self.x, target.x)
+    local y2 = math.max(self.y, target.y)
+
+    for _, e in pairs(global.collider:shapesInRange(x1, y1, x2, y2)) do
         -- Only static things which stop bullets obstruct line of
         -- sight
-        if e:isInstanceOf(Static) and
-           e.stopsBullets == true and
-           e.hitbox:collidesWith(check) then
+        if e.entity:isInstanceOf(Static) and
+           e.entity.stopsBullets == true and
+           e:collidesWith(check) then
             return false
         end
     end
