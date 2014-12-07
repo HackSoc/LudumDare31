@@ -8,6 +8,8 @@ local Gun = require "gun"
 local Zombie = require "zombie"
 local Trap = require "trap"
 
+local drawing = require "drawing"
+
 local size = 10
 local range = 100
 
@@ -108,25 +110,17 @@ function Human:draw()
     if self.selected then
         im = image_selected
     end
-    -- love.graphics.rectangle(drawstyle, self.x, self.y, size, size)
     love.graphics.draw(im,
                        self.x+im:getWidth()/2, self.y+im:getWidth()/2,
                        self.rotation,
                        1, 1,
                        im:getWidth()/2, im:getHeight()/2)
 
-    -- draw portion of health bar for remaining health
-    love.graphics.setColor(0, 255, 0)
-    love.graphics.rectangle("fill",
-                            self.x-im:getWidth()/2,
-                            self.y-im:getHeight()/2,
-                            self.hp/10, 2)
-    -- draw portion of health bar for health lost
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.rectangle("fill",
-                            self.x-im:getWidth()/2 + self.hp/10,
-                            self.y-im:getHeight()/2,
-                            10 - self.hp/10, 2)
+    drawing.bar(self.x, self.y - 5,
+                im:getWidth(), 2,
+                self.hp / self.maxhp,
+                {0, 255, 0},
+                {255, 0, 0})
 end
 
 function Human:update(dt)
