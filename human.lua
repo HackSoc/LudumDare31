@@ -86,8 +86,7 @@ function Human:update(dt)
 
     closeZ = self:getClosest("Zombie")
     if self.targetx == nil and closeZ and self:getAbsDistance(closeZ) < 20 then
-        self.targetx = self.x - (closeZ.x - self.x)
-        self.targety = self.y - (closeZ.y - self.y)
+        self:setTarget(self.x - (closeZ.x - self.x), self.y - (closeZ.y - self.y))
     end
 
     if self.infected then
