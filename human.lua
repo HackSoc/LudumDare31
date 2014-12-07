@@ -72,6 +72,12 @@ function Human:update(dt)
         self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
     end
 
+    closeZ = self:getClosest("Zombie")
+    if self.targetx == nil and closeZ and self:getAbsDistance(closeZ) < 20 then
+        self.targetx = self.x - (closeZ.x - self.x)
+        self.targety = self.y - (closeZ.y - self.y)
+    end
+
     if self.infected then
         self:hurt(5 * dt)
     end

@@ -1,4 +1,5 @@
 local class = require "middleclass.middleclass"
+local global = require "global"
 
 local Collidable = require "collidable"
 local Mobile = class("Mobile", Collidable)
@@ -58,6 +59,25 @@ function Mobile:update(dt)
         end
     end
     Collidable.update(self, dt)
+end
+
+function Mobile:getClosest(objType)
+    local function compare(entity1, entity2)
+        return self:getAbsDistance(entity1) < self:getAbsDistance(entity2)
+    end
+    assert(objType)
+    local entities = {}
+    for _, e in pairs(global.entities) do
+        if e.class.name == objType then
+            table.insert(entities, e)
+        end
+    end
+    table.sort(entities, compare)
+    for _, entity in ipairs(entities) do
+        if self:hasLineOfSight(entity.hitbox) then
+            return entity
+        end
+    end
 end
 
 function Mobile:setTarget(x, y)

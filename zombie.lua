@@ -49,21 +49,9 @@ function Zombie:update(dt)
     end
 
     if self.targetHuman == nil or self.planningCooldown <= 0 then
-       	local function compare(entity1, entity2)
-            return self:getAbsDistance(entity1) < self:getAbsDistance(entity2)
-        end
-        local entities = {}
-        for _, e in pairs(global.entities) do
-            table.insert(entities, e)
-        end
-        table.sort(entities, compare)
-        for _, entity in ipairs(entities) do
-            if entity.class.name == "Human" and
-            self:hasLineOfSight(entity.hitbox) then
-                self.targetHuman = entity
-                self.planningCooldown = 1
-                break
-            end
+        self.targetHuman = self:getClosest("Human")
+        if self.targetHuman then
+            self.planningCooldown = 1
         end
     else
         self:setTarget(self.targetHuman.x, self.targetHuman.y)
