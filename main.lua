@@ -89,7 +89,7 @@ function love.update(dt)
     end
     global.collider:update(dt)
 
-    if global.continuousspawn and love.math.random() <=  zSpawnRate * dt then
+    if love.math.random() <=  zSpawnRate * dt then
         zSpawnRate = math.min(zSpawnRate * 1.01, 7)
         Zombie.spawn()
     end
@@ -190,7 +190,7 @@ function love.keypressed(key)
 
     if global.debug then
         if key == "z" then
-            global.continuousspawn = not global.continuousspawn
+            zSpawnRate = 5
         elseif key == "h" then
             local x, y = love.mouse.getPosition()
             global.addDrawable(Human:new(x, y, 10, 0.1, 1))

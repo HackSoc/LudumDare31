@@ -6,7 +6,6 @@ global.humans = {}
 global.zombies = {}
 
 global.debug = false
-global.continuousspawn = true
 
 global.maxdrawlayer = 2
 
