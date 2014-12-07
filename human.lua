@@ -149,11 +149,7 @@ function Human:update(dt)
             self.gun:fire(self.x + size / 2, self.y + size / 2, zeds[zid])
         end
     elseif self.mode == "heal" then
-        self.hp = self.hp + heal_rate * dt
-        if self.hp >= self.maxhp then
-            self.hp = self.maxhp
-            self.infected = false
-        end
+        self:heal(heal_rate * dt)
     elseif self.mode == "trap" then
         if self.deployCooldown <= 0 then
             self.deployCooldown = deploy_cooldown_start
@@ -252,6 +248,15 @@ end
 
 function Human:setMode(mode)
     self.mode = mode
+end
+
+function Human:heal(amount)
+    self.hp = self.hp + amount
+
+    if self.hp >= self.maxhp then
+        self.hp = self.maxhp
+        self.infected = false
+    end
 end
 
 function Human:hurt(damage)
