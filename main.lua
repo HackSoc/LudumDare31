@@ -76,19 +76,23 @@ function love.draw()
     end
 
     if selcount == 1 then
-        local w = 275
+        local w = 200
+        local wL = 275
         local x = love.graphics.getWidth() - w - 5
-        love.graphics.printf(selected.name, x, 5, w, "right")
-        love.graphics.printf("HP: " .. math.floor(selected.hp), x, 20, w, "right")
-
-        local y = 35
+        local xL = love.graphics.getWidth() - wL - 5
+        love.graphics.printf(selected.name .. " (" .. selected.hp .. ")", x, 5, w, "center")
+        local y = 20
         if selected.talent ~= nil then
-            love.graphics.printf(selected.talent, x, y, w, "right")
+            love.graphics.printf("[" .. selected.talent .. "]", x, y, w, "center")
             y = y + 15
         end
 
+        y = y + 15
+        love.graphics.printf(selected.dream, xL, y, wL, "right")
+        y = y + 30
+
         if selected.lastsaid ~= nil then
-            love.graphics.printf(selected.lastsaid, x, y, w, "right")
+            love.graphics.printf(selected.lastsaid, xL, y, wL, "right")
         end
     end
 

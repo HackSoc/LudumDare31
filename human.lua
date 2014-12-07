@@ -55,6 +55,15 @@ local surnamecount = 11
 local talents = {"Velociraptor Whisperer"}
 local talentcount = 1
 
+local dreams = {"Get a summer house in Spain",
+                "Buy a farm",
+                "Start a business",
+                "Get married",
+                "See son through university",
+                "Become a teacher",
+                "Learn to dance"}
+local dreamcount = 7
+
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
@@ -75,6 +84,8 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     if love.math.random() <= 0.25 then
         self.talent = talents[love.math.random(1, talentcount)]
     end
+
+    self.dream = dreams[love.math.random(1, dreamcount)]
 end
 
 function Human:setName(forename, surname)
