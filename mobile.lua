@@ -98,7 +98,6 @@ function Mobile:canSee(target)
         if e:isInstanceOf(Static) and
            e.stopsBullets == true and
            e.hitbox:collidesWith(check) then
-            print(self, target, e)
             return false
         end
     end
