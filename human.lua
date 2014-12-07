@@ -52,6 +52,9 @@ local surnames = {"Threepwood",
                   "Allsop"}
 local surnamecount = 11
 
+local talents = {"Velociraptor Whisperer"}
+local talentcount = 1
+
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
@@ -68,6 +71,10 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self:setName(forenames[love.math.random(1, forenamecount)],
                  surnames[love.math.random(1, surnamecount)])
+
+    if love.math.random() <= 0.25 then
+        self.talent = talents[love.math.random(1, talentcount)]
+    end
 end
 
 function Human:setName(forename, surname)

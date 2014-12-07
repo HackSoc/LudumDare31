@@ -80,8 +80,15 @@ function love.draw()
         local x = love.graphics.getWidth() - w - 5
         love.graphics.printf(selected.name, x, 5, w, "right")
         love.graphics.printf("HP: " .. math.floor(selected.hp), x, 20, w, "right")
+
+        local y = 35
+        if selected.talent ~= nil then
+            love.graphics.printf(selected.talent, x, y, w, "right")
+            y = y + 15
+        end
+
         if selected.lastsaid ~= nil then
-            love.graphics.printf(selected.lastsaid, x, 35, w, "right")
+            love.graphics.printf(selected.lastsaid, x, y, w, "right")
         end
     end
 
