@@ -5,7 +5,7 @@ local Trap = class("Trap", Static)
 
 local global = require "global"
 
-local Mobile = require "mobile"
+local Zombie = require "zombie"
 
 function Trap:initialize(x, y)
     Static.initialize(self, x, y)
@@ -20,7 +20,7 @@ function Trap:draw()
 end
 
 function Trap:onCollision(other, dx, dy)
-    if other:isInstanceOf(Mobile) then
+    if other:isInstanceOf(Zombie) then
         other:hurt(self.damage)
         self:destroy()
     end

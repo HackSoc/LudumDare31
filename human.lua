@@ -6,11 +6,13 @@ local Human = class("Human", Mobile)
 local global = require "global"
 local Gun = require "gun"
 local Zombie = require "zombie"
+local Trap = require "trap"
 
 local size = 10
 local range = 100
 
 local heal_rate = 10
+local deploy_cooldown_start = 10
 
 local image = love.graphics.newImage('human.png')
 local image_selected = love.graphics.newImage('human_selected.png')
@@ -75,6 +77,7 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self:setMaxSpeed(50)
 
     self.mode = "normal"
+    self.deployCooldown = deploy_cooldown_start
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
@@ -151,6 +154,11 @@ function Human:update(dt)
             self.hp = self.maxhp
             self.infected = false
         end
+    elseif self.mode == "trap" then
+        if self.deployCooldown <= 0 then
+            self.deployCooldown = deploy_cooldown_start
+            global.addDrawable(Trap(self.x, self.y))
+        end
     end
 
     closeZ = self:getClosest("Zombie")
@@ -221,6 +229,7 @@ function Human:update(dt)
         end
     end
 
+    self.deployCooldown = self.deployCooldown - dt
     Mobile.update(self, dt)
 end
 

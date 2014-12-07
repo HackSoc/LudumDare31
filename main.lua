@@ -150,6 +150,12 @@ function love.keypressed(key)
                 e:setMode("heal")
             end
         end
+    elseif key == 'kp2' then
+        for e, _ in pairs(global.entities) do
+            if e:isInstanceOf(Human) and e.selected then
+                e:setMode("trap")
+            end
+        end
     end
 end
 
