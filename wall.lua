@@ -10,6 +10,7 @@ function Wall:initialize(x, y, w, h)
 
     self.w = w
     self.h = h
+    self.layer = 2
     self.hitbox = global.addHitbox(self, x, y, w, h)
 end
 
