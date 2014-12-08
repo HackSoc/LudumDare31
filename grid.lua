@@ -19,6 +19,9 @@ function Grid:initialize(w, h, cellsize)
     self.cellsize = cellsize
     self.cells = mkgrid(w, h, false)
     self:clearOverlay()
+    self.lasti = nil
+    self.lastj = nil
+    self.cand_idx = 1
 end
 
 function Grid:clearOverlay()
@@ -112,6 +115,8 @@ function Grid:pathNext(from, to)
                     ((not overlay or not overlay[i][j]) and
                      not self.cells[i][j]))
                 then
+                    -- propagate distances from neighbours
+                    -- 1.4 ~~ sqrt(2) for diagonals
                     d[i][j] = math.min(
                         -- cannot be further than itself
                         d[i][j],
@@ -153,16 +158,72 @@ function Grid:pathNext(from, to)
         return unpack(to)
     end
 
+    -- choosing the next cell to go to is a little nuanced:
+    -- we want to avoid being completely deterministic, as
+    -- this causes all the humans to collide en route
+
+    -- to mitigate this, we find all nearly-equally-good next cells,
+    -- and deal them out
+
     -- find cheapest next cell
-    local mi, mj, md = fi, fj, math.huge
+    local md = math.huge
     d[fi][fj] = math.huge
+
+    -- first pass: find minimum (cell) distance to target
     for i = fi-1, fi+1, 1 do
         for j = fj-1, fj+1, 1 do
             if d[i][j] < md then
-                mi, mj, md = i, j, d[i][j]
+                md = d[i][j]
             end
         end
     end
+
+    -- second pass: find candidate cells
+
+    -- anything within 1 cell-distance of optimal
+    -- is a potential candidate
+
+    -- using a diagonal to take a parallel path adds 0.8
+    -- (because of our approximation to sqrt(2), but would be
+    -- valid even if 'exact')
+
+    -- negative progress must add >1
+
+    -- this therefore guarantees possibly-suboptimal progress
+
+    --   /---- x + 0.8 ----\
+    -- -------    x    -------
+    --   \---- x + 0.8 ----/
+    local candidates = {}
+    for i = fi-1, fi+1, 1 do
+        for j = fj-1, fj+1, 1 do
+            if math.abs(d[i][j] - md) < 1 then
+                table.insert(candidates, {i, j})
+            end
+        end
+    end
+
+    -- we do not have to check that candidates is non-empty;
+    -- were that the case, we would have bailed out in
+    -- the unreachability check above
+
+
+    -- if we're aiming for the same destination,
+    -- deal candidates out to takers in sequence
+
+    -- this is clearly bizarre in the general case,
+    -- but with the usage pattern we have,
+    -- it will tend to reduce contention for the same cell
+    if ti == self.lasti and tj == self.lastj then
+        self.cand_idx = (self.cand_idx + 1) % #candidates
+        if self.cand_idx == 0 then
+            self.cand_idx = 1
+        end
+    else
+        self.cand_idx = 1
+    end
+
+    local mi, mj = unpack(candidates[self.cand_idx])
 
     -- if next path cell is the target, just return target coords
     if mi == ti and mj == tj then
