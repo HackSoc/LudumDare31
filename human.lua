@@ -16,7 +16,7 @@ local size = 10
 local range = 100
 
 local heal_rate = 10
-local deploy_cooldown_start = 10
+local cooldown_rate = 1
 
 local image = love.graphics.newImage('human.png')
 local image_selected = love.graphics.newImage('human_selected.png')
@@ -83,7 +83,8 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self:setMaxSpeed(50)
 
     self.mode = "normal"
-    self.deployCooldown = deploy_cooldown_start
+    self.max_cooldown = 10
+    self.cooldown = self.max_cooldown
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
@@ -125,10 +126,20 @@ function Human:draw()
                 self.hp / self.maxhp,
                 {0, 255, 0},
                 {255, 0, 0})
+    drawing.bar(self.x, self.y - 3,
+                im:getWidth(), 2,
+                self.cooldown / self.max_cooldown,
+                {0, 255, 255},
+                {0, 0,   255})
 end
 
 function Human:update(dt)
     self.gun:update(dt)
+
+    self.cooldown = self.cooldown + cooldown_rate * dt
+    if self.cooldown >= self.max_cooldown then
+        self.cooldown = self.max_cooldown
+    end
 
     local zeds = {}
     local zcount = 0
@@ -151,8 +162,8 @@ function Human:update(dt)
     elseif self.mode == "heal" then
         self:heal(heal_rate * dt)
     elseif self.mode == "trap" then
-        if self.deployCooldown <= 0 then
-            self.deployCooldown = deploy_cooldown_start
+        if self.cooldown == self.max_cooldown then
+            self.cooldown = 0
             global.addDrawable(Trap(self.x, self.y))
         end
     end
@@ -246,7 +257,6 @@ function Human:update(dt)
         end
     end
 
-    self.deployCooldown = self.deployCooldown - dt
     Mobile.update(self, dt)
 end
 
