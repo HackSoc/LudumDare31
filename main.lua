@@ -140,7 +140,7 @@ end
 -- holding shift, same as before: one-unit selections.
 function click(entities, isdragging)
     for e, _ in pairs(entities) do
-        if e:isInstanceOf(Button) and not isdragging then
+        if e:isInstanceOf(Button) and e.depressed then
             e:onClick()
             e.depressed = false
         end
