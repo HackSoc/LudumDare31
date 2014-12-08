@@ -143,6 +143,10 @@ function drawEndgame(x, y, w, h)
 
     love.graphics.setNewFont(50)
     love.graphics.printf(text, x, y + 245, w - 2*x, "center")
+
+    love.graphics.setNewFont(24)
+    love.graphics.printf("Press [r] to restart", x, h - 2*y, w - 2*x, "center")
+
     love.graphics.setNewFont(12)
 end
 
@@ -195,6 +199,14 @@ function love.draw()
 end
 
 function love.keypressed(key)
+    if global.endGame then
+        if key == "r" then
+            reset()
+        else
+            return
+        end
+    end
+
     if key == "d" then
         global.debug = not global.debug
     elseif key == 'escape' and global.showHelp then
