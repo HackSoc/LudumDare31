@@ -136,6 +136,7 @@ function riskyCanSee(self, target)
         if e.entity ~= target and
            e.entity:isInstanceOf(Static) and
            e.entity.stopsBullets and
+           not e.entity.is_open and
            e:collidesWith(check) then
             return false
         end
