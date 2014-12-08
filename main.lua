@@ -64,11 +64,20 @@ function love.update(dt)
         zSpawnRate = math.min(zSpawnRate * 1.01, 7)
         Zombie.spawn()
     end
+
+    local humancount = 0
+    for _, _ in pairs(global.humans) do
+        humancount = humancount + 1
+    end
+    if humancount == 0 then
+        global.endGame = true
+        global.showHelp = false
+    end
 end
 
 function drawHelp(x, y, w, h)
     love.graphics.setColor(105, 105, 105, 220)
-    love.graphics.rectangle("fill", x, y, w - 80, h - 80)
+    love.graphics.rectangle("fill", x, y, w - 2*x, h - 2*y)
 
     local text = [[Welcome to Zombie Simulator 2014
 
@@ -93,6 +102,41 @@ When a survivor is in a relevant 'hotzone', they can:]]
 
     love.graphics.printf("Good luck!", x, y + 300, w - 2*x, "center")
     love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - 2*x, "center")
+end
+
+function drawEndgame(x, y, w, h)
+    love.graphics.setColor(178, 34, 34, 220)
+    love.graphics.rectangle("fill", x, y, w - 2*x, h - 2*y)
+
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf("Oh no, everyone died", x, y + 10, w - 2*x, "center")
+    love.graphics.printf("Here is some text which mocks/praises you based on how many zombies you managed to kill:",
+                         x, y + 30, w - 2*x, "center")
+
+    -- :(
+    local texts = {
+        [100]   = "what? you suck",
+        [500]   = "meh",
+        [1000]  = "not bad",
+        [5000]  = "nice work",
+        [10000] = "excellent!"
+    }
+    local textkeys = {}
+    for k, _ in pairs(texts) do
+        textkeys[#textkeys+1] = k
+    end
+    table.sort(textkeys)
+    local text = "i think you broke the game"
+    for _, count in ipairs(textkeys) do
+        if global.killedZombies <= count then
+            text = texts[count]
+            break
+        end
+    end
+
+    love.graphics.setNewFont(50)
+    love.graphics.printf(text, x, y + 245, w - 2*x, "center")
+    love.graphics.setNewFont(12)
 end
 
 function love.draw()
@@ -138,6 +182,8 @@ function love.draw()
 
     if global.showHelp then
         drawHelp(40, 40, winW, winH)
+    elseif global.endGame then
+        drawEndgame(40, 40, winW, winH)
     end
 end
 
@@ -170,7 +216,7 @@ function love.keypressed(key)
                 e:setMode("trap")
             end
         end
-    elseif key == '/' or key == '?' then
+    elseif (key == '/' or key == '?') and not global.endGame then
         global.showHelp = not global.showHelp
     end
 
