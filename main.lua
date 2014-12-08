@@ -11,42 +11,23 @@ local ModeButton = require "modebutton"
 local Collidable = require "collidable"
 local Tank = require "tank"
 local Static = require "static"
-<<<<<<< HEAD
-local Barricade = require "barricade"
-=======
 local ZombieGrid = require "zombiegrid"
 local Barricade = require "barricade"
 
-local zSpawnRate = 0.25
-
-local totalTime = 0
-global.zg = ZombieGrid(86, 48, 15)
-
 local lastdt = 0
->>>>>>> Sort of kind of better pathing
 
 function love.load()
     love.window.setMode(1280, 720)
     love.window.setTitle("Zombie Simulator 2014")
     love.graphics.setBackgroundColor(255, 248, 220)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Add a global.reset() to reinitialise the state
 
     reset()
 end
 
 function reset()
     global.reset()
-
-<<<<<<< HEAD
-    global.addDrawable(HumanInfo())
-=======
-=======
->>>>>>> Add a global.reset() to reinitialise the state
+    global.zg = ZombieGrid(86, 48, 15)
     global.addDrawable(HumanInfo(0, 0))
->>>>>>> Sort of kind of better pathing
 
     LevelLoader("level")
 
@@ -66,24 +47,13 @@ function reset()
 end
 
 function love.update(dt)
-<<<<<<< HEAD
-<<<<<<< HEAD
     if global.showHelp then
         return
     end
     global.totalTime = global.totalTime + dt
-=======
-=======
-    if global.showHelp then
-        return
-    end
->>>>>>> Add intro helptext, which pauses the game
-    totalTime = totalTime + dt
     lastdt = dt
 
     global.zg:compute()
-
->>>>>>> Sort of kind of better pathing
 
     -- update pathfinding
     global.grid:clear()
@@ -103,13 +73,8 @@ function love.update(dt)
     end
     global.collider:update(dt)
 
-<<<<<<< HEAD
     if love.math.random() <= global.zSpawnRate * math.abs(math.cos(math.rad(global.totalTime))) * dt then
-        global.zSpawnRate = math.min(global.zSpawnRate * 1.01, global.maxZRate)
-=======
-    if love.math.random() <= zSpawnRate * math.abs(math.cos(math.rad(totalTime))) * dt then
-        zSpawnRate = math.min(zSpawnRate * 1.01, 100)
->>>>>>> Sort of kind of better pathing
+        global.zSpawnRate = math.min(global.zSpawnRate * 1.01, 7)
         Zombie.spawn()
     end
 
@@ -323,7 +288,11 @@ function love.keypressed(key)
 
     if global.debug then
         if key == "z" then
+<<<<<<< HEAD
             global.zSpawnRate = global.maxZRate
+=======
+            global.zSpawnRate = 5
+>>>>>>> Move zSpawnRate and totalTime to global
         elseif key == "h" then
             local x, y = love.mouse.getPosition()
             global.addDrawable(Human:new(x, y, 10, 0.1, 1))
