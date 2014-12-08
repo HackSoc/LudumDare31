@@ -315,7 +315,12 @@ function Human:zomb()
 end
 
 function Human:setMode(mode)
-    self.cooldown = 0
+    if mode == "normal" or mode == "heal" then
+        self.cooldown = self.max_cooldown
+    else
+        self.cooldown = 0
+    end
+
     self.mode = mode
 end
 
