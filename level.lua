@@ -6,7 +6,7 @@
 -- Turret room 1
 turret {x=19, y=15, dir=  math.pi/2, hx=17, hy=18, hw=6, hh=1}
 turret {x=13, y=21, dir=  math.pi/4, hx=16, hy=19, hw=1, hh=7}
-turret {x=19, y=28, dir=0*math.pi/2, hx=17, hy=26, hw=6, hh=1}
+turret {x=19, y=28, dir=3*math.pi/2, hx=17, hy=26, hw=6, hh=1}
 
 wall {x=14, y=16, dir='h', len=13}
 wall {x=14, y=16, dir='v', len=13}
@@ -17,7 +17,7 @@ wall {x=27, y=24, dir='v', len=5}
 -- Turret room 2
 turret {x=63, y=15, dir=  math.pi/2, hx=61, hy=18, hw=6, hh=1}
 turret {x=69, y=21, dir=  math.pi,   hx=67, hy=19, hw=1, hh=7}
-turret {x=63, y=28, dir=0*math.pi/2, hx=61, hy=26, hw=6, hh=1}
+turret {x=63, y=28, dir=3*math.pi/2, hx=61, hy=26, hw=6, hh=1}
 
 wall {x=57, y=16, dir='h', len=13}
 wall {x=70, y=16, dir='v', len=13}
