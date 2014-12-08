@@ -15,12 +15,21 @@ function HotZone:initialize(x, y, w, h)
     self.h = h
     self.contains_human = false
     self.contains_zombie = false
+    self.new_contains_human = false
+    self.new_contains_zombie = false
+    self.frame = 0
 end
 
 function HotZone:update(dt)
-    self.contains_human = false
-    self.contains_zombie = false
-    
+    self.frame = (self.frame + 1) % 2
+    -- budget low-pass filter
+    if self.frame == 0 then
+        self.contains_human = false
+        self.contains_zombie = false
+    else
+        self.new_contains_human = false
+        self.new_contains_human = false
+    end
 end
 
 function HotZone:draw()
@@ -39,9 +48,17 @@ end
 
 function HotZone:onCollision(other, dx, dy)
     if other:isInstanceOf(Human) then
-        self.contains_human = true
+        if self.frame == 0 then
+            self.contains_human = true
+        else
+            self.new_contains_human = true
+        end
     elseif other:isInstanceOf(Zombie) then
-        self.contains_zombie = true
+        if self.frame == 0 then
+            self.contains_zombie = true
+        else
+            self.new_contains_zombie = true
+        end
     end
 end
 
