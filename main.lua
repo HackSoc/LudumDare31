@@ -5,6 +5,7 @@ local Bullet = require "bullet"
 local Gate = require "gate"
 local LevelLoader = require "levelloader"
 local HumanInfo = require "humaninfo"
+local Trap = require "trap"
 local Button = require "button"
 local ModeButton = require "modebutton"
 

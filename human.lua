@@ -7,6 +7,7 @@ local global = require "global"
 local Gun = require "gun"
 local Zombie = require "zombie"
 local Trap = require "trap"
+local Bullet = require "bullet"
 
 local drawing = require "drawing"
 
@@ -77,6 +78,7 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.targetx = nil
     self.targety = nil
     self.infected = false
+    self.stopsBullets = false
     self:setMaxSpeed(50)
 
     self.mode = "normal"
@@ -245,6 +247,12 @@ function Human:update(dt)
 
     self.deployCooldown = self.deployCooldown - dt
     Mobile.update(self, dt)
+end
+
+function Human:onCollision(other, dx, dy)
+    if not other:isInstanceOf(Bullet) then
+        Mobile.onCollision(self, other, dx, dy)
+    end
 end
 
 function Human:toggleSelected()
