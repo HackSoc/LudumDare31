@@ -35,6 +35,32 @@ wall {x=30, y=24, dir='v', len=16}
 wall {x=54, y=6,  dir='v', len=15}
 wall {x=54, y=24, dir='v', len=16}
 
+-- Interior walls
+wall {x=30, y=12, dir='h', len=8}
+wall {x=38, y=6,  dir='v', len=2}
+gate {x=38, y=8,  dir='v', len=3}
+wall {x=38, y=11, dir='v', len=1}
+wall {x=38, y=12, dir='v', len=1}
+gate {x=38, y=13, dir='v', len=2}
+wall {x=38, y=15, dir='v', len=1}
+wall {x=38, y=16, dir='h', len=6}
+gate {x=44, y=16, dir='h', len=4}
+wall {x=48, y=16, dir='h', len=6}
+
+wall {x=30, y=28, dir='h', len=8}
+wall {x=38, y=28, dir='v', len=4}
+gate {x=38, y=32, dir='v', len=4}
+wall {x=38, y=36, dir='v', len=4}
+
+wall {x=42, y=16, dir='v', len=6}
+gate {x=42, y=22, dir='v', len=3}
+wall {x=42, y=25, dir='v', len=6}
+
+wall {x=38, y=31, dir='h', len=8}
+gate {x=46, y=31, dir='h', len=3}
+wall {x=49, y=31, dir='h', len=5}
+
+
 -- Side corridors
 wall {x=27, y=21, dir='h', len=3}
 wall {x=27, y=24, dir='h', len=3}

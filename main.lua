@@ -71,6 +71,10 @@ function love.draw()
         global.grid:draw()
         love.graphics.setColor(0, 0, 0)
         love.graphics.printf(string.format("x: %d, y: %d", love.mouse.getX(), love.mouse.getY()), 0, 0 ,130)
+        love.graphics.printf(string.format("i: %d, j: %d",
+                                           math.floor(love.mouse.getX()/15),
+                                           math.floor(love.mouse.getY()/15)),
+                             130, 0 ,130)
     end
 end
 
