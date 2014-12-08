@@ -11,6 +11,8 @@ local ModeButton = require "modebutton"
 
 local zSpawnRate = 0.25
 
+local totalTime = 0
+
 function love.load()
     love.window.setMode(1280, 720)
     love.window.setTitle("Zombie Simulator 2014")
@@ -32,12 +34,14 @@ function love.load()
 end
 
 function love.update(dt)
+    totalTime = totalTime + dt
+
     for o, _ in pairs(global.entities) do
         o:update(dt)
     end
     global.collider:update(dt)
 
-    if love.math.random() <=  zSpawnRate * dt then
+    if love.math.random() <= zSpawnRate * math.abs(math.cos(math.rad(totalTime))) * dt then
         zSpawnRate = math.min(zSpawnRate * 1.01, 7)
         Zombie.spawn()
     end
