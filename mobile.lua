@@ -4,6 +4,9 @@ local global = require "global"
 local Collidable = require "collidable"
 local Mobile = class("Mobile", Collidable)
 
+local Static = require "static"
+local shapes = require "hardoncollider.shapes"
+
 local bufsize = 32
 
 function Mobile:initialize(x, y, maxhp)
@@ -94,9 +97,6 @@ function Mobile:getClosest(objType, dist, mustSee)
 end
 
 function riskyCanSee(self, target)
-    local Static = require "static"
-    local shapes = require "hardoncollider.shapes"
-
     local points = {self.x, self.y}
     if self.x < target.x then
         points[3] = self.x + 1
