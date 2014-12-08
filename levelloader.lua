@@ -34,7 +34,9 @@ end
 
 --wall {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.wall(info)
-    global.addDrawable(Wall(correctWall(info, 3)))
+    local x, y, w, h = correctWall(info, 3)
+    global.addDrawable(Wall(x, y, w, h))
+    global.grid:fillRegion(x, y, w, h)
 end
 
 --gate {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
@@ -47,6 +49,7 @@ function level.turret(info)
     local hz = HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
     global.addDrawable(hz)
     global.addDrawable(Turret(info.x*15+8, info.y*15+8, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
+    global.grid:fillRegion(info.x*15, info.y*15, 30, 30)
 end
 
 --human {x=<n>, y=<n>}

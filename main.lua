@@ -56,6 +56,7 @@ function love.draw()
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
+        global.grid:draw()
         love.graphics.setColor(0, 0, 0)
         love.graphics.printf(string.format("x: %d, y: %d", love.mouse.getX(), love.mouse.getY()), 0, 0 ,130)
     end
@@ -173,7 +174,7 @@ function love.mousereleased(x, y, button)
     elseif button == "r" then
         for e, _ in pairs(global.humans) do
             if e.selected then
-                e:setTarget(x, y)
+                e:setDest(x, y)
             end
         end
     end

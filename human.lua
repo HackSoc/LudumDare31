@@ -71,7 +71,8 @@ local dreamcount = 7
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
 
-    self.hitbox = global.addHitbox(self, x, y, image:getWidth(), image:getHeight())
+    self.hitbox = global.addHitbox(self, x-1, y-1,
+                                   image:getWidth()+2, image:getHeight()+2)
     self.selected = false
     self.targetx = nil
     self.targety = nil
@@ -226,6 +227,22 @@ function Human:update(dt)
         end
     end
 
+    -- naive pathfinding
+    if self.destx and self.desty then
+        if not (self.targetx and self.targety) or
+        self:getAbsDistance({x=self.targetx, y=self.targety}) <= 1 then
+            local cx, cy = self.hitbox:center()
+            local tx, ty = global.grid:pathNext({cx, cy},
+                                                {self.destx, self.desty})
+            tx = tx - cx + self.x
+            ty = ty - cy + self.y
+            self:setTarget(tx, ty)
+        end
+        if self:getAbsDistance({x=self.destx, y=self.desty}) <= 1 then
+            self:stop()
+        end
+    end
+
     self.deployCooldown = self.deployCooldown - dt
     Mobile.update(self, dt)
 end
@@ -273,6 +290,20 @@ function Human:hurt(damage)
 
         self:destroy()
     end
+end
+
+function Human:setDest(x, y)
+    self.destx = x
+    self.desty = y
+    self.targetx = nil
+    self.targety = nil
+    self.buffer = {}
+end
+
+function Human:stop()
+    Mobile.stop(self)
+    self.destx = nil
+    self.desty = nil
 end
 
 return Human

@@ -39,11 +39,18 @@ function Mobile:update(dt)
             self.vx = dx / mag * self.maxspeed
             self.vy = dy / mag * self.maxspeed
             self.rotation = math.atan2(self.vx, -self.vy)
+            -- don't move further than we need to
+            if math.abs(self.vx * dt) > math.abs(dx) then
+                self.vx = dx
+            end
+            if math.abs(self.vy * dt) > math.abs(dy) then
+                self.vy = dy
+            end
         else
-            self.vx = 0
-            self.vy = 0
+            self:stop()
         end
     end
+
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
 
@@ -54,10 +61,7 @@ function Mobile:update(dt)
         local dx = math.abs(self.buffer[oldbufidx].x - self.x)
         local dy = math.abs(self.buffer[oldbufidx].y - self.y)
         if dx < 2 and dy < 2 then
-            self.vx = 0
-            self.vy = 0
-            self.targetx = nil
-            self.targety = nil
+            self:stop()
         end
     end
     Collidable.update(self, dt)
@@ -158,6 +162,13 @@ end
 
 function Mobile:setMaxSpeed(speed)
     self.maxspeed = speed
+end
+
+function Mobile:stop()
+    self.vx = 0
+    self.vy = 0
+    self.targetx = nil
+    self.targety = nil
 end
 
 return Mobile

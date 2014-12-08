@@ -11,6 +11,9 @@ global.maxdrawlayer = 3
 
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
+local Grid = require "grid"
+
+global.grid = Grid(86, 48, 15)
 
 local function onCollision(dt, a, b, dx, dy)
     a.entity:onCollision(b.entity, dx, dy)
