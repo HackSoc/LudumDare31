@@ -13,6 +13,7 @@ function Collidable:initialize(x, y, maxhp)
     -- this is wrong, but will disappear quickly
     self.centerx = x
     self.centery = y
+    self.is_ghost = false
 end
 
 function Collidable:update(dt)
@@ -31,7 +32,7 @@ function Collidable:update(dt)
 end
 
 function Collidable:stopsBullets()
-    return true
+    return not self.is_ghost
 end
 
 function Collidable:center()
@@ -55,6 +56,20 @@ function Collidable:destroy()
    end
 
    Drawable.destroy(self)
+end
+
+function Collidable:ghost()
+    if not self.is_ghost and self.hitbox ~= nil then
+        self.is_ghost = true
+        global.setGhost(self.hitbox)
+    end
+end
+
+function Collidable:solidify()
+    if self.is_ghost and self.hitbox ~= nil then
+        self.is_ghost = false
+        global.setSolid(self.hitbox)
+    end
 end
 
 return Collidable
