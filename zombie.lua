@@ -103,6 +103,11 @@ function Zombie:update(dt)
         for _, objType in ipairs({"Window", "Gate"}) do
             if self.target == nil then
                 self.target = self:getClosest(objType, self.followDist)
+
+                -- Don't be attracted to open gates
+                if self.target and self.target.is_open == true then
+                    self.target = nil
+                end
             end
         end
 
