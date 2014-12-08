@@ -79,7 +79,11 @@ end
 
 function Gate:heal(amount)
     self:solidify()
-    self.is_destroyed = false
+    if self.is_destroyed then
+       self.is_destroyed = false
+       self.is_open = false
+    end
+
     self.hp = self.hp + amount
     if self.hp >= self.maxhp then
         self.hp = self.maxhp
@@ -99,6 +103,7 @@ end
 function Gate:destroy()
     self:ghost()
     self.is_destroyed = true
+    self.is_open = true
 end
 
 function Gate:ghost()
