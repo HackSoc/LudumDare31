@@ -112,9 +112,11 @@ function love.draw()
                                 mouseX - dragging.x, mouseY - dragging.y)
     end
 
+    love.graphics.setNewFont(20)
     love.graphics.setColor(0, 0, 0)
-
-    love.graphics.printf(string.format("%d", global.killedZombies), winW / 2, 5, 50)
+    love.graphics.printf(string.format("Zombie kills: %05d", global.killedZombies),
+                         0, 5, winW, "center")
+    love.graphics.setNewFont(12)
 
     local msgstr = ""
     for i = 1, global.messagenum do
