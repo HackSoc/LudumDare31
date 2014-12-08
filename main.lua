@@ -60,11 +60,17 @@ end
 
 function love.update(dt)
 <<<<<<< HEAD
+<<<<<<< HEAD
     if global.showHelp then
         return
     end
     global.totalTime = global.totalTime + dt
 =======
+=======
+    if global.showHelp then
+        return
+    end
+>>>>>>> Add intro helptext, which pauses the game
     totalTime = totalTime + dt
     lastdt = dt
 
@@ -178,6 +184,35 @@ function drawEndgame(x, y, w, h)
     love.graphics.setNewFont(12)
 end
 
+function drawHelp(x, y, w, h)
+    love.graphics.setColor(105, 105, 105, 220)
+    love.graphics.rectangle("fill", x, y, w - 80, h - 80)
+
+    local text = [[Welcome to Zombie Simulator 2014
+
+
+
+
+Use the mouse to direct your human survivors.
+Left-click (and drag) to select, right-click to direct.
+
+
+When a survivor is in a relevant 'hotzone', they can:]]
+
+    local tasks = [[ - radio the military for help
+ - call for reinforcements at the helipad
+ - repair outer doors
+ - increase turret accuracy
+ - recover in a rest area]]
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf(text, x, y + 10, w - x, "center")
+    love.graphics.printf(tasks, x + 530, y + 165, w)
+
+    love.graphics.printf("Good luck!", x, y + 300, w - x, "center")
+    love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - x, "center")
+end
+
 function love.draw()
     local winW = love.graphics.getWidth()
     local winH = love.graphics.getHeight()
@@ -197,9 +232,14 @@ function love.draw()
 
     love.graphics.setNewFont(20)
     love.graphics.setColor(0, 0, 0)
+<<<<<<< HEAD
     love.graphics.printf(string.format("Zombie kills: %05d", global.killedZombies),
                          0, 5, winW, "center")
     love.graphics.setNewFont(12)
+=======
+
+    love.graphics.printf(string.format("%d", global.killedZombies), winW / 2, 5, 50)
+>>>>>>> Add intro helptext, which pauses the game
 
     local msgstr = ""
     for i = 1, global.messagenum do
@@ -223,8 +263,11 @@ function love.draw()
 
     if global.showHelp then
         drawHelp(40, 40, winW, winH)
+<<<<<<< HEAD
     elseif global.endGame then
         drawEndgame(40, 40, winW, winH)
+=======
+>>>>>>> Add intro helptext, which pauses the game
     end
 end
 
