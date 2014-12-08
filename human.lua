@@ -89,7 +89,8 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
-    self.bulletChance = 0.05 -- Chance of being damaged by a bullet
+    self.baseBulletChance = 0.05 -- Chance of being damaged by a bullet
+    self.bulletChance = self.baseBulletChance
 
     self:setName(forenames[love.math.random(1, #forenames)],
                  surnames[love.math.random(1, #surnames)])
@@ -191,6 +192,7 @@ function Human:update(dt)
     -- Become tired
     local scale = 3 * self.tiredCooldown / self.tiredCooldownMax
     self.gun.accuracy = self.accuracy * scale
+    self.bulletChance = self.baseBulletChance * scale
 
     if self.tiredCooldown < self.tiredCooldownMax then
         self.tiredCooldown = self.tiredCooldown + dt
