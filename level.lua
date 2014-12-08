@@ -21,28 +21,46 @@ gate   {x=30, y=15, dir='v', len=3}
 turret {x=60, y=22, dir=3*math.pi/4,   hx=58, hy=24, hw=2, hh=2}
 turret {x=60, y=35, dir=5*math.pi/4, hx=58, hy=33, hw=2, hh=2}
 
-wall {x=54, y=23, dir='h', len=7}
-wall {x=61, y=23, dir='v', len=13}
-gate {x=54, y=26, dir='v', len=3}
-wall {x=54, y=29, dir='v', len=4}
-gate {x=54, y=33, dir='v', len=2}
-wall {x=54, y=36, dir='h', len=7}
+wall   {x=54, y=23, dir='h', len=7}
+wall   {x=61, y=23, dir='v', len=5}
+window {x=61, y=28, dir='v', len=3}
+wall   {x=61, y=31, dir='v', len=5}
+gate   {x=54, y=26, dir='v', len=3}
+wall   {x=54, y=29, dir='v', len=4}
+gate   {x=54, y=33, dir='v', len=2}
+wall   {x=54, y=36, dir='h', len=3}
+window {x=57, y=36, dir='h', len=2}
+wall   {x=59, y=36, dir='h', len=2}
 
 
 -- Central room
-wall   {x=30, y=8,  dir='h', len=12}
+wall   {x=30, y=8,  dir='h', len=4}
+window {x=34, y=8,  dir='h', len=2}
+wall   {x=36, y=8,  dir='h', len=6}
 wall   {x=30, y=8,  dir='v', len=1}
 gate   {x=42, y=8,  dir='h', len=4, hx=46, hy=9, hw=2, hh=2}
 gate   {x=30, y=9,  dir='v', len=2}
 wall   {x=30, y=11, dir='v', len=4}
-wall   {x=46, y=8,  dir='h', len=8}
-wall   {x=30, y=36, dir='h', len=12}
+wall   {x=46, y=8,  dir='h', len=3}
+window {x=49, y=8,  dir='h', len=2}
+wall   {x=51, y=8,  dir='h', len=3}
+wall   {x=30, y=36, dir='h', len=3}
+window {x=33, y=36, dir='h', len=2}
+wall   {x=35, y=36, dir='h', len=4}
+window {x=39, y=36, dir='h', len=2}
+wall   {x=41, y=36, dir='h', len=1}
 gate   {x=42, y=36, dir='h', len=4, hx=46, hy=33, hw=2, hh=2}
-wall   {x=46, y=36, dir='h', len=8}
-wall   {x=30, y=18, dir='v', len=14}
+wall   {x=46, y=36, dir='h', len=4}
+window {x=50, y=36, dir='h', len=2}
+wall   {x=52, y=36, dir='h', len=2}
+wall   {x=30, y=18, dir='v', len=6}
+window {x=30, y=24, dir='v', len=2}
+wall   {x=30, y=26, dir='v', len=6}
 window {x=30, y=32, dir='v', len=2}
 wall   {x=30, y=34, dir='v', len=2}
-wall   {x=54, y=8,  dir='v', len=18}
+wall   {x=54, y=8,  dir='v', len=9}
+window {x=54, y=17, dir='v', len=2}
+wall   {x=54, y=19, dir='v', len=7}
 wall   {x=54, y=35, dir='v', len=1}
 
 -- Interior walls
