@@ -8,6 +8,7 @@ local Gun = require "gun"
 local Zombie = require "zombie"
 local Trap = require "trap"
 local Bullet = require "bullet"
+local Gate = require "gate"
 
 local drawing = require "drawing"
 
@@ -250,6 +251,11 @@ function Human:update(dt)
 end
 
 function Human:onCollision(other, dx, dy)
+    if other:isInstanceOf(Gate) then
+        other:passingHuman()
+        return
+    end
+
     if not other:isInstanceOf(Bullet) then
         Mobile.onCollision(self, other, dx, dy)
     end
