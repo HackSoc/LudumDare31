@@ -7,7 +7,7 @@ global.zombies = {}
 
 global.debug = false
 
-global.maxdrawlayer = 3
+global.maxdrawlayer = 4
 
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"

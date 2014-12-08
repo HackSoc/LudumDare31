@@ -5,6 +5,8 @@ local Bullet = require "bullet"
 local Gate = require "gate"
 local LevelLoader = require "levelloader"
 local HumanInfo = require "humaninfo"
+local Button = require "button"
+local ModeButton = require "modebutton"
 
 local zSpawnRate = 0.25
 
@@ -15,6 +17,17 @@ function love.load()
     global.addDrawable(HumanInfo())
 
     LevelLoader("level")
+
+    -- Define mode buttons
+    global.addDrawable(ModeButton(864, 582,
+                                  love.graphics.newImage("button_normal.png"),
+                                  "normal"))
+    global.addDrawable(ModeButton(1002, 582,
+                                  love.graphics.newImage("button_heal.png"),
+                                  "heal"))
+    global.addDrawable(ModeButton(1140, 582,
+                                  love.graphics.newImage("button_trap.png"),
+                                  "trap"))
 end
 
 function love.update(dt)
@@ -126,6 +139,13 @@ end
 -- set (but don't unselect things we have already selected), if not
 -- holding shift, same as before: one-unit selections.
 function click(entities, isdragging)
+    for e, _ in pairs(entities) do
+        if e:isInstanceOf(Button) and not isdragging then
+            e:onClick()
+            e.depressed = false
+        end
+    end
+
     for e, _ in pairs(global.entities) do
         if e:isInstanceOf(Human) then
             if love.keyboard.isDown("lshift") then
@@ -155,6 +175,12 @@ end
 function love.mousepressed(x, y, button)
     if button == "l" then
         dragging = {x=x, y=y}
+
+        for _, o in pairs(global.collidablesUnder(x, y, x + 1, y + 1)) do
+            if o:isInstanceOf(Button) then
+                o.depressed = true
+            end
+        end
     end
 end
 
