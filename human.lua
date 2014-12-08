@@ -313,6 +313,7 @@ function Human:zomb()
 end
 
 function Human:setMode(mode)
+    self.cooldown = 0
     self.mode = mode
 end
 
