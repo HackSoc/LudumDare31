@@ -149,7 +149,9 @@ end
 
 function Zombie:onCollision(other, dx, dy)
     Mobile.onCollision(self, other, dx, dy)
-    if (other.class.name == "Human" or other.class.name == "Gate")
+    if (other.class.name == "Human" or
+        other.class.name == "Gate" or
+        other.class.name == "Window")
        and (self.damageCooldown <= 0) then
         if other.class.name == "Human" then
             other:zomb()
