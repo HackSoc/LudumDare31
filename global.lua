@@ -1,28 +1,13 @@
 local global = {}
 
-global.entities = {}
-global.drawables = {}
-global.destroyedDrawables = nil
-global.humans = {}
-global.zombies = {}
-global.killedZombies = 0
-
-global.debug = false
-global.showHelp = true
-global.endGame = false
-
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
 local Grid = require "grid"
-
-global.grid = Grid(86, 48, 15)
 
 local function onCollision(dt, a, b, dx, dy)
     a.entity:onCollision(b.entity, dx, dy)
     b.entity:onCollision(a.entity, -dx, -dy)
 end
-
-global.collider = HC(100, onCollision)
 
 function global.addHitbox(obj, x, y, w, h)
     local hitbox = global.collider:addRectangle(x, y, w, h)
@@ -134,10 +119,6 @@ function global.countSelected()
     return selcount
 end
 
-global.messages = {}
-global.messagenum = 0
-global.maxmessages = 10
-
 function global.log(str)
     if global.messagenum == global.maxmessages then
         local msgs = {}
@@ -151,6 +132,27 @@ function global.log(str)
 
     global.messagenum = global.messagenum + 1
     global.messages[global.messagenum] = str
+end
+
+function global.reset()
+    global.entities = {}
+    global.drawables = {}
+    global.destroyedDrawables = nil
+    global.humans = {}
+    global.zombies = {}
+    global.killedZombies = 0
+
+    global.grid = Grid(86, 48, 15)
+
+    global.debug = false
+    global.showHelp = true
+    global.endGame = false
+
+    global.collider = HC(100, onCollision)
+
+    global.messages = {}
+    global.messagenum = 0
+    global.maxmessages = 10
 end
 
 return global

@@ -20,6 +20,13 @@ function love.load()
     love.window.setMode(1280, 720)
     love.window.setTitle("Zombie Simulator 2014")
     love.graphics.setBackgroundColor(255, 248, 220)
+
+    reset()
+end
+
+function reset()
+    global.reset()
+
     global.addDrawable(HumanInfo())
 
     LevelLoader("level")
