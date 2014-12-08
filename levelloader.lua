@@ -9,6 +9,7 @@ local Window = require "window"
 local HotZone = require "hotzone"
 local Turret = require "turret"
 local Human = require "human"
+local Helipad = require "helipad"
 
 local level = {math=math}
 
@@ -58,6 +59,13 @@ function level.turret(info)
     global.addDrawable(Turret(info.x*15+8, info.y*15+8, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
     global.grid:fillRegion(info.x*15, info.y*15, 30, 30)
 end
+
+function level.helipad(info)
+    local hz = HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
+    global.addDrawable(hz)
+    global.addDrawable(Helipad(info.x*15+8, info.y*15+8, hz))
+end
+
 
 --human {x=<n>, y=<n>}
 function level.human(info)

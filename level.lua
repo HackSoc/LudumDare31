@@ -77,11 +77,14 @@ gate {x=46, y=31, dir='h', len=3}
 wall {x=49, y=31, dir='h', len=5}
 
 -- Starting humans
-human {x=45, y=20}
-human {x=45, y=22}
-human {x=45, y=24}
-human {x=45, y=26}
-human {x=48, y=20}
-human {x=48, y=22}
+human {x=44, y=24}
+human {x=46, y=24}
 human {x=48, y=24}
+human {x=50, y=24}
+human {x=44, y=26}
+human {x=46, y=26}
 human {x=48, y=26}
+human {x=50, y=26}
+
+-- features
+helipad {x=48, y=17, hx=52, hy=17, hw=1, hh=3}
