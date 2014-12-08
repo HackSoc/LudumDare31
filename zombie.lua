@@ -21,6 +21,7 @@ function Zombie:initialize(x, y)
     self.followDist = 250
     self.noticeDist = 150
     self.waitForPlan = false
+    self.flockDist = 200
 end
 
 function Zombie:draw()
@@ -43,8 +44,54 @@ end
 function Zombie:update(dt)
     -- It's got stuck
     if not self.waitForPlan and (not self.targetx or not self.targety) then
-        self:setTarget(self.x + love.math.random(-100, 100),
-                       self.y + love.math.random(-100, 100))
+        local newx = self.x + love.math.random(-50, 50)
+        local newy = self.y + love.math.random(-50, 50)
+
+        local sumtx = 0
+        local sumty = 0
+        local sumdx = 0
+        local sumdy = 0
+        local count = 0
+
+        for _, e in pairs(global.zombies) do
+            if self:getAbsDistance(e) < self.flockDist and e.targetx and e.targety then
+                sumtx = sumtx + e.targetx
+                sumty = sumty + e.targety
+                sumdx = sumdx + e.targetx - e.x
+                sumdy = sumdy + e.targety - e.y
+                count = count + 1
+            end
+        end
+
+        if count == 0 then
+            local avgtx = sumtx / count
+            local avgty = sumty / count
+            local avgdx = sumdx / count
+            local avgdy = sumdy / count
+
+            -- Get normalised average direction vector
+            local mod = math.sqrt(avgdx * avgdx + avgdy * avgdy)
+            local avgdxN = avgdx / mod
+            local avgdyN = avgdy / mod
+
+            -- Get distance to average target
+            local avgdist = math.sqrt((self.x - avgtx) * (self.x - avgtx) +
+                                      (self.y - avgty) * (self.y - avgty))
+
+            -- Pick a new target in the average distance
+            local len = 1 + love.math.random(math.max(2 * avgdist, 10))
+            local newx = self.x + avgdxN * len
+            local newy = self.y + avgdyN * len
+
+            -- Sanity check
+            local function isnan(x) return x ~= x end
+            if isnan(newx) or isnan(newy) then
+                newx = self.x + love.math.random(-50, 50)
+                newy = self.y + love.math.random(-50, 50)
+            end
+        end
+
+        self:setTarget(newx, newy)
     end
 
     if self.target == nil or
@@ -62,7 +109,23 @@ function Zombie:update(dt)
         self.planningCooldown = 1
         self.waitForPlan = false
 
+        self:retarget()
+
     elseif not self.waitForPlan then
+        self:retarget()
+    end
+
+    self.planningCooldown = self.planningCooldown - dt
+
+    if self.damageCooldown > 0 then
+        self.damageCooldown = self.damageCooldown - dt
+    end
+
+    Mobile.update(self, dt)
+end
+
+function Zombie:retarget()
+    if self.target then
         local targetx = self.target.x
         if self.target.w ~= nil then
             targetx = targetx + love.math.random(self.target.w)
@@ -77,14 +140,6 @@ function Zombie:update(dt)
 
         self:setTarget(targetx, targety)
     end
-
-    self.planningCooldown = self.planningCooldown - dt
-
-    if self.damageCooldown > 0 then
-        self.damageCooldown = self.damageCooldown - dt
-    end
-
-    Mobile.update(self, dt)
 end
 
 function Zombie:onCollision(other, dx, dy)
