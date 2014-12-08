@@ -25,7 +25,7 @@ end
 
 -- x, y - where the bullet initially appears (not including radius of the gun)
 function Gun:fire(x, y, target)
-    if self.ammo <= 0 or self.cooldown > 0 then
+    if global.endGame or self.ammo <= 0 or self.cooldown > 0 then
         return
     end
 
