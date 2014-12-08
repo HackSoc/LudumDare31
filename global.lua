@@ -155,6 +155,7 @@ function global.reset()
     global.maxmessages = 10
 
     global.zSpawnRate = 0.25
+    global.maxZRate = 7
     global.totalTime = 0
 end
 
