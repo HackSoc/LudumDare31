@@ -15,6 +15,7 @@ local Static = require "static"
 local Barricade = require "barricade"
 =======
 local ZombieGrid = require "zombiegrid"
+local Barricade = require "barricade"
 
 local zSpawnRate = 0.25
 
