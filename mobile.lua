@@ -24,7 +24,12 @@ function Mobile:initialize(x, y, maxhp)
 end
 
 function Mobile:onCollision(other, dx, dy)
-    if other:isInstanceOf(Collidable) then
+    if other:isInstanceOf(Mobile) then
+        -- if other is Mobile, it will also be correcting for this collision
+        -- applying only half the separation vector produces less jitter
+        self.x = self.x + dx/2
+        self.y = self.y + dy/2
+    elseif other:isInstanceOf(Collidable) then
         self.x = self.x + dx
         self.y = self.y + dy
     end
