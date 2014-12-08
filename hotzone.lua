@@ -63,11 +63,11 @@ function HotZone:onCollision(other, dx, dy)
 end
 
 function HotZone:containsHuman()
-    return self.contains_human
+    return self.contains_human or self.new_contains_human
 end
 
 function HotZone:containsZombie()
-    return self.contains_zombie
+    return self.contains_zombie or self.new_contains_zombie
 end
 
 function HotZone:destroy()
