@@ -62,11 +62,17 @@ function love.draw()
     end
 
     love.graphics.setColor(0, 0, 0)
+
+    love.graphics.printf(string.format("%d", global.killedZombies),
+                         love.graphics:getWidth()/2, 5, 50)
+
     local msgstr = ""
     for i = 1, global.messagenum do
         msgstr = msgstr .. global.messages[i] .. "\n"
     end
-    love.graphics.printf(msgstr, 5, 20, 400)
+    love.graphics.printf(msgstr, 5,
+                         love.graphics.getHeight() - global.maxmessages*18,
+                         450)
 
 
     if global.debug then

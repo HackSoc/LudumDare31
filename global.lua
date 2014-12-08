@@ -5,6 +5,7 @@ global.drawables = {}
 global.destroyedDrawables = nil
 global.humans = {}
 global.zombies = {}
+global.killedZombies = 0
 
 global.debug = false
 

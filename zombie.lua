@@ -181,4 +181,9 @@ function Zombie.spawn()
     global.addDrawable(Zombie:new(x, y))
 end
 
+function Zombie:destroy()
+    Mobile.destroy(self)
+    global.killedZombies = global.killedZombies + 1
+end
+
 return Zombie
