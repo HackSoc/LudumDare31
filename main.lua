@@ -88,11 +88,11 @@ When a survivor is in a relevant 'hotzone', they can:]]
  - recover in a rest area]]
 
     love.graphics.setColor(255, 255, 255)
-    love.graphics.printf(text, x, y + 10, w - x, "center")
-    love.graphics.printf(tasks, x + 530, y + 165, w)
+    love.graphics.printf(text, x, y + 10, w - 2*x, "center")
+    love.graphics.printf(tasks, x + 490, y + 165, w)
 
-    love.graphics.printf("Good luck!", x, y + 300, w - x, "center")
-    love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - x, "center")
+    love.graphics.printf("Good luck!", x, y + 300, w - 2*x, "center")
+    love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - 2*x, "center")
 end
 
 function love.draw()
