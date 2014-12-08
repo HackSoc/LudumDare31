@@ -88,6 +88,8 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
+    self.bulletChance = 0.05 -- Chance of being damaged by a bullet
+
     self:setName(forenames[love.math.random(1, #forenames)],
                  surnames[love.math.random(1, #surnames)])
 

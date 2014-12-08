@@ -19,7 +19,8 @@ function Bullet:hurt()
 end
 
 function Bullet:onCollision(other, dx, dy)
-    if other:isInstanceOf(Collidable) and other:stopsBullets() then
+    if (other:isInstanceOf(Collidable) and other:stopsBullets()) or
+       (other.class.name == "Human" and love.math.random() < other.bulletChance) then
         other:hurt(self.damage)
         self:destroy()
     end
