@@ -33,15 +33,18 @@ function reset()
     LevelLoader("level")
 
     -- Define mode buttons
-    global.addDrawable(ModeButton(1058, 646,
+    global.addDrawable(ModeButton(984, 646,
                                   love.graphics.newImage("button_normal.png"),
                                   "normal"))
-    global.addDrawable(ModeButton(1132, 646,
+    global.addDrawable(ModeButton(1058, 646,
                                   love.graphics.newImage("button_heal.png"),
                                   "heal"))
-    global.addDrawable(ModeButton(1206, 646,
+    global.addDrawable(ModeButton(1132, 646,
                                   love.graphics.newImage("button_trap.png"),
                                   "trap"))
+    global.addDrawable(ModeButton(1206, 646,
+                                  love.graphics.newImage("button_barricade.png"),
+                                  "barricade"))
 end
 
 function love.update(dt)
@@ -239,7 +242,6 @@ function love.keypressed(key)
     elseif key == 'kp3' then
         for e, _ in pairs(global.humans) do
             if e.selected then
-                e.cooldown = 0
                 e:setMode("barricade")
             end
         end
