@@ -236,6 +236,13 @@ function love.keypressed(key)
                 e:setMode("trap")
             end
         end
+    elseif key == 'kp3' then
+        for e, _ in pairs(global.humans) do
+            if e.selected then
+                e.cooldown = 0
+                e:setMode("barricade")
+            end
+        end
     elseif (key == '/' or key == '?') and not global.endGame then
         global.showHelp = not global.showHelp
     end

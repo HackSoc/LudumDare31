@@ -9,6 +9,7 @@ local Zombie = require "zombie"
 local Trap = require "trap"
 local Bullet = require "bullet"
 local Gate = require "gate"
+local Barricade = require "barricade"
 
 local drawing = require "drawing"
 
@@ -174,6 +175,11 @@ function Human:update(dt)
         if self.cooldown == self.max_cooldown then
             self.cooldown = 0
             global.addDrawable(Trap(self.x, self.y))
+        end
+    elseif self.mode == "barricade" then
+        if self.cooldown == self.max_cooldown then
+            global.addDrawable(Barricade(self.x, self.y))
+            self:setMode("normal")
         end
     end
 
