@@ -10,6 +10,7 @@ local Button = require "button"
 local ModeButton = require "modebutton"
 local Collidable = require "collidable"
 local Tank = require "tank"
+local Static = require "static"
 
 local zSpawnRate = 0.25
 
@@ -38,15 +39,15 @@ end
 function love.update(dt)
     totalTime = totalTime + dt
 
-    -- update dynamic pathfinding overlay
-    global.grid:clearOverlay()
+    -- update pathfinding
+    global.grid:clear()
     for e, _ in pairs(global.entities) do
-        if e:isInstanceOf(Collidable) and not e:isInstanceOf(Wall) and e.stopsHumans then
+        if e:isInstanceOf(Static) and e.stopsHumans then
             -- hope that all things with area also have these properties...
             if e.w and e.h then
-                global.grid:overlayFillRegion(e.x, e.y, e.w, e.h)
+                global.grid:fillRegion(e.x, e.y, e.w, e.h)
             else
-                global.grid:overlayFill(e:center())
+                global.grid:fill(e:center())
             end
         end
     end

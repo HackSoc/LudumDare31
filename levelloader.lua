@@ -43,7 +43,6 @@ end
 function level.wall(info)
     local x, y, w, h = correctWall(info, 3)
     global.addDrawable(Wall(x, y, w, h))
-    global.grid:fillRegion(x, y, w, h)
 end
 
 --wall {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
@@ -68,7 +67,6 @@ function level.turret(info)
     local hz = mkhz(info)
     global.addDrawable(hz)
     global.addDrawable(Turret(info.x*15+8, info.y*15+8, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
-    global.grid:fillRegion(info.x*15, info.y*15, 30, 30)
 end
 
 function level.helipad(info)

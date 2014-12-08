@@ -2,30 +2,18 @@ local class = require "middleclass.middleclass"
 
 local Grid = class("Grid")
 
-local function mkgrid(w, h, default)
-    local g = {}
-    for i = 0, w, 1 do
-        g[i] = {}
-        for j = 0, h, 1 do
-            g[i][j] = default
-        end
-    end
-    return g
-end
-
 function Grid:initialize(w, h, cellsize)
     self.width = w
     self.height = h
     self.cellsize = cellsize
-    self.cells = mkgrid(w, h, false)
-    self:clearOverlay()
+    self.cells = self:mk(false)
     self.lasti = nil
     self.lastj = nil
     self.cand_idx = 1
 end
 
-function Grid:clearOverlay()
-    self.overlay = mkgrid(self.width, self.height, false)
+function Grid:clear()
+    self.cells = self:mk(false)
 end
 
 function Grid:draw()
@@ -35,7 +23,7 @@ function Grid:draw()
             if self.lastd and self.lastd[i][j] then
                 alpha = self.lastd[i][j] * 3
             end
-            if self.cells[i][j] or (self.overlay and self.overlay[i][j]) then
+            if self.cells[i][j] then
                 love.graphics.setColor(255, 0, 0, 30)
             else
                 love.graphics.setColor(0, 255, 0, alpha)
@@ -62,25 +50,6 @@ function Grid:fillRegion(x, y, w, h)
     end
 end
 
-function Grid:overlayFill(x, y)
-    local i, j = self:coord2Cell(x, y)
-    if not self.overlay then
-        self:clearOverlay()
-    end
-    if i < 0 or i > self.width or j < 0 or j >= self.height then
-        return
-    end
-    self.overlay[i][j] = true
-end
-
-function Grid:overlayFillRegion(x, y, w, h)
-    for i = x, x+w, 15 do
-        for j = y, y+h, 15 do
-            self:overlayFill(i, j)
-        end
-    end
-end
-
 function Grid:pathNext(from, to)
     local fi, fj = self:coord2Cell(unpack(from))
     local ti, tj = self:coord2Cell(unpack(to))
@@ -91,61 +60,46 @@ function Grid:pathNext(from, to)
     end
 
     -- initialise the distance matrix with infinity
-    local d = mkgrid(self.width, self.height, math.huge)
-
-    -- calculate bounds for fill
-    -- currently just using the whole screen
-    local li = 1
-    local ui = self.width-1
-    local lj = 1
-    local uj = self.height-1
+    local d = self:mk(math.huge)
 
     -- desination is no distance from itself
     d[ti][tj] = 0
 
-    -- keep a local reference to the overlay, so we can clear it for fallback
-    local overlay = self.overlay
-
     -- propagate shortest distances
     local r = 0
+    local rlimit = math.sqrt(self.width^2 + self.height^2)
     while d[fi][fj] == math.huge do
-        for i = li, ui, 1 do
-            for j = lj, uj, 1 do
-                if ((i == fi and j == fj) or
-                    ((not overlay or not overlay[i][j]) and
-                     not self.cells[i][j]))
-                then
-                    -- propagate distances from neighbours
-                    -- 1.4 ~~ sqrt(2) for diagonals
-                    d[i][j] = math.min(
-                        -- cannot be further than itself
-                        d[i][j],
-                        -- left col
-                        d[i-1][j-1]+1.4,
-                        d[i-1][j]+1,
-                        d[i-1][j+1]+1.4,
-                        -- right col
-                        d[i+1][j-1]+1.4,
-                        d[i+1][j]+1,
-                        d[i+1][j+1]+1.4,
-                        -- others
-                        d[i][j-1]+1,
-                        d[i][j+1]+1
-                    )
-                end
+        self:mapGrid(
+            function (i, j)
+                -- propagate distances from neighbours
+                -- 1.4 ~~ sqrt(2) for diagonals
+                d[i][j] = math.min(
+                    -- cannot be further than itself
+                    d[i][j],
+                    -- left col
+                    d[i-1][j-1]+1.4,
+                    d[i-1][j]+1,
+                    d[i-1][j+1]+1.4,
+                    -- right col
+                    d[i+1][j-1]+1.4,
+                    d[i+1][j]+1,
+                    d[i+1][j+1]+1.4,
+                    -- others
+                    d[i][j-1]+1,
+                    d[i][j+1]+1
+                )
+            end,
+            function (i, j)
+                return
+                    (i == fi and j == fi) or
+                    not self.cells[i][j]
             end
-        end
+        )
         r = r + 1
         -- reached iteration limit (this allows for a path that covers
         -- every cell in the grid)
-        if r >= self.width*self.height then
-            -- fall back to the static grid, just in case
-            if overlay then
-                print("falling back to static pathfinding")
-                overlay = nil
-            else
-                break
-            end
+        if r >= rlimit then
+            break
         end
     end
 
@@ -170,13 +124,14 @@ function Grid:pathNext(from, to)
     d[fi][fj] = math.huge
 
     -- first pass: find minimum (cell) distance to target
-    for i = fi-1, fi+1, 1 do
-        for j = fj-1, fj+1, 1 do
+    self:mapNeighbours(
+        fi, fj,
+        function (i, j)
             if d[i][j] < md then
                 md = d[i][j]
             end
         end
-    end
+    )
 
     -- second pass: find candidate cells
 
@@ -195,14 +150,14 @@ function Grid:pathNext(from, to)
     -- -------    x    -------
     --   \---- x + 0.8 ----/
     local candidates = {}
-    for i = fi-1, fi+1, 1 do
-        for j = fj-1, fj+1, 1 do
+    self:mapNeighbours(
+        fi, fj,
+        function (i, j)
             if math.abs(d[i][j] - md) < 1 then
                 table.insert(candidates, {i, j})
             end
         end
-    end
-
+    )
     -- we do not have to check that candidates is non-empty;
     -- were that the case, we would have bailed out in
     -- the unreachability check above
@@ -239,6 +194,37 @@ end
 
 function Grid:cell2Coord(i, j)
     return i*self.cellsize+(self.cellsize/2), j*self.cellsize+(self.cellsize/2)
+end
+
+function Grid:mk(default)
+    local g = {}
+    for i = -1, self.width+1, 1 do
+        g[i] = {}
+        for j = -1, self.height+1, 1 do
+            g[i][j] = default
+        end
+    end
+    return g
+end
+
+function Grid:mapGrid(fn, pred)
+    for i = 0, self.width, 1 do
+        for j = 0, self.height, 1 do
+            if not pred or pred(i, j) then
+                fn(i, j)
+            end
+        end
+    end
+end
+
+function Grid:mapNeighbours(pi, pj, fn, pred)
+    for i = pi-1, pi+1, 1 do
+        for j = pj-1, pj+1, 1 do
+            if not pred or pred(i, j) then
+                fn(i, j)
+            end
+        end
+    end
 end
 
 return Grid
