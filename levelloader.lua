@@ -5,6 +5,7 @@ local LevelLoader = class("LevelLoader")
 
 local Wall = require "wall"
 local Gate = require "gate"
+local Window = require "window"
 local HotZone = require "hotzone"
 local Turret = require "turret"
 local Human = require "human"
@@ -36,6 +37,13 @@ end
 function level.wall(info)
     local x, y, w, h = correctWall(info, 3)
     global.addDrawable(Wall(x, y, w, h))
+    global.grid:fillRegion(x, y, w, h)
+end
+
+--wall {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
+function level.window(info)
+    local x, y, w, h = correctWall(info, 3)
+    global.addDrawable(Window(x, y, w, h))
     global.grid:fillRegion(x, y, w, h)
 end
 
