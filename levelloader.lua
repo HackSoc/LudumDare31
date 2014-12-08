@@ -11,18 +11,21 @@ local Human = require "human"
 
 local level = {math=math}
 
-local function correctWall(info, thickness)
+local function correctWall(info, thickness, offby)
     local x, y, w, h
+    offby = offby or 0
     x = info.x * 15 + 6
     y = info.y * 15 + 6
     if info.dir == 'v' then
         w = thickness
-        h = info.len * 15 + 3
+        h = info.len * 15 + 3 - offby * 2
         x = x - (thickness-3) / 2
+        y = y + offby
     elseif info.dir == 'h' then
-        w = info.len * 15 + 3
+        w = info.len * 15 + 3 - offby * 2
         h = thickness
         y = y - (thickness-3) / 2
+        x = x + offby
     else
         error("Invalid direction")
     end
@@ -36,7 +39,7 @@ end
 
 --gate {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.gate(info)
-    global.addDrawable(Gate(correctWall(info, 5)))
+    global.addDrawable(Gate(correctWall(info, 5, 3)))
 end
 
 --turret {x=<n>, y=<n>, dir=<n*pi>, hx=<n>, hy=<n>, hw=<n>, hh=<n>}
