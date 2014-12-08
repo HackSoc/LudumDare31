@@ -21,7 +21,13 @@ function Gate:draw()
     if self.is_open then
         love.graphics.setColor(205, 133, 63, 100)
     else
-        love.graphics.setColor(205, 133, 63)
+        local nr, ng, nb = 205, 133, 63
+        local dr, dg, db = 255, 0, 0
+        local hpr = self.hp/self.maxhp
+        local r = (nr * hpr + dr * (1-hpr))
+        local g = (ng * hpr + dg * (1-hpr))
+        local b = (nb * hpr + db * (1-hpr))
+        love.graphics.setColor(r, g, b)
     end
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
 end
