@@ -213,6 +213,7 @@ When a survivor is in a relevant 'hotzone', they can:]]
     love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - x, "center")
 end
 
+
 function love.draw()
     local winW = love.graphics.getWidth()
     local winH = love.graphics.getHeight()
@@ -264,10 +265,15 @@ function love.draw()
     if global.showHelp then
         drawHelp(40, 40, winW, winH)
 <<<<<<< HEAD
+<<<<<<< HEAD
     elseif global.endGame then
         drawEndgame(40, 40, winW, winH)
 =======
 >>>>>>> Add intro helptext, which pauses the game
+=======
+    elseif global.endGame then
+        drawEndgame(40, 40, winW, winH)
+>>>>>>> Add endgame screen. Fixes #57
     end
 end
 
@@ -308,12 +314,15 @@ function love.keypressed(key)
                 e:setMode("trap")
             end
         end
+<<<<<<< HEAD
     elseif key == 'kp3' then
         for e, _ in pairs(global.humans) do
             if e.selected then
                 e:setMode("barricade")
             end
         end
+=======
+>>>>>>> Add endgame screen. Fixes #57
     elseif (key == '/' or key == '?') and not global.endGame then
         global.showHelp = not global.showHelp
     end
