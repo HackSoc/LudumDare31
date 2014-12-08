@@ -37,6 +37,9 @@ function love.load()
 end
 
 function love.update(dt)
+    if global.showHelp then
+        return
+    end
     totalTime = totalTime + dt
 
     -- update pathfinding
@@ -63,7 +66,41 @@ function love.update(dt)
     end
 end
 
+function drawHelp(x, y, w, h)
+    love.graphics.setColor(105, 105, 105, 220)
+    love.graphics.rectangle("fill", x, y, w - 80, h - 80)
+
+    local text = [[Welcome to Zombie Simulator 2014
+
+
+
+
+Use the mouse to direct your human survivors.
+Left-click (and drag) to select, right-click to direct.
+
+
+When a survivor is in a relevant 'hotzone', they can:]]
+
+    local tasks = [[ - radio the military for help
+ - call for reinforcements at the helipad
+ - repair outer doors
+ - increase turret accuracy
+ - recover in a rest area]]
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf(text, x, y + 10, w - x, "center")
+    love.graphics.printf(tasks, x + 530, y + 165, w)
+
+    love.graphics.printf("Good luck!", x, y + 300, w - x, "center")
+    love.graphics.printf("(Press Esc or ? to begin)", x, y + 315, w - x, "center")
+end
+
 function love.draw()
+    local winW = love.graphics.getWidth()
+    local winH = love.graphics.getHeight()
+    local mouseX = love.mouse.getX()
+    local mouseY = love.mouse.getY()
+
     global.correctDrawables()
     for _, d in pairs(global.drawables) do
         d:draw()
@@ -72,22 +109,18 @@ function love.draw()
     if dragging then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("line", dragging.x, dragging.y,
-                                love.mouse.getX() - dragging.x,
-                                love.mouse.getY() - dragging.y)
+                                mouseX - dragging.x, mouseY - dragging.y)
     end
 
     love.graphics.setColor(0, 0, 0)
 
-    love.graphics.printf(string.format("%d", global.killedZombies),
-                         love.graphics:getWidth()/2, 5, 50)
+    love.graphics.printf(string.format("%d", global.killedZombies), winW / 2, 5, 50)
 
     local msgstr = ""
     for i = 1, global.messagenum do
         msgstr = msgstr .. global.messages[i] .. "\n"
     end
-    love.graphics.printf(msgstr, 5,
-                         love.graphics.getHeight() - global.maxmessages*18,
-                         450)
+    love.graphics.printf(msgstr, 5, winH - global.maxmessages * 18, 450)
 
 
     if global.debug then
@@ -95,17 +128,22 @@ function love.draw()
         global.drawHitboxes()
         global.grid:draw()
         love.graphics.setColor(0, 0, 0)
-        love.graphics.printf(string.format("x: %d, y: %d", love.mouse.getX(), love.mouse.getY()), 0, 0 ,130)
+        love.graphics.printf(string.format("x: %d, y: %d", mouseX, mouseY), 0, 0, 130)
         love.graphics.printf(string.format("i: %d, j: %d",
-                                           math.floor(love.mouse.getX()/15),
-                                           math.floor(love.mouse.getY()/15)),
+                                           math.floor(mouseX / 15), math.floor(mouseY / 15)),
                              130, 0 ,130)
+    end
+
+    if global.showHelp then
+        drawHelp(40, 40, winW, winH)
     end
 end
 
 function love.keypressed(key)
     if key == "d" then
         global.debug = not global.debug
+    elseif key == 'escape' and global.showHelp then
+        global.showHelp = false
     elseif key == 'escape' then
         unselectAll()
     elseif key == 'a' then
@@ -130,6 +168,8 @@ function love.keypressed(key)
                 e:setMode("trap")
             end
         end
+    elseif key == '/' or key == '?' then
+        global.showHelp = not global.showHelp
     end
 
     if global.debug then

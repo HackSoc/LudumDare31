@@ -8,6 +8,7 @@ global.zombies = {}
 global.killedZombies = 0
 
 global.debug = false
+global.showHelp = true
 
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
