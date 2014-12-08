@@ -82,6 +82,11 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.max_cooldown = 10
     self.cooldown = self.max_cooldown
 
+    self.tiredCooldownMax = love.math.random(120, 240)
+    self.tiredCooldown = 0
+
+    self.accuracy = 10
+
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
     self:setName(forenames[love.math.random(1, #forenames)],
@@ -170,6 +175,14 @@ function Human:update(dt)
     -- Heal passively (but slowly)
     if self.mode ~= "heal" then
         self:heal(dt)
+    end
+
+    -- Become tired
+    local scale = 3 * self.tiredCooldown / self.tiredCooldownMax
+    self.gun.accuracy = self.accuracy * scale
+
+    if self.tiredCooldown < self.tiredCooldownMax then
+        self.tiredCooldown = self.tiredCooldown + dt
     end
 
     closeZ = self:getClosest("Zombie", 20)
@@ -314,6 +327,10 @@ function Human:hurt(damage)
 
         self:destroy()
     end
+end
+
+function Human:awaken()
+    self.tiredCooldown = 0
 end
 
 function Human:setDest(x, y)

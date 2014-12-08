@@ -16,6 +16,7 @@ end
 function Rest:trigger()
     for _, h in pairs(global.humans) do
         h:heal(50)
+        h:awaken()
     end
 end
 
