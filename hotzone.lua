@@ -28,7 +28,7 @@ function HotZone:update(dt)
         self.contains_zombie = false
     else
         self.new_contains_human = false
-        self.new_contains_human = false
+        self.new_contains_zombie = false
     end
 end
 
