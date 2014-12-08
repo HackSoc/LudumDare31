@@ -6,7 +6,7 @@ local Radio = class("Radio", Periodic)
 
 local Tank = require "tank"
 
-local image = love.graphics.newImage('helipad.png')
+local image = love.graphics.newImage('radio.png')
 
 function Radio:initialize(x, y, hotzone)
     Periodic.initialize(self, x, y, hotzone, image)
