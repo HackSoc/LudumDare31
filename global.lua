@@ -2,12 +2,11 @@ local global = {}
 
 global.entities = {}
 global.drawables = {}
+global.destroyedDrawables = nil
 global.humans = {}
 global.zombies = {}
 
 global.debug = false
-
-global.maxdrawlayer = 4
 
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
@@ -69,12 +68,28 @@ end
 
 function global.addDrawable(obj)
     global.addEntity(obj)
-    global.drawables[obj] = obj
+    table.insert(global.drawables, obj)
 end
 
 function global.removeDrawable(obj)
     global.removeEntity(obj)
-    global.drawables[obj] = nil
+    global.destroyedDrawables = global.destroyedDrawables or {}
+    global.destroyedDrawables[obj] = obj
+end
+
+function global.correctDrawables()
+    if global.destroyedDrawables then
+        local newDrawables = {}
+        for _, d in ipairs(global.drawables) do
+            if not global.destroyedDrawables[d] then
+                table.insert(newDrawables, d)
+            end
+        end
+        global.drawables = newDrawables
+    end
+    global.destroyedDrawables = nil
+    table.sort(global.drawables,
+               function (d1, d2) return d1.layer < d2.layer end)
 end
 
 function global.collidablesAt(x, y)

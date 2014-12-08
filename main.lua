@@ -43,13 +43,11 @@ function love.update(dt)
 end
 
 function love.draw()
-    for i = 1, global.maxdrawlayer do
-        for o, _ in pairs(global.drawables) do
-            if o.layer == i then
-                o:draw()
-            end
-        end
+    global.correctDrawables()
+    for _, d in pairs(global.drawables) do
+        d:draw()
     end
+
 
     if dragging then
         love.graphics.setColor(0, 0, 0)
