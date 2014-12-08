@@ -15,13 +15,16 @@ function Tank:initialize(x, y)
     self.y = y
     self.vx = 50
     self.vy = 0
-    self.stopsBullets = false
     self.stopsHumans = true
     self.fire_cooldown_max = 0.05
     self.fire_cooldown = self.fire_cooldown_max
     self.damage = 50
     self.hitbox = global.addHitbox(self, x, y, image:getWidth(), image:getHeight())
     self.layer = 3
+end
+
+function Tank:stopsBullets()
+    return false
 end
 
 function Tank:update(dt)

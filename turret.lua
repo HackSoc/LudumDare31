@@ -14,7 +14,6 @@ local image = love.graphics.newImage('turret.png')
 function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, spread, hotzone)
     Static.initialize(self, x, y)
 
-    self.stopsBullets = false
     self.radius = 15 -- For drawing/hitbox
     if direction < 0 then
         self.direction = 2 * math.pi + direction
@@ -29,6 +28,10 @@ function Turret:initialize(x, y, ammo, cooldown, reload, accuracy, direction, sp
     self.accuracy = accuracy
     self.target = nil
     self.layer = 3
+end
+
+function Turret:stopsBullets()
+    return false
 end
 
 function Turret:update(dt)

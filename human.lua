@@ -75,7 +75,6 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     self.targetx = nil
     self.targety = nil
     self.infected = false
-    self.stopsBullets = false
     self:setMaxSpeed(50)
 
     self.mode = "normal"
@@ -100,6 +99,10 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self.repath_backoff = nil
     self.repath_attempts = 0
+end
+
+function Human:stopsBullets()
+    return false
 end
 
 function Human:setName(forename, surname)

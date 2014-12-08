@@ -7,7 +7,6 @@ local global = require "global"
 
 function Collidable:initialize(x, y, maxhp)
     Drawable.initialize(self, x, y)
-    self.stopsBullets = true
     self.stopsHumans = true
     self.maxhp = maxhp
     self.hp = maxhp
@@ -29,6 +28,10 @@ function Collidable:update(dt)
    end
 
    Drawable.update(self, dt)
+end
+
+function Collidable:stopsBullets()
+    return true
 end
 
 function Collidable:center()

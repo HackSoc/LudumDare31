@@ -9,7 +9,6 @@ local drawing = require "drawing"
 function Periodic:initialize(x, y, hotzone, image)
     Static.initialize(self, x, y)
 
-    self.stopsBullets = false
     self.stopsHumans = false
 
     self.cooldown = 0
@@ -19,6 +18,10 @@ function Periodic:initialize(x, y, hotzone, image)
 
     self.image = image
     self.callback = callback
+end
+
+function Periodic:stopsBullets()
+    return false
 end
 
 function Periodic:update(dt)

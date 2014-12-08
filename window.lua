@@ -11,8 +11,11 @@ function Window:initialize(x, y, w, h)
 
     self.w = w
     self.h = h
-    self.stopsBullets = false
     self.hitbox = global.addHitbox(self, x, y, w, h)
+end
+
+function Window:stopsBullets()
+    return false
 end
 
 function Window:draw()
