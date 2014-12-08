@@ -4,6 +4,7 @@ local Human = require "human"
 local Bullet = require "bullet"
 local Gate = require "gate"
 local LevelLoader = require "levelloader"
+local HumanInfo = require "humaninfo"
 
 local zSpawnRate = 0.25
 
@@ -11,6 +12,7 @@ function love.load()
     love.window.setMode(1280, 720)
     love.window.setTitle("Zombie Simulator 2014")
     love.graphics.setBackgroundColor(255, 248, 220)
+    global.addDrawable(HumanInfo())
 
     LevelLoader("level")
 end
@@ -50,38 +52,6 @@ function love.draw()
     end
     love.graphics.printf(msgstr, 5, 20, 400)
 
-    local selected = nil
-    local selcount = 0
-    for _, e in pairs(global.humans) do
-        if e.selected then
-            selected = e
-            selcount = selcount + 1
-        end
-    end
-
-    if selcount == 1 then
-        local w = 200
-        local wL = 275
-        local x = love.graphics.getWidth() - w - 5
-        local xL = love.graphics.getWidth() - wL - 5
-        love.graphics.printf(selected.name .. " (" .. math.floor(selected.hp) .. ")", x, 5, w, "center")
-        local y = 20
-        if selected.talent ~= nil then
-            love.graphics.setColor(100, 100, 100)
-            love.graphics.printf("[" .. selected.talent .. "]", x, y, w, "center")
-            y = y + 15
-        end
-
-        y = y + 15
-        love.graphics.setColor(70, 130, 180)
-        love.graphics.printf(selected.dream, xL, y, wL, "right")
-        y = y + 30
-
-        if selected.lastsaid ~= nil then
-            love.graphics.setColor(165, 42, 42)
-            love.graphics.printf(selected.lastsaid, xL, y, wL, "right")
-        end
-    end
 
     if global.debug then
         love.graphics.setColor(255, 0, 0)

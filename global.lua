@@ -103,6 +103,16 @@ function global.collidablesUnder(x0, y0, x1, y1)
     return collidables
 end
 
+function global.countSelected()
+    local selcount = 0
+    for _, h in pairs(humans) do
+        if h.selected then
+            selcount = selcount + 1
+        end
+    end
+    return selcount
+end
+
 global.messages = {}
 global.messagenum = 0
 global.maxmessages = 10
