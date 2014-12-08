@@ -9,6 +9,7 @@ local Trap = require "trap"
 local Button = require "button"
 local ModeButton = require "modebutton"
 local Collidable = require "collidable"
+local Tank = require "tank"
 
 local zSpawnRate = 0.25
 
@@ -153,6 +154,8 @@ function love.keypressed(key)
             global.addDrawable(b)
         elseif key == 't' then
             global.addDrawable(Trap(love.mouse.getX(), love.mouse.getY()))
+        elseif key == 'm' then
+            global.addDrawable(Tank(love.mouse.getX(), love.mouse.getY()))
         end
     end
 end

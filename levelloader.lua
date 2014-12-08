@@ -10,6 +10,7 @@ local HotZone = require "hotzone"
 local Turret = require "turret"
 local Human = require "human"
 local Helipad = require "helipad"
+local Radio = require "radio"
 
 local level = {math=math}
 
@@ -74,6 +75,12 @@ function level.helipad(info)
     local hz = mkhz(info)
     global.addDrawable(hz)
     global.addDrawable(Helipad(info.x*15+8, info.y*15+8, hz))
+end
+
+function level.radio(info)
+    local hz = mkhz(info)
+    global.addDrawable(hz)
+    global.addDrawable(Radio(info.x*15+8, info.y*15+8, hz))
 end
 
 

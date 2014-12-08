@@ -88,3 +88,4 @@ human {x=50, y=26}
 
 -- features
 helipad {x=48, y=17, hx=52, hy=17, hw=1, hh=3}
+radio   {x=31, y=29, hx=31, hy=29, hw=3, hh=3}
