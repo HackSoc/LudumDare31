@@ -142,6 +142,7 @@ function click(entities, isdragging)
         if e:isInstanceOf(Button) and e.depressed then
             e:onClick()
             e.depressed = false
+            return
         end
     end
 
