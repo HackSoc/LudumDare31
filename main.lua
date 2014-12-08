@@ -11,6 +11,7 @@ local ModeButton = require "modebutton"
 local Collidable = require "collidable"
 local Tank = require "tank"
 local Static = require "static"
+local Barricade = require "barricade"
 
 local zSpawnRate = 0.25
 
@@ -247,6 +248,8 @@ function love.keypressed(key)
             global.addDrawable(Human:new(x, y, 10, 0.1, 1))
         elseif key == "q" then
             global.addDrawable(Zombie:new(love.mouse.getPosition()))
+        elseif key == "b" then
+            global.addDrawable(Barricade:new(love.mouse.getPosition()))
         elseif key == 'c' then
             for e, _ in pairs(global.humans) do
                 e:destroy()
