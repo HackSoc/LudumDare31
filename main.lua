@@ -8,6 +8,7 @@ local HumanInfo = require "humaninfo"
 local Trap = require "trap"
 local Button = require "button"
 local ModeButton = require "modebutton"
+local Collidable = require "collidable"
 
 local zSpawnRate = 0.25
 
@@ -36,6 +37,19 @@ end
 function love.update(dt)
     totalTime = totalTime + dt
 
+    -- update dynamic pathfinding overlay
+    global.grid:clearOverlay()
+    for e, _ in pairs(global.entities) do
+        if e:isInstanceOf(Collidable) and e.stopsHumans then
+            -- hope that all things with area also have these properties...
+            if e.w and e.h then
+                global.grid:overlayFillRegion(e.x, e.y, e.w, e.h)
+            else
+                global.grid:overlayFill(e.x, e.y)
+            end
+        end
+    end
+
     for o, _ in pairs(global.entities) do
         o:update(dt)
     end
@@ -52,7 +66,6 @@ function love.draw()
     for _, d in pairs(global.drawables) do
         d:draw()
     end
-
 
     if dragging then
         love.graphics.setColor(0, 0, 0)

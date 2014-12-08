@@ -8,6 +8,7 @@ local global = require "global"
 function Collidable:initialize(x, y, maxhp)
     Drawable.initialize(self, x, y)
     self.stopsBullets = true
+    self.stopsHumans = true
     self.maxhp = maxhp
     self.hp = maxhp
 end

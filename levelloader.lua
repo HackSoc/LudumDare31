@@ -44,7 +44,6 @@ end
 function level.window(info)
     local x, y, w, h = correctWall(info, 3)
     global.addDrawable(Window(x, y, w, h))
-    global.grid:fillRegion(x, y, w, h)
 end
 
 --gate {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}

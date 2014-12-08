@@ -14,6 +14,7 @@ function Gate:initialize(x, y, w, h)
     self.command_open = false
     self.is_open = false
     self.hitbox = global.addHitbox(self, x, y, w, h)
+    self.stopsHumans = false
 end
 
 function Gate:draw()

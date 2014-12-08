@@ -25,4 +25,8 @@ function Window:hurt(damage)
     Collidable.hurt(self, damage)
 end
 
+function Window:destroy()
+    Collidable.destroy(self)
+end
+
 return Window
