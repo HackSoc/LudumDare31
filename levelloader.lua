@@ -34,6 +34,10 @@ local function correctWall(info, thickness, offby)
     return x, y, w, h
 end
 
+local function mkhz(info)
+    return HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
+end
+
 --wall {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.wall(info)
     local x, y, w, h = correctWall(info, 3)
@@ -49,19 +53,25 @@ end
 
 --gate {x=<n>, y=<n>, dir=<'v'|'h'>, len=<n>}
 function level.gate(info)
-    global.addDrawable(Gate(correctWall(info, 5, 3)))
+    local hz
+    if info.hx and info.hy and info.hw and info.hh then
+        hz = mkhz(info)
+        global.addDrawable(hz)
+    end
+    local x, y, w, h = correctWall(info, 5, 3)
+    global.addDrawable(Gate(x, y, w, h, hz))
 end
 
 --turret {x=<n>, y=<n>, dir=<n*pi>, hx=<n>, hy=<n>, hw=<n>, hh=<n>}
 function level.turret(info)
-    local hz = HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
+    local hz = mkhz(info)
     global.addDrawable(hz)
     global.addDrawable(Turret(info.x*15+8, info.y*15+8, 10, 0.1, 1, 75, info.dir, math.pi/4, hz))
     global.grid:fillRegion(info.x*15, info.y*15, 30, 30)
 end
 
 function level.helipad(info)
-    local hz = HotZone(info.hx*15+8, info.hy*15+8, info.hw*15, info.hh*15)
+    local hz = mkhz(info)
     global.addDrawable(hz)
     global.addDrawable(Helipad(info.x*15+8, info.y*15+8, hz))
 end

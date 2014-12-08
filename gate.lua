@@ -6,18 +6,24 @@ local Gate = class("Gate", Static)
 local global = require "global"
 local Collidable = require "collidable"
 
-function Gate:initialize(x, y, w, h)
+function Gate:initialize(x, y, w, h, hotzone)
     Static.initialize(self, x, y, 5000)
 
     self.w = w
     self.h = h
+    self.hotzone = hotzone
     self.command_open = false
     self.is_open = false
     self.hitbox = global.addHitbox(self, x, y, w, h)
     self.stopsHumans = false
+    self.is_destroyed = false
+    self.is_ghost = false
 end
 
 function Gate:draw()
+    if self.is_destroyed then
+        return
+    end
     if self.is_open then
         love.graphics.setColor(205, 133, 63, 100)
     else
@@ -33,24 +39,27 @@ function Gate:draw()
 end
 
 function Gate:passingHuman()
-    if not self.is_open then
-        global.setGhost(self.hitbox)
+    if self.is_destroyed then
+        return
     end
+    self:ghost()
     self.is_open = true
 end
 
 function Gate:open()
-    if not self.is_open then
-        global.setGhost(self.hitbox)
+    if self.is_destroyed then
+        return
     end
+    self:ghost()
     self.is_open = true
     self.command_open = true
 end
 
 function Gate:close()
-    if self.is_open then
-        global.setSolid(self.hitbox)
+    if self.is_destroyed then
+        return
     end
+    self:solidify()
     self.is_open = false
     self.command_open = false
 end
@@ -68,10 +77,41 @@ function Gate:hurt(damage)
     Collidable.hurt(self, damage)
 end
 
-function Gate:update()
+function Gate:heal(amount)
+    self:solidify()
+    self.is_destroyed = false
+    self.hp = self.hp + amount
+    if self.hp >= self.maxhp then
+        self.hp = self.maxhp
+    end
+end
+
+function Gate:update(dt)
     Collidable.update(self)
-    if self.is_open and not self.command_open then
+    if not self.is_destroyed and self.is_open and not self.command_open then
         self:close()
+    end
+    if self.hotzone and self.hotzone:containsHuman() then
+        self:heal(50 * dt)
+    end
+end
+
+function Gate:destroy()
+    self:ghost()
+    self.is_destroyed = true
+end
+
+function Gate:ghost()
+    if not self.is_ghost then
+        self.is_ghost = true
+        global.setGhost(self.hitbox)
+    end
+end
+
+function Gate:solidify()
+    if self.is_ghost then
+        self.is_ghost = false
+        global.setSolid(self.hitbox)
     end
 end
 

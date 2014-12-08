@@ -32,12 +32,12 @@ wall {x=54, y=36, dir='h', len=7}
 -- Central room
 wall   {x=30, y=8,  dir='h', len=12}
 wall   {x=30, y=8,  dir='v', len=1}
-gate   {x=42, y=8,  dir='h', len=4}
+gate   {x=42, y=8,  dir='h', len=4, hx=46, hy=9, hw=2, hh=2}
 gate   {x=30, y=9,  dir='v', len=2}
 wall   {x=30, y=11, dir='v', len=4}
 wall   {x=46, y=8,  dir='h', len=8}
 wall   {x=30, y=36, dir='h', len=12}
-gate   {x=42, y=36, dir='h', len=4}
+gate   {x=42, y=36, dir='h', len=4, hx=46, hy=33, hw=2, hh=2}
 wall   {x=46, y=36, dir='h', len=8}
 wall   {x=30, y=18, dir='v', len=14}
 window {x=30, y=32, dir='v', len=2}
