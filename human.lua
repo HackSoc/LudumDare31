@@ -96,6 +96,9 @@ function Human:initialize(x, y, ammo, cooldown, reload)
     end
 
     self.dream = dreams[love.math.random(1, dreamcount)]
+
+    self.repath_backoff = nil
+    self.repath_attempts = 0
 end
 
 function Human:setName(forename, surname)
@@ -241,10 +244,19 @@ function Human:update(dt)
         end
     end
 
+    -- backoff on repathing if we get stuck
+    if self.repath_backoff then
+        self.repath_backoff = self.repath_backoff - dt
+        if self.repath_backoff <= 0 then
+            self.repath_backoff = nil
+        end
+    end
+
     -- naive pathfinding
     if self.destx and self.desty then
-        if not (self.targetx and self.targety) or
-        self:getAbsDistance({x=self.targetx, y=self.targety}) <= 1 then
+        if (not (self.targetx and self.targety) or
+            self:getAbsDistance({x=self.targetx, y=self.targety}) <= 1) and
+        not self.repath_backoff  then
             local cx, cy = self.hitbox:center()
             local tx, ty = global.grid:pathNext({cx, cy},
                                                 {self.destx, self.desty})
@@ -326,8 +338,14 @@ end
 
 function Human:stop()
     Mobile.stop(self)
-    self.destx = nil
-    self.desty = nil
+    if self.destx and self.desty and self:getAbsDistance({x=self.destx, y=self.desty}) <= 1 or self.repath_attempts > 3 then
+        self.destx = nil
+        self.desty = nil
+        self.repath_attempts = 0
+    elseif self.destx and self.desty then
+        self.repath_backoff = math.random(5 * self.repath_attempts, 10 * self.repath_attempts) / 10
+        self.repath_attempts = self.repath_attempts + 1
+    end
 end
 
 return Human
