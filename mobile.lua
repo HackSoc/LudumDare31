@@ -71,8 +71,7 @@ function Mobile:getClosest(objType, dist, mustSee)
     local entities = {}
     for _, e in pairs(global.entities) do
         if e.class.name == objType and
-           (dist == nil or self:getAbsDistance(e) < dist) and
-           (not mustSee or self:canSee(e)) then
+           (dist == nil or self:getAbsDistance(e) < dist) then
             table.insert(entities, e)
         end
     end
@@ -88,9 +87,21 @@ end
 function Mobile:canSee(target)
     local Static = require "static"
     local shapes = require "hardoncollider.shapes"
-    local check = shapes.newPolygonShape(self.x, self.y,
-                                         self.x + 1, self.y + 1,
-                                         target.x, target.y)
+
+    local points = {self.x, self.y}
+    if self.x < target.x then
+        points[3] = self.x
+        points[4] = self.y + 1
+        points[5] = target.x
+        points[6] = target.y
+    else
+        points[3] = self.x
+        points[4] = self.y - 1
+        points[5] = target.x + 1
+        points[6] = target.y + 1
+    end
+
+    local check = shapes.newPolygonShape(unpack(points))
 
     local x1 = math.min(self.x, target.x)
     local y1 = math.min(self.y, target.y)
