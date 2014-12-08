@@ -175,7 +175,7 @@ function love.mousepressed(x, y, button)
     if button == "l" then
         dragging = {x=x, y=y}
 
-        for _, o in pairs(global.collidablesUnder(x, y, x + 1, y + 1)) do
+        for _, o in pairs(global.collidablesAt(x, y)) do
             if o:isInstanceOf(Button) then
                 o.depressed = true
             end
