@@ -20,6 +20,10 @@ function Gate:initialize(x, y, w, h, hotzone)
     self.is_ghost = false
 end
 
+function Gate:stopsBullets()
+    return self.is_open or self.is_destroyed or self.is_ghost
+end
+
 function Gate:draw()
     if self.is_destroyed then
         return
