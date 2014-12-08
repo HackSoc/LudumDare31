@@ -12,6 +12,7 @@ function Trap:initialize(x, y)
 
     self.hitbox = global.addHitbox(self, x, y, 5, 5)
     self.damage = 100
+    self.stopsBullets = false
 end
 
 function Trap:draw()
