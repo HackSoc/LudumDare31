@@ -35,11 +35,15 @@ function HumanInfo:draw()
         love.graphics.printf(self.selected.name .. " (" .. math.floor(self.selected.hp) .. ")", x, y, w, "center")
         y = y + 15
 
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.printf("Mode: " .. self.selected.mode, xL, y, wL, "center")
+        y = y + 15
+
         if self.selected.talent ~= nil then
             love.graphics.setColor(100, 100, 100)
             love.graphics.printf("[" .. self.selected.talent .. "]", x, y, w, "center")
         end
-        y = y + 30
+        y = y + 15
 
         love.graphics.setColor(70, 130, 180)
         love.graphics.printf(self.selected.dream, xL, y, wL, "right")
