@@ -1,6 +1,5 @@
 local global = {}
 
-
 local HC = require "hardoncollider"
 local HCShapes = require "hardoncollider.shapes"
 local Grid = require "grid"

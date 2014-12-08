@@ -29,6 +29,9 @@ function love.load()
     love.window.setTitle("Zombie Simulator 2014")
     love.graphics.setBackgroundColor(255, 248, 220)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Add a global.reset() to reinitialise the state
 
     reset()
 end
@@ -36,8 +39,11 @@ end
 function reset()
     global.reset()
 
+<<<<<<< HEAD
     global.addDrawable(HumanInfo())
 =======
+=======
+>>>>>>> Add a global.reset() to reinitialise the state
     global.addDrawable(HumanInfo(0, 0))
 >>>>>>> Sort of kind of better pathing
 
@@ -233,14 +239,9 @@ function love.draw()
 
     love.graphics.setNewFont(20)
     love.graphics.setColor(0, 0, 0)
-<<<<<<< HEAD
     love.graphics.printf(string.format("Zombie kills: %05d", global.killedZombies),
                          0, 5, winW, "center")
     love.graphics.setNewFont(12)
-=======
-
-    love.graphics.printf(string.format("%d", global.killedZombies), winW / 2, 5, 50)
->>>>>>> Add intro helptext, which pauses the game
 
     local msgstr = ""
     for i = 1, global.messagenum do
@@ -264,16 +265,8 @@ function love.draw()
 
     if global.showHelp then
         drawHelp(40, 40, winW, winH)
-<<<<<<< HEAD
-<<<<<<< HEAD
     elseif global.endGame then
         drawEndgame(40, 40, winW, winH)
-=======
->>>>>>> Add intro helptext, which pauses the game
-=======
-    elseif global.endGame then
-        drawEndgame(40, 40, winW, winH)
->>>>>>> Add endgame screen. Fixes #57
     end
 end
 
