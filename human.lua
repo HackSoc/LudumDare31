@@ -43,7 +43,6 @@ local forenames = {"Clarence",
                    "Lavender",
                    "Alexandra",
                    "Eve"}
-local forenamecount = 22
 
 local surnames = {"Threepwood",
                   "Warblington",
@@ -56,10 +55,8 @@ local surnames = {"Threepwood",
                   "Garland",
                   "Wedge",
                   "Allsop"}
-local surnamecount = 11
 
 local talents = {"Velociraptor Whisperer"}
-local talentcount = 1
 
 local dreams = {"Get a summer house in Spain",
                 "Buy a farm",
@@ -68,7 +65,6 @@ local dreams = {"Get a summer house in Spain",
                 "See son through university",
                 "Become a teacher",
                 "Learn to dance"}
-local dreamcount = 7
 
 function Human:initialize(x, y, ammo, cooldown, reload)
     Mobile.initialize(self, x, y, 100)
@@ -88,14 +84,14 @@ function Human:initialize(x, y, ammo, cooldown, reload)
 
     self.gun = Gun:new(15, 10, ammo, cooldown, reload, 10)
 
-    self:setName(forenames[love.math.random(1, forenamecount)],
-                 surnames[love.math.random(1, surnamecount)])
+    self:setName(forenames[love.math.random(1, #forenames)],
+                 surnames[love.math.random(1, #surnames)])
 
     if love.math.random() <= 0.25 then
-        self.talent = talents[love.math.random(1, talentcount)]
+        self.talent = talents[love.math.random(1, #talents)]
     end
 
-    self.dream = dreams[love.math.random(1, dreamcount)]
+    self.dream = dreams[love.math.random(1, #dreams)]
 
     self.repath_backoff = nil
     self.repath_attempts = 0
@@ -201,46 +197,38 @@ function Human:update(dt)
         local p1count = 12
 
         local phrases2 = {}
-        local p2count = 0
 
         if self.gun.ammo <= 0 then
             table.insert(phrases2, "I'm out of ammo!")
-            p2count = p2count + 1
         end
 
         if zcount == 0 then
             table.insert(phrases2, "Can't see anything...")
-            p2count = p2count + 1
         elseif zcount <= 3 then
             table.insert(phrases2, "Got the blighter in my sights!")
-            p2count = p2count + 1
         else
             table.insert(phrases2, "There are so many!")
-            p2count = p2count + 1
         end
 
         if self.infected then
             table.insert(phrases2, "I'm feeling a little woozy...")
-            p2count = p2count + 1
         end
 
         if self.hp < 10 then
             table.insert(phrases2, "It's all going dark!")
-            p2count = p2count + 1
         elseif self.hp < 50 then
             table.insert(phrases2, "That hurt!")
-            p2count = p2count + 1
         end
 
         local p2prob = 0.5
-        if p2count > 2 then
+        if #phrases2 > 2 then
             p2prob = 0.75
         end
 
         if love.math.random() <= p2prob then
-            self:say(phrases2[love.math.random(1, p2count)])
+            self:say(phrases2[love.math.random(1, #phrases2)])
         else
-            self:say(phrases1[love.math.random(1, p1count)])
+            self:say(phrases1[love.math.random(1, #phrases1)])
         end
     end
 
