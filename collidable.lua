@@ -11,6 +11,9 @@ function Collidable:initialize(x, y, maxhp)
     self.stopsHumans = true
     self.maxhp = maxhp
     self.hp = maxhp
+    -- this is wrong, but will disappear quickly
+    self.centerx = x
+    self.centery = y
 end
 
 function Collidable:update(dt)
@@ -20,10 +23,16 @@ function Collidable:update(dt)
        local hx0, hy0, hx1, hy1 = self.hitbox:bbox()
        local hw = hx1 - hx0
        local hh = hy1 - hy0
-       self.hitbox:moveTo(self.x + hw/2, self.y + hh/2)
+       self.centerx = self.x + hw/2
+       self.centery = self.y + hh/2
+       self.hitbox:moveTo(self.centerx, self.centery)
    end
 
    Drawable.update(self, dt)
+end
+
+function Collidable:center()
+    return self.centerx, self.centery
 end
 
 function Collidable:onCollision(other, dx, dy)

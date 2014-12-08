@@ -40,12 +40,12 @@ function love.update(dt)
     -- update dynamic pathfinding overlay
     global.grid:clearOverlay()
     for e, _ in pairs(global.entities) do
-        if e:isInstanceOf(Collidable) and e.stopsHumans then
+        if e:isInstanceOf(Collidable) and not e:isInstanceOf(Wall) and e.stopsHumans then
             -- hope that all things with area also have these properties...
             if e.w and e.h then
                 global.grid:overlayFillRegion(e.x, e.y, e.w, e.h)
             else
-                global.grid:overlayFill(e.x, e.y)
+                global.grid:overlayFill(e:center())
             end
         end
     end
