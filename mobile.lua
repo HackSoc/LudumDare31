@@ -90,15 +90,33 @@ function Mobile:canSee(target)
 
     local points = {self.x, self.y}
     if self.x < target.x then
-        points[3] = self.x
-        points[4] = self.y + 1
-        points[5] = target.x
-        points[6] = target.y
+        points[3] = self.x + 1
+        points[4] = self.y
+        if self.y < target.y then
+            points[5] = target.x + 2
+            points[6] = target.y + 1
+            points[7] = target.x + 1
+            points[8] = target.y + 1
+        else
+            points[5] = target.x + 1
+            points[6] = target.y + 1
+            points[7] = target.x
+            points[8] = target.y + 1
+        end
     else
-        points[3] = self.x
-        points[4] = self.y - 1
-        points[5] = target.x + 1
-        points[6] = target.y + 1
+        points[3] = self.x - 1
+        points[4] = self.y
+        if self.y < target.y then
+            points[5] = target.x + 1
+            points[6] = target.y + 1
+            points[7] = target.x + 2
+            points[8] = target.y + 1
+        else
+            points[5] = target.x
+            points[6] = target.y + 1
+            points[7] = target.x + 1
+            points[8] = target.y + 1
+        end
     end
 
     local check = shapes.newPolygonShape(unpack(points))
