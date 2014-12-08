@@ -22,13 +22,17 @@ function Periodic:initialize(x, y, hotzone, image)
 end
 
 function Periodic:update(dt)
-    if self.hotzone:containsHuman() then
+    if self.hotzone:containsHuman() and not self.hotzone:containsZombie() then
         self.cooldown = self.cooldown + dt
+    elseif self.hotzone:containsZombie() and not self.hotzone:containsHuman() then
+        self.cooldown = self.cooldown - dt
     end
 
     if self.cooldown >= self.max_cooldown then
         self.cooldown = 0
         self:trigger()
+    elseif self.cooldown < 0 then
+        self.cooldown = 0
     end
 end
 
