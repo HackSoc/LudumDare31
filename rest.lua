@@ -15,9 +15,16 @@ end
 
 function Rest:trigger()
     for _, h in pairs(global.humans) do
-        h:heal(50)
-        h:awaken()
+        if self:contains(h) then
+            h:heal(50)
+            h:awaken()
+        end
     end
+end
+
+function Rest:contains(human)
+    return human.x >= self.x and human.x <= self.x + self.image:getWidth() and
+           human.y >= self.y and human.y <= self.y + self.image:getHeight()
 end
 
 return Rest
