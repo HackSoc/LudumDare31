@@ -266,7 +266,7 @@ function Human:onCollision(other, dx, dy)
         return
     end
 
-    if not other:isInstanceOf(Bullet) then
+    if other.stopsHumans then
         Mobile.onCollision(self, other, dx, dy)
     end
 end

@@ -10,9 +10,12 @@ local Zombie = require "zombie"
 function Trap:initialize(x, y)
     Static.initialize(self, x, y)
 
-    self.hitbox = global.addHitbox(self, x, y, 5, 5)
+    self.w = 5
+    self.h = 5
+    self.hitbox = global.addHitbox(self, x, y, self.w, self.h)
     self.damage = 100
     self.stopsBullets = false
+    self.stopsHumans = false
 end
 
 function Trap:draw()
@@ -24,6 +27,14 @@ function Trap:onCollision(other, dx, dy)
     if other:isInstanceOf(Zombie) then
         other:hurt(self.damage)
         self:destroy()
+    elseif other:isInstanceOf(Trap) then
+        -- each colliding trap gets half of the translation vector
+        self.x = self.x + dx/2
+        self.y = self.y + dy/2
+        local hx0, hy0, hx1, hy1 = self.hitbox:bbox()
+        local hw = hx1 - hx0
+        local hh = hy1 - hy0
+        self.hitbox:moveTo(self.x + hw/2, self.y + hh/2)
     end
 end
 
