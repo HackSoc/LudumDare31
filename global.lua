@@ -153,6 +153,9 @@ function global.reset()
     global.messages = {}
     global.messagenum = 0
     global.maxmessages = 10
+
+    global.zSpawnRate = 0.25
+    global.totalTime = 0
 end
 
 return global
