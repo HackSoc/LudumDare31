@@ -84,7 +84,7 @@ function Mobile:getClosest(objType, dist, mustSee)
     end
 end
 
-function Mobile:canSee(target)
+function riskyCanSee(self, target)
     local Static = require "static"
     local shapes = require "hardoncollider.shapes"
 
@@ -138,6 +138,16 @@ function Mobile:canSee(target)
     end
 
     return true
+end
+
+-- Horrible work-around
+function Mobile:canSee(target)
+    out, res = pcall(function () return riskyCanSee(self, target) end)
+    if out then
+        return res
+    else
+        return false
+    end
 end
 
 function Mobile:setTarget(x, y)
