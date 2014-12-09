@@ -28,6 +28,10 @@ function Barricade:hurt(damage)
     Collidable.hurt(self, damage)
 end
 
+function Barricade:brains()
+    return -3
+end
+
 function Barricade:destroy()
     Collidable.destroy(self)
 end
