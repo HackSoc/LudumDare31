@@ -273,26 +273,19 @@ function love.keypressed(key)
                 e:setMode("trap")
             end
         end
-<<<<<<< HEAD
     elseif key == 'kp3' then
         for e, _ in pairs(global.humans) do
             if e.selected then
                 e:setMode("barricade")
             end
         end
-=======
->>>>>>> Add endgame screen. Fixes #57
     elseif (key == '/' or key == '?') and not global.endGame then
         global.showHelp = not global.showHelp
     end
 
     if global.debug then
         if key == "z" then
-<<<<<<< HEAD
             global.zSpawnRate = global.maxZRate
-=======
-            global.zSpawnRate = 5
->>>>>>> Move zSpawnRate and totalTime to global
         elseif key == "h" then
             local x, y = love.mouse.getPosition()
             global.addDrawable(Human:new(x, y, 10, 0.1, 1))
