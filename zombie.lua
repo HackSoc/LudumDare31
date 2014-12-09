@@ -47,6 +47,7 @@ function Zombie:update(dt)
     if mag ~= 0 then
         self.vx = dx / mag * self.maxspeed
         self.vy = dy / mag * self.maxspeed
+        self.rotation = math.atan2(self.vx, -self.vy)
     end
  
     if self.damageCooldown > 0 then
