@@ -341,7 +341,7 @@ end
 
 function love.mousereleased(x, y, button)
     if button == "l" then
-        if not (dragging.x == x and dragging.y == y) then
+        if dragging and not (dragging.x == x and dragging.y == y) then
             if dragging.x == x then
                 x = x + 1
             elseif dragging.y == y then
@@ -352,6 +352,7 @@ function love.mousereleased(x, y, button)
         else
             click(global.collidablesAt(x, y), false)
         end
+		dragging = nil
     elseif button == "r" then
         for e, _ in pairs(global.humans) do
             if e.selected then
@@ -359,5 +360,4 @@ function love.mousereleased(x, y, button)
             end
         end
     end
-    dragging = nil
 end
