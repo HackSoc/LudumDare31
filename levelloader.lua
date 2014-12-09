@@ -95,7 +95,9 @@ function level.human(info)
 end
 
 function LevelLoader:initialize(module)
-    loadfile(module .. '.lua', 't', level)()
+    local chunk = assert(love.filesystem.load(module .. '.lua'))
+    setfenv(chunk, level)
+    chunk()
 end
 
 return LevelLoader
