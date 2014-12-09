@@ -28,4 +28,20 @@ function Entity:destroy()
     global.removeEntity(self)
 end
 
+function Entity:brains()
+    return math.huge
+end
+
+function Entity:horror()
+    return 0
+end
+
+function Entity:zombieResistance()
+    return 1
+end
+
+function Entity:humanResistance()
+    return 1
+end
+
 return Entity

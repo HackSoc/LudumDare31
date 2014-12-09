@@ -110,4 +110,22 @@ function Gate:destroy()
     self.is_open = true
 end
 
+function Gate:ghost()
+    if not self.is_ghost then
+        self.is_ghost = true
+        global.setGhost(self.hitbox)
+    end
+end
+
+function Gate:solidify()
+    if self.is_ghost then
+        self.is_ghost = false
+        global.setSolid(self.hitbox)
+    end
+end
+
+function Gate:brains()
+    return 0
+end
+
 return Gate

@@ -12,6 +12,9 @@ local Collidable = require "collidable"
 local Tank = require "tank"
 local Static = require "static"
 local Barricade = require "barricade"
+local ZombieGrid = require "zombiegrid"
+
+local lastdt = 0
 
 function love.load()
     love.window.setMode(1280, 720)
@@ -24,7 +27,8 @@ end
 function reset()
     global.reset()
 
-    global.addDrawable(HumanInfo())
+    global.zg = ZombieGrid(86, 48, 15)
+    global.addDrawable(HumanInfo(0, 0))
 
     LevelLoader("level")
 
@@ -48,6 +52,9 @@ function love.update(dt)
         return
     end
     global.totalTime = global.totalTime + dt
+    lastdt = dt
+
+    global.zg:compute()
 
     -- update pathfinding
     global.grid:clear()
@@ -183,12 +190,14 @@ function love.draw()
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
-        global.grid:draw()
+        global.zg:drawGrid(global.zg.heights)
         love.graphics.setColor(0, 0, 0)
         love.graphics.printf(string.format("x: %d, y: %d", mouseX, mouseY), 0, 0, 130)
         love.graphics.printf(string.format("i: %d, j: %d",
                                            math.floor(mouseX / 15), math.floor(mouseY / 15)),
                              130, 0 ,130)
+        love.graphics.printf(string.format("dt: %f", lastdt),
+                             260, 0 ,130)
     end
 
     if global.showHelp then
