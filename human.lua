@@ -372,4 +372,8 @@ function Human:stop()
     end
 end
 
+function Human:brains()
+    return -10
+end
+
 return Human

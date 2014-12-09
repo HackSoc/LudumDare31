@@ -19,4 +19,12 @@ function Wall:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
 end
 
+function Wall:zombieResistance()
+    return math.huge
+end
+
+function Wall:humanResistance()
+    return math.huge
+end
+
 return Wall

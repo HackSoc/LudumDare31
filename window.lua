@@ -32,4 +32,12 @@ function Window:destroy()
     Collidable.destroy(self)
 end
 
+function Window:brains()
+    return -5
+end
+
+function Window:zombieResistance()
+    return 2
+end
+
 return Window

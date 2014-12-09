@@ -11,12 +11,24 @@ local ModeButton = require "modebutton"
 local Collidable = require "collidable"
 local Tank = require "tank"
 local Static = require "static"
+<<<<<<< HEAD
 local Barricade = require "barricade"
+=======
+local ZombieGrid = require "zombiegrid"
+
+local zSpawnRate = 0.25
+
+local totalTime = 0
+global.zg = ZombieGrid(86, 48, 15)
+
+local lastdt = 0
+>>>>>>> Sort of kind of better pathing
 
 function love.load()
     love.window.setMode(1280, 720)
     love.window.setTitle("Zombie Simulator 2014")
     love.graphics.setBackgroundColor(255, 248, 220)
+<<<<<<< HEAD
 
     reset()
 end
@@ -25,6 +37,9 @@ function reset()
     global.reset()
 
     global.addDrawable(HumanInfo())
+=======
+    global.addDrawable(HumanInfo(0, 0))
+>>>>>>> Sort of kind of better pathing
 
     LevelLoader("level")
 
@@ -44,10 +59,18 @@ function reset()
 end
 
 function love.update(dt)
+<<<<<<< HEAD
     if global.showHelp then
         return
     end
     global.totalTime = global.totalTime + dt
+=======
+    totalTime = totalTime + dt
+    lastdt = dt
+
+    global.zg:compute()
+
+>>>>>>> Sort of kind of better pathing
 
     -- update pathfinding
     global.grid:clear()
@@ -67,8 +90,13 @@ function love.update(dt)
     end
     global.collider:update(dt)
 
+<<<<<<< HEAD
     if love.math.random() <= global.zSpawnRate * math.abs(math.cos(math.rad(global.totalTime))) * dt then
         global.zSpawnRate = math.min(global.zSpawnRate * 1.01, global.maxZRate)
+=======
+    if love.math.random() <= zSpawnRate * math.abs(math.cos(math.rad(totalTime))) * dt then
+        zSpawnRate = math.min(zSpawnRate * 1.01, 100)
+>>>>>>> Sort of kind of better pathing
         Zombie.spawn()
     end
 
@@ -183,12 +211,14 @@ function love.draw()
     if global.debug then
         love.graphics.setColor(255, 0, 0)
         global.drawHitboxes()
-        global.grid:draw()
+        global.zg:drawGrid(global.zg.heights)
         love.graphics.setColor(0, 0, 0)
         love.graphics.printf(string.format("x: %d, y: %d", mouseX, mouseY), 0, 0, 130)
         love.graphics.printf(string.format("i: %d, j: %d",
                                            math.floor(mouseX / 15), math.floor(mouseY / 15)),
                              130, 0 ,130)
+        love.graphics.printf(string.format("dt: %f", lastdt),
+                             260, 0 ,130)
     end
 
     if global.showHelp then
